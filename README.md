@@ -1,5 +1,6 @@
-# Laboratório de Software - ISEL/LEIC
+# ISEL - LEIC
+## Software Laboratory, 2019/2020, Spring semester
 
-[![N|Solid](https://www.isel.pt/media/assets/default/images/logo-isel.png)]
+### Students:
 
-## Repositório do Grupo 09
+* Tiago Pereira - 43592
