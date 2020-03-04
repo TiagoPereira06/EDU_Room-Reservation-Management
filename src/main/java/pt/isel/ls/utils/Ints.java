@@ -24,9 +24,12 @@ public class Ints {
      */
 
     public static int indexOfBinary(int[] a, int fromIndex, int toIndex, int n) {
-
         if (fromIndex > toIndex) {
             throw new IllegalArgumentException("from(" + fromIndex + ") > to(" + toIndex + ")");
+        }
+
+        if (toIndex >= a.length || fromIndex < 0) {
+            return -1;
         }
 
         int low = fromIndex;

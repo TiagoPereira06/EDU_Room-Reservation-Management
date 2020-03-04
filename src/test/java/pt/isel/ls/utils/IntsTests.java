@@ -46,4 +46,18 @@ public class IntsTests {
         assertTrue(ix < 0);
     }
 
+    @Test
+    public void indexOfBinary_right_bound_is_negative() {
+        int[] v = {1, 2, 3, 4, 5, 6};
+        int ix = Ints.indexOfBinary(v, -6, 4, 3);
+        assertEquals(-1, ix);
+    }
+
+    @Test
+    public void indexOfBinary_bounds_are_negative() {
+        int[] v = {1, 2, 3, 4, 5, 6};
+        int ix = Ints.indexOfBinary(v, -10, -6, 3);
+        assertEquals(-1, ix);
+    }
+
 }
