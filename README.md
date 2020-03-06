@@ -4,3 +4,4 @@
 ### Students:
 
 * Tiago Pereira - 43592
+* Denise Rodrigues - 44881

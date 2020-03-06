@@ -28,7 +28,7 @@ public class Ints {
             throw new IllegalArgumentException("from(" + fromIndex + ") > to(" + toIndex + ")");
         }
 
-        if (toIndex >= a.length || fromIndex < 0) {
+        if (toIndex > a.length || fromIndex < 0) {
             return -1;
         }
 
@@ -37,7 +37,7 @@ public class Ints {
         int mid;
 
         while (low < high) {
-            mid = high + low / 2 + 1;
+            mid = high + low / 2;
             if (n > a[mid]) {
                 low = mid + 1;
             } else if (n < a[mid]) {

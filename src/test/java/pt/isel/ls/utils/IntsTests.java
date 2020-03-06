@@ -60,4 +60,18 @@ public class IntsTests {
         assertEquals(-1, ix);
     }
 
+    @Test
+    public void indexOfBinary01() {
+        int[] v = {6, 2};
+        int ix = Ints.indexOfBinary(v, 0, 2, 2);
+        assertEquals(ix, 1);
+    }
+
+    @Test
+    public void indexOfBinary02() {
+        int[] v = {6, 2, 1, 0, 8, 9, 15, 22};
+        int ix = Ints.indexOfBinary(v, 0, 6, 0);
+        assertEquals(ix, 3);
+    }
+
 }
