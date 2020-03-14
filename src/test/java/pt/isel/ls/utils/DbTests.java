@@ -2,11 +2,13 @@ package pt.isel.ls.utils;
 
 import org.junit.Test;
 import org.postgresql.ds.PGSimpleDataSource;
+
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import static org.junit.Assert.assertTrue;
 
 public class DbTests {

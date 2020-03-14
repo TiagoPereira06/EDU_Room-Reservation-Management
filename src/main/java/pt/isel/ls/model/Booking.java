@@ -1,29 +1,36 @@
 package pt.isel.ls.model;
 
 public class Booking {
-    private Integer begin;
-    private Integer end;
-    private String owner;
+    private String reservationOwner;
+    private String roomName;
+    private String beginTime;
+    private String endTime;
 
-    public Booking(Integer begin, Integer end, String owner) {
-        this.begin = begin;
-        this.end = end;
-        this.owner = owner;
+    public Booking(String owner, String roomName, String beginTime, String endTime) {
+        this.reservationOwner = owner;
+        this.roomName = roomName;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
     }
 
-    public Integer getBegin() {
-        return begin;
+    public String getReservationOwner() {
+        return reservationOwner;
     }
 
-    public Integer getEnd() {
-        return end;
+    public String getRoomName() {
+        return roomName;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
     }
 
     public String toString() {
-        return String.format("Booking information: begin %d , end %d , reservation owner %s", begin, end, owner);
+        return "Booking Info : Owner -> " + reservationOwner + " Room Name -> " + roomName + " Begin/End -> "
+                + beginTime + " / " + endTime;
     }
 }

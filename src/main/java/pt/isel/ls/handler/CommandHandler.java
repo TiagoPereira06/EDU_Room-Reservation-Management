@@ -1,18 +1,10 @@
 package pt.isel.ls.handler;
 
-import pt.isel.ls.request.Request;
-import pt.isel.ls.result.Result;
-import pt.isel.ls.request.Method;
-import pt.isel.ls.template.Template;
+import pt.isel.ls.request.CommandRequest;
 
 
 public interface CommandHandler {
 
-    Result execute(Request commandRequest);
+    CommandResult execute(CommandRequest commandRequest);
 
-    Template getTemplate();
-
-    Method getMethod();
-
-    String description();
 }

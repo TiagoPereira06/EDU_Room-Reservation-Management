@@ -1,12 +1,14 @@
 package pt.isel.ls.model;
 
-public class Rooms {
+import java.util.List;
+
+public class Room {
     private String name;
     private String location;
     private Integer capacity;
-    private String labels;
+    private List<String> labels;
 
-    public Rooms(String name, String location, Integer capacity, String labels) {
+    public Room(String name, String location, Integer capacity, List<String> labels) {
         this.name = name;
         this.location = location;
         this.capacity = capacity;
@@ -21,12 +23,12 @@ public class Rooms {
         return location;
     }
 
-    public String getLabels() {
-        return labels;
-    }
-
     public Integer getCapacity() {
         return capacity;
+    }
+
+    public List<String> getLabels() {
+        return labels;
     }
 
     public String toString() {

@@ -1,15 +1,15 @@
 package pt.isel.ls.request;
 
 
-public class Request {
+public class CommandRequest {
     private Method method;
     private Path path;
-    private Parameters parameters;
+    private Parameter parameter;
 
-    public Request(Method method, Path path, Parameters parameters) {
+    public CommandRequest(Method method, Path path, Parameter parameter) {
         this.method = method;
         this.path = path;
-        this.parameters = parameters;
+        this.parameter = parameter;
     }
 
     public Method getMethod() {
@@ -20,7 +20,7 @@ public class Request {
         return path;
     }
 
-    public Parameters getParameters() {
-        return parameters;
+    public Parameter getParameter() {
+        return parameter;
     }
 }

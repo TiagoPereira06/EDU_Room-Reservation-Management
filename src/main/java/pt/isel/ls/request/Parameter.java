@@ -1,4 +1,4 @@
 package pt.isel.ls.request;
 
-public class Parameters {
+public class Parameter {
 }
