@@ -14,6 +14,10 @@ public class RouteResult {
         this.parameters = parameters;
     }
 
+    public RouteResult() {
+
+    }
+
     public List<Parameter> getParameters() {
         return parameters;
     }
