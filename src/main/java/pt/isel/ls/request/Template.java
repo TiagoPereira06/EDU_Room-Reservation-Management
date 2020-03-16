@@ -2,6 +2,7 @@ package pt.isel.ls.request;
 
 public class Template {
 
+
     public static final String OPTION = "/";
 
     public static final String ROOMS = "/rooms";
@@ -22,6 +23,13 @@ public class Template {
     public static final String ROOMS_RID_BOOKINGS = "/rooms/{rid}/bookings";
 
     public static final String LABELS_LID_ROOMS = "/labels/{lid}/rooms";
+    String template;
 
+    public Template(String template) {
+        this.template = template;
+    }
 
+    public static Template where(String s) {
+        return new Template(s);
+    }
 }
