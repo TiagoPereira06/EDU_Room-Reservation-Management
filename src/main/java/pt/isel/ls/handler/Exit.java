@@ -8,4 +8,9 @@ public class Exit implements CommandHandler {
         return null;
     }
 
+    @Override
+    public String description() {
+        return "Exits program";
+    }
+
 }

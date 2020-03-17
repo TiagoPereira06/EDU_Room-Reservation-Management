@@ -29,6 +29,7 @@ public class Booking {
         return endTime;
     }
 
+    @Override
     public String toString() {
         return "Booking Info : Owner -> " + reservationOwner + " Room Name -> " + roomName + " Begin/End -> "
                 + beginTime + " / " + endTime;

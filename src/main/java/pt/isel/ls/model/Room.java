@@ -31,8 +31,10 @@ public class Room {
         return labels;
     }
 
+    @Override
     public String toString() {
-        return String.format("RoomInfo: name %s , loc %s , cap %d , lab %s", name, location, capacity, labels);
+        return String.format("Room Info: Name -> %s , Location -> %s , Capacity -> %d , "
+                + "Labels -> %s", name, location, capacity, labels);
     }
 
 

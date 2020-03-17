@@ -28,6 +28,7 @@ public class App {
         //Adicionar os comandos ao route
 
         Router router = new Router();
+        UserInterface ui = new UserInterface();
         router.initRoutes();
 
         //MODO CONSOLA
@@ -39,7 +40,6 @@ public class App {
             userRequest.setParameter(
                     UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
             CommandResult commandResult = routeResult.getHandler().execute(userRequest);
-            UserInterface ui = new UserInterface();
             ui.show(commandResult);
         }
     }

@@ -17,7 +17,8 @@ public class User {
         return email;
     }
 
+    @Override
     public String toString() {
-        return String.format("username: %s , email: %s", name, email);
+        return String.format("User: %s , email: %s", name, email);
     }
 }

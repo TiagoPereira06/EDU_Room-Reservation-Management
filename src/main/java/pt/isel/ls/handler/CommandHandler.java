@@ -1,17 +1,12 @@
 package pt.isel.ls.handler;
 
 import pt.isel.ls.request.CommandRequest;
-import pt.isel.ls.request.Method;
-import pt.isel.ls.request.Template;
 
 
 public interface CommandHandler {
+    final String url = "jdbc:postgresql://localhost:5432/school?user=postgres&password=1234";
 
     CommandResult execute(CommandRequest commandRequest);
 
-    Template getTemplate();
-
     String description();
-
-
 }

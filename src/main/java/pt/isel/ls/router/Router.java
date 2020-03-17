@@ -11,6 +11,7 @@ import pt.isel.ls.handler.label.PostLabel;
 import pt.isel.ls.handler.room.GetRoom;
 import pt.isel.ls.handler.room.GetRoomById;
 import pt.isel.ls.handler.room.PostRoom;
+import pt.isel.ls.handler.user.GetUser;
 import pt.isel.ls.handler.user.GetUserById;
 import pt.isel.ls.handler.user.PostUser;
 import pt.isel.ls.request.Method;
@@ -19,11 +20,11 @@ import pt.isel.ls.request.Template;
 import pt.isel.ls.request.Path;
 import pt.isel.ls.request.Parameter;
 import pt.isel.ls.utils.UtilMethods;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
 
 
 public class Router {
@@ -57,14 +58,12 @@ public class Router {
 
 
     public RouteResult findRoute(Method method, Path path) {
-        RouteResult result;
-        for (Key key : routesMap.keySet()) {
-            result = checkPathMatch(key, method, path);
-            if (result != null) {
-                return result;
-            }
+        RouteResult result = null;
+        Iterator<Key> itr = routesMap.keySet().iterator();
+        while (itr.hasNext() && result == null) {
+            result = checkPathMatch(itr.next(), method, path);
         }
-        return null;
+        return result;
     }
 
     private RouteResult checkPathMatch(Key routesMapKey, Method method, Path path) {
@@ -77,13 +76,10 @@ public class Router {
         if (routesMapKey.getMethod() == method && foundPath.length == userPath.length) {
             //PALAVRA/ARG/PALAVRA/ARG...-> Percorrer até fazer match
             List<Parameter> parameterList = new LinkedList<>();
-            for (int i = 0; i < userPath.length; i++) {
+            for (int i = 0; i < userPath.length && userPath[i].equals(foundPath[i]); i++) {
                 if (i % 2 != 0) {
                     parameterList.add(new Parameter((foundPath[i]), userPath[i]));
                     continue;
-                }
-                if (!(userPath[i].equals(foundPath[i]))) {
-                    break;
                 }
                 //Chegou ao fim da verificação porque fez match
                 if (i == userPath.length - 1) {
@@ -101,6 +97,7 @@ public class Router {
         this.addRoute(Method.POST, new PathTemplate(Template.ROOMS_RID_BOOKINGS), new PostBooking());
         this.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new GetBookingById());
         this.addRoute(Method.POST, new PathTemplate(Template.USERS), new PostUser());
+        this.addRoute(Method.GET, new PathTemplate(Template.USERS), new GetUser());
         this.addRoute(Method.GET, new PathTemplate(Template.USERS_UID), new GetUserById());
         this.addRoute(Method.GET, new PathTemplate(Template.USERS_UID_BOOKINGS), new GetBookingByOwner());
         this.addRoute(Method.POST, new PathTemplate(Template.LABELS), new PostLabel());

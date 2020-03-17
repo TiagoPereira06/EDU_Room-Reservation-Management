@@ -11,7 +11,8 @@ public class Label {
         return name;
     }
 
+    @Override
     public String toString() {
-        return String.format("Label: %s", name);
+        return String.format("Label Info: %s \n", name);
     }
 }
