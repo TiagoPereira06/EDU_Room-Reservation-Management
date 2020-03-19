@@ -8,11 +8,11 @@ public class Room {
     private Integer capacity;
     private List<String> labels;
 
-    public Room(String name, String location, Integer capacity, List<String> labels) {
+    public Room(String name, String location, Integer capacity) {
         this.name = name;
         this.location = location;
         this.capacity = capacity;
-        this.labels = labels;
+
     }
 
     public String getName() {
@@ -34,7 +34,7 @@ public class Room {
     @Override
     public String toString() {
         return String.format("Room Info: Name -> %s , Location -> %s , Capacity -> %d , "
-                + "Labels -> %s", name, location, capacity, labels);
+                +  name, location, capacity);
     }
 
 

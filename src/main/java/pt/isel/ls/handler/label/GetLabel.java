@@ -31,13 +31,13 @@ public class GetLabel implements CommandHandler {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                ex.getMessage();
             }
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.getMessage();
             }
         }
         return commandResult;
