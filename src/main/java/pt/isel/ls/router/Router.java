@@ -2,11 +2,12 @@ package pt.isel.ls.router;
 
 import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.Exit;
+import pt.isel.ls.handler.booking.GetBooking;
 import pt.isel.ls.handler.booking.GetBookingById;
 import pt.isel.ls.handler.booking.GetBookingByOwner;
 import pt.isel.ls.handler.booking.PostBooking;
 import pt.isel.ls.handler.label.GetLabel;
-import pt.isel.ls.handler.label.GetRoomsByLabel;
+import pt.isel.ls.handler.room.GetRoomsByLabel;
 import pt.isel.ls.handler.label.PostLabel;
 import pt.isel.ls.handler.room.GetRoom;
 import pt.isel.ls.handler.room.GetRoomById;
@@ -76,19 +77,24 @@ public class Router {
         if (routesMapKey.getMethod() == method && foundPath.length == userPath.length) {
             //PALAVRA/ARG/PALAVRA/ARG...-> Percorrer até fazer match
             List<Parameter> parameterList = new LinkedList<>();
-            for (int i = 0; i < userPath.length && userPath[i].equals(foundPath[i]); i++) {
+            int i = 0;
+            for (; i < userPath.length; i++) {
                 if (i % 2 != 0) {
                     parameterList.add(new Parameter((foundPath[i]), userPath[i]));
                     continue;
                 }
-                //Chegou ao fim da verificação porque fez match
-                if (i == userPath.length - 1) {
-                    return new RouteResult(routesMap.get(routesMapKey), parameterList);
+                if (!(userPath[i].equals(foundPath[i]))) {
+                    break;
                 }
+            }
+            //Chegou ao fim da verificação porque fez match
+            if (i == userPath.length) {
+                return new RouteResult(routesMap.get(routesMapKey), parameterList);
             }
         }
         return null;
     }
+
 
     public void initRoutes() {
         this.addRoute(Method.POST, new PathTemplate(Template.ROOMS), new PostRoom());
@@ -100,6 +106,7 @@ public class Router {
         this.addRoute(Method.GET, new PathTemplate(Template.USERS), new GetUser());
         this.addRoute(Method.GET, new PathTemplate(Template.USERS_UID), new GetUserById());
         this.addRoute(Method.GET, new PathTemplate(Template.USERS_UID_BOOKINGS), new GetBookingByOwner());
+        this.addRoute(Method.GET, new PathTemplate(Template.BOOKINGS), new GetBooking());
         this.addRoute(Method.POST, new PathTemplate(Template.LABELS), new PostLabel());
         this.addRoute(Method.GET, new PathTemplate(Template.LABELS), new GetLabel());
         this.addRoute(Method.GET, new PathTemplate(Template.LABELS_LID_ROOMS), new GetRoomsByLabel());

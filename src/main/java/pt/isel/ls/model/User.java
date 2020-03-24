@@ -4,7 +4,7 @@ public class User {
     private String name;
     private String email;
 
-    public User(String name, String email) {
+    public User(String email, String name) {
         this.name = name;
         this.email = email;
     }
@@ -19,6 +19,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("User: %s , email: %s", name, email);
+        return String.format("USER INFO: Username -> %s ; Email -> %s", name, email);
     }
 }

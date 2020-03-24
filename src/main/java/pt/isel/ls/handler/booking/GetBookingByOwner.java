@@ -12,9 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GetBookingByOwner implements CommandHandler {
+    private final int uidPosition = 0;
+
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
-
         CommandResult commandResult = new CommandResult();
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         Connection connection = null;
@@ -22,13 +23,19 @@ public class GetBookingByOwner implements CommandHandler {
 
         try {
             connection = dataSource.getConnection();
-            String getBookingsByOwnerQuery = "SELECT B.reservationOwner, U.email"
-                    + "FROM bookings as B, users as U "
-                    + "WHERE B.reservationOwner = U.email ";
+            String getBookingsByOwnerQuery = "SELECT * FROM bookings WHERE reservationOwner = ?";
             PreparedStatement statement = connection.prepareStatement(getBookingsByOwnerQuery);
+            statement.setString(1, commandRequest.getParameter().get(uidPosition).getValue());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                commandResult.getResult().add(new Booking(resultSet.getString("reservationOwner"), resultSet.getString("roomName"), resultSet.getString("beginTime"), resultSet.getString("endTime")));
+                commandResult.getResult().add(
+                        new Booking(
+                                resultSet.getString("reservationOwner"),
+                                resultSet.getString("roomName"),
+                                resultSet.getString("beginTime"),
+                                resultSet.getString("endTime")
+                        )
+                );
             }
         } catch (SQLException e) {
             try {

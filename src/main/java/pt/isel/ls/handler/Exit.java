@@ -5,6 +5,7 @@ import pt.isel.ls.request.CommandRequest;
 public class Exit implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
+        System.exit(1);
         return null;
     }
 

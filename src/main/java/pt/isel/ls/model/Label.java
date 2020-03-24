@@ -13,6 +13,6 @@ public class Label {
 
     @Override
     public String toString() {
-        return String.format("Label Info: %s \n", name);
+        return String.format("LABEL INFO -> %s", name);
     }
 }

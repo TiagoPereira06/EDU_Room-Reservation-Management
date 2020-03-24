@@ -5,12 +5,12 @@ VALUES ('marciogarcia@gmail.com', 'Marcio Garcia'),
        ('ttavares@slb.pt', 'Tomas Tavares'),
        ('bernassilva@slb.pt', 'Bernardo Silva');
 
-INSERT INTO rooms(name, location, capacity)
-VALUES ('LS1', 'Building F floor -1', 53),
-       ('LS2', 'Building F floor -1', 48),
-       ('AURS', 'Building C floor 3', 125),
-       ('LAC', 'Building G floor 0', 12),
-       ('LH1', 'Building F floor 0', 33);
+INSERT INTO rooms(name, location, capacity, description)
+VALUES ('LS1', 'Building F floor -1', 53, 'Software-LabI'),
+       ('LS2', 'Building F floor -1', 48, 'Software-LabII'),
+       ('AURS', 'Building C floor 3', 125, 'Auditorio-URS'),
+       ('LAC', 'Building G floor 0', 12, 'Acoustics-Lab'),
+       ('LH1', 'Building F floor 0', 33, 'Hardware-LabI');
 
 INSERT INTO labels(name)
 VALUES ('easy access'),
@@ -27,7 +27,7 @@ VALUES ('marciogarcia@gmail.com', 'LS1', '2020-04-01 10:00:00', '2020-04-01 11:0
        ('ttavares@slb.pt', 'LS1', '2020-04-30 18:00:00', '2020-04-30 20:00:00'),
        ('bernassilva@slb.pt', 'AURS', '2020-04-27 09:00:00', '2020-04-28 09:00:00');
 
-INSERT INTO roomLabels(roomname, label)
+INSERT INTO roomLabels(roomName, label)
 VALUES ('LS1', 'easy access'),
        ('LS2', 'video projector availability'),
        ('LS2', 'easy access'),

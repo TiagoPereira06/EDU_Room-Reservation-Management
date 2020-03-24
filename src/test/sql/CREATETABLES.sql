@@ -1,8 +1,8 @@
-drop table if exists users;
-drop table if exists room;
-drop table if exists label;
-drop table if exists booking;
 drop table if exists roomLabels;
+drop table if exists labels;
+drop table if exists bookings;
+drop table if exists users;
+drop table if exists rooms;
 
 CREATE TABLE users
 (
@@ -14,7 +14,9 @@ CREATE TABLE rooms
 (
     name     VARCHAR(80) PRIMARY KEY,
     location VARCHAR(80),
-    capacity INTEGER
+    capacity INTEGER,
+    description VARCHAR(500)
+
 );
 
 CREATE TABLE labels
@@ -24,16 +26,16 @@ CREATE TABLE labels
 
 CREATE TABLE bookings
 (
+    bid serial primary key,
     reservationOwner VARCHAR(80) REFERENCES users (email),
     roomName         VARCHAR(80) REFERENCES rooms (name),
     beginTime        TIMESTAMP,
-    endTime          TIMESTAMP,
-    PRIMARY KEY (reservationOwner, roomName, beginTime)
+    endTime          TIMESTAMP
 );
 
 CREATE TABLE roomLabels
 (
-    roomname VARCHAR(80) REFERENCES rooms (name),
+    roomName VARCHAR(80) REFERENCES rooms (name),
     label    VARCHAR(80) REFERENCES labels (name),
-    PRIMARY KEY (roomname, label)
+    PRIMARY KEY (roomName, label)
 );
