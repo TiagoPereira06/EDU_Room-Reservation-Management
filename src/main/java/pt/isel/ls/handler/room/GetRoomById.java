@@ -1,6 +1,5 @@
 package pt.isel.ls.handler.room;
 
-import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.model.Room;
@@ -14,12 +13,9 @@ import java.util.List;
 
 
 public class GetRoomById extends RoomHandler {
-    private final int ridPosition = 0;
-
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult commandResult = new CommandResult();
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         Connection connection = null;
         dataSource.setUrl(url);
 
@@ -27,14 +23,14 @@ public class GetRoomById extends RoomHandler {
             connection = dataSource.getConnection();
             String getRoomsByIdQuery = "SELECT * from rooms WHERE name = ?";
             PreparedStatement statement = connection.prepareStatement(getRoomsByIdQuery);
-            statement.setString(1, commandRequest.getParameter().get(ridPosition).getValue());
+            statement.setString(1, commandRequest.getParametersByName(idArgument).get(0).getValue());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String roomName = resultSet.getString("name");
                 String roomLocation = resultSet.getString("location");
                 int roomCapacity = resultSet.getInt("capacity");
                 String roomDescription = resultSet.getString("description");
-                List<Label> labels = getRoomLabels(roomName);
+                List<Label> labels = getRoomLabels(connection, roomName);
                 Room m = new Room(roomName, roomLocation, roomCapacity, roomDescription);
                 m.setLabels(labels);
                 commandResult.getResult().add(m);
@@ -42,12 +38,14 @@ public class GetRoomById extends RoomHandler {
 
         } catch (SQLException e) {
             try {
+                assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
                 ex.getMessage();
             }
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
                 e.getMessage();

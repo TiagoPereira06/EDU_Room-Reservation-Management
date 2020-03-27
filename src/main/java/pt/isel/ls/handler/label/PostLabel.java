@@ -1,7 +1,5 @@
 package pt.isel.ls.handler.label;
 
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.request.CommandRequest;
 
@@ -9,13 +7,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class PostLabel implements CommandHandler {
-    private final int labelNamePosition = 0;
+public class PostLabel extends LabelHandler {
 
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult commandResult = new CommandResult();
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         Connection connection = null;
         String labelName = "";
         dataSource.setUrl(url);
@@ -23,24 +19,33 @@ public class PostLabel implements CommandHandler {
             connection = dataSource.getConnection();
             String getRoomsQuery = "INSERT INTO labels(name) VALUES (?)";
             PreparedStatement statement = connection.prepareStatement(getRoomsQuery);
-            labelName = commandRequest.getParameter().get(labelNamePosition).getValue().replace('+', ' ');
+            labelName = commandRequest.getParametersByName(nameParameter).get(0).getValue().replace('+', ' ');
             statement.setString(1, labelName);
+            if (checkIfLabelAlreadyExists(labelName, connection)) {
+                throw new SQLException("LABEL ALREADY IN USE !");
+            }
             statement.executeQuery();
 
         } catch (SQLException e) {
             try {
+                assert connection != null;
                 connection.rollback();
+                commandResult.getResult().add(e.getMessage());
             } catch (SQLException ex) {
-                ex.getMessage();
+                commandResult.getResult().add(e.getMessage());
             }
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
-                e.getMessage();
+                commandResult.getResult().add(e.getMessage());
             }
         }
-        commandResult.getResult().add("LABEL INSERTED: LABEL INFO -> ".concat(labelName));
+        if (commandResult.getResult().isEmpty()) {
+            commandResult.getResult().add("LABEL INSERTED: LABEL INFO -> ".concat(labelName));
+        }
+
         return commandResult;
     }
 

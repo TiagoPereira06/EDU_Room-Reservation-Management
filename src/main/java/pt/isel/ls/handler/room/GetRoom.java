@@ -1,6 +1,5 @@
 package pt.isel.ls.handler.room;
 
-import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.model.Room;
 import pt.isel.ls.request.CommandRequest;
@@ -14,7 +13,6 @@ public class GetRoom extends RoomHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult commandResult = new CommandResult();
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         Connection connection = null;
         dataSource.setUrl(url);
 
@@ -34,12 +32,14 @@ public class GetRoom extends RoomHandler {
 
         } catch (SQLException e) {
             try {
+                assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
                 ex.getMessage();
             }
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
                 e.getMessage();

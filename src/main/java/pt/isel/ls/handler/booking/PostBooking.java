@@ -1,83 +1,76 @@
 package pt.isel.ls.handler.booking;
 
 import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.CommandResult;
-import pt.isel.ls.handler.Queries;
-
+import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
-
 import java.sql.SQLException;
+import java.util.Date;
 
 
-public class PostBooking implements CommandHandler {
-    private final int bidPosition = 0;
-    private final int reservationOwnerPosition = 1;
-    private final int roomNamePosition = 2;
-    private final int beginTimePosition = 3;
-    private final int endTimePosition = 4;
+public class PostBooking extends BookingHandler {
 
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
-
+        final long oneMinuteInMillis = 60000;//millisecs
         CommandResult commandResult = new CommandResult();
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        Connection connection = null;
-        String bid = " ";
-        String reservationOwner = "";
-        String roomName = "";
-        String beginTime = "";
-        String endTime = "";
         dataSource.setUrl(url);
+        Connection connection = null;
 
         try {
             connection = dataSource.getConnection();
-            String postBookingsQuery = "INSERT INTO bookings(bid, reservationOwner, roomName, beginTime, endTime )"
-                    + "VALUES (?,?,?,?,?) ";
+            connection.setAutoCommit(false);
+            String postBookingsQuery = "INSERT INTO bookings(reservationOwner, roomName, beginTime, endTime)"
+                    + "VALUES (?,?,?,?) ";
             PreparedStatement statement = connection.prepareStatement(postBookingsQuery);
-            bid = commandRequest.getParameter().get(bidPosition).getValue()
-                    .replace('+', ' ');
-            statement.setString(1, bid);
-            reservationOwner = commandRequest.getParameter().get(reservationOwnerPosition).getValue()
-                    .replace('+', ' ');
-            statement.setString(2, reservationOwner);
-            roomName = commandRequest.getParameter().get(roomNamePosition).getValue()
-                    .replace('+', ' ');
-            statement.setString(3, roomName);
-            beginTime = commandRequest.getParameter().get(beginTimePosition).getValue()
-                    .replace('+', ' ');
-            statement.setString(4, beginTime);
-            endTime = commandRequest.getParameter().get(endTimePosition).getValue()
-                    .replace('+', ' ');
-            statement.setString(5, endTime);
-            statement.executeQuery();
-
-            /* Verifica se já existe room*/
-            if (Queries.checksIfRoomAlreadyExists(roomName, connection)) {
-                throw new Exception("Room already in usage");
+            String owner = commandRequest.getParametersByName(ownerIdParameter).get(0).getValue();
+            statement.setString(1, owner);
+            String name = commandRequest.getParametersByName(roomIdParameter).get(0).getValue();
+            statement.setString(2, name);
+            String begin = commandRequest.getParametersByName(beginParameter).get(0).getValue().replace('+', ' ');
+            statement.setString(3, begin);
+            String duration = commandRequest.getParametersByName(durationParameter).get(0).getValue();
+            if (Integer.parseInt(duration) < 10) {
+                throw new SQLException("DURATION MUST BE LONGER !");
             }
-
+            //Adicionar ao beginTime o valor do duration e converter para string
+            Date beginTime = Booking.dateFormat.parse(begin);
+            Date endTime = new Date(beginTime.getTime() + oneMinuteInMillis * Integer.parseInt(duration));
+            duration = Booking.dateFormat.format(endTime);
+            statement.setString(4, duration);
+            if (!checkIfRoomIsAvailable(connection, name, beginTime, endTime)) {
+                throw new SQLException("ROOM IS NOT AVAILABLE !");
+            }
+            statement.executeUpdate();
+            connection.commit();
 
         } catch (SQLException e) {
             try {
+                assert connection != null;
                 connection.rollback();
+                commandResult.getResult().add(e.getMessage());
             } catch (SQLException ex) {
-                ex.getMessage();
+                commandResult.getResult().add(ex.getMessage());
             }
         } catch (Exception e) {
             e.printStackTrace();
+            commandResult.getResult().add(e.getMessage());
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
-                e.getMessage();
+                commandResult.getResult().add(e.getMessage());
             }
         }
-        commandResult.getResult().add("BOOKING INSERTED: BOOKING INFO -> ".concat(bid));
+        if (commandResult.getResult().isEmpty()) {
+            //TODO:GET BOOKING ID!
+            commandResult.getResult().add("BOOKING INSERTED");
+        }
         return commandResult;
     }
 

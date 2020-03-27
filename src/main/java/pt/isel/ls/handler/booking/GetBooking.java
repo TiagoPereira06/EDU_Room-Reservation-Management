@@ -1,7 +1,5 @@
 package pt.isel.ls.handler.booking;
 
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
@@ -12,11 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class GetBooking implements CommandHandler {
+public class GetBooking extends BookingHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult commandResult = new CommandResult();
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         Connection connection = null;
         dataSource.setUrl(url);
 
@@ -32,12 +29,14 @@ public class GetBooking implements CommandHandler {
             }
         } catch (SQLException e) {
             try {
+                assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
                 ex.getMessage();
             }
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
                 e.getMessage();

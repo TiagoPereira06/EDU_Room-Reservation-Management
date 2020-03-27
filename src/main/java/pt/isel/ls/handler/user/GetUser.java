@@ -1,7 +1,5 @@
 package pt.isel.ls.handler.user;
 
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.model.User;
 import pt.isel.ls.request.CommandRequest;
@@ -12,13 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class GetUser implements CommandHandler {
+public class GetUser extends UserHandler {
 
 
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult commandResult = new CommandResult();
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         Connection connection = null;
         dataSource.setUrl(url);
 
@@ -32,12 +29,14 @@ public class GetUser implements CommandHandler {
             }
         } catch (SQLException e) {
             try {
+                assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();

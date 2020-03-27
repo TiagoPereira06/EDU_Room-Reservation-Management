@@ -100,7 +100,7 @@ public class Router {
         this.addRoute(Method.POST, new PathTemplate(Template.ROOMS), new PostRoom());
         this.addRoute(Method.GET, new PathTemplate(Template.ROOMS), new GetRoom());
         this.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID), new GetRoomById());
-        this.addRoute(Method.POST, new PathTemplate(Template.ROOMS_RID_BOOKINGS), new PostBooking());
+        this.addRoute(Method.POST, new PathTemplate(Template.BOOKINGS), new PostBooking());
         this.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new GetBookingById());
         this.addRoute(Method.POST, new PathTemplate(Template.USERS), new PostUser());
         this.addRoute(Method.GET, new PathTemplate(Template.USERS), new GetUser());

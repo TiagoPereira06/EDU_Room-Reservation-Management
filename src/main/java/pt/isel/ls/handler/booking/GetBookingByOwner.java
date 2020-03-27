@@ -1,7 +1,6 @@
 package pt.isel.ls.handler.booking;
 
 import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
@@ -11,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GetBookingByOwner implements CommandHandler {
+public class GetBookingByOwner extends BookingHandler {
     private final int uidPosition = 0;
 
     @Override
@@ -25,7 +24,7 @@ public class GetBookingByOwner implements CommandHandler {
             connection = dataSource.getConnection();
             String getBookingsByOwnerQuery = "SELECT * FROM bookings WHERE reservationOwner = ?";
             PreparedStatement statement = connection.prepareStatement(getBookingsByOwnerQuery);
-            statement.setString(1, commandRequest.getParameter().get(uidPosition).getValue());
+            statement.setString(1, commandRequest.getParametersByName(ownerIdArgument).get(0).getValue());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 commandResult.getResult().add(
@@ -39,12 +38,14 @@ public class GetBookingByOwner implements CommandHandler {
             }
         } catch (SQLException e) {
             try {
+                assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
                 ex.getMessage();
             }
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
                 e.getMessage();

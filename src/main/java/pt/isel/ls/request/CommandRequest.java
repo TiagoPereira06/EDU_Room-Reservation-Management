@@ -1,5 +1,6 @@
 package pt.isel.ls.request;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class CommandRequest {
@@ -27,5 +28,15 @@ public class CommandRequest {
 
     public void setParameter(List<Parameter> parameter) {
         this.parameter = parameter;
+    }
+
+    public List<Parameter> getParametersByName(String paramName) {
+        List<Parameter> list = new LinkedList<>();
+        for (Parameter p : parameter) {
+            if (p.getName().equals(paramName)) {
+                list.add(p);
+            }
+        }
+        return list;
     }
 }

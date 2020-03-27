@@ -26,11 +26,12 @@ CREATE TABLE labels
 
 CREATE TABLE bookings
 (
-    bid serial primary key,
+    bid serial,
     reservationOwner VARCHAR(80) REFERENCES users (email),
     roomName         VARCHAR(80) REFERENCES rooms (name),
-    beginTime        TIMESTAMP,
-    endTime          TIMESTAMP
+    beginTime        VARCHAR(80),
+    endTime          VARCHAR(80),
+    PRIMARY KEY (roomName,beginTime,endTime)
 );
 
 CREATE TABLE roomLabels

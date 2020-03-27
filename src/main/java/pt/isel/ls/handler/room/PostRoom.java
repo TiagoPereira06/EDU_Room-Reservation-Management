@@ -1,65 +1,77 @@
 package pt.isel.ls.handler.room;
 
-import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.CommandResult;
+import pt.isel.ls.model.Label;
 import pt.isel.ls.request.CommandRequest;
+import pt.isel.ls.request.Parameter;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 
-public class PostRoom implements CommandHandler {
-    private final int roomNamePosition = 0;
-    private final int roomLocationPosition = 1;
-    private final int roomCapacityPosition = 2;
-    private final int roomDescriptionPosition = 3;
-
+public class PostRoom extends RoomHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult commandResult = new CommandResult();
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         Connection connection = null;
         String roomName = "";
-        String roomLocation = "";
-        int roomCapacity = 0;
-        String roomDescription = "";
+        int roomCapacity;
+        String roomDescription;
+        String roomLocation;
         dataSource.setUrl(url);
         try {
             connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
             String postRoomsQuery = "INSERT INTO rooms(name, location, capacity, description) VALUES (?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(postRoomsQuery);
-            roomName = commandRequest.getParameter().get(roomNamePosition).getValue()
+            roomName = commandRequest.getParametersByName(nameParameter).get(0).getValue()
                     .replace('+', ' ');
             statement.setString(1, roomName);
-            roomLocation = commandRequest.getParameter().get(roomLocationPosition).getValue()
+            roomLocation = commandRequest.getParametersByName(locationParameter).get(0).getValue()
                     .replace('+', ' ');
             statement.setString(2, roomLocation);
             //VOLTAR A VER ROOMCAPACITY
-            roomCapacity = commandRequest.getParameter().get(roomCapacityPosition).getValue()
-                    .indexOf(roomCapacityPosition);
+            roomCapacity = Integer.parseInt(commandRequest.getParametersByName(capacityParameter).get(0).getValue());
             statement.setInt(3, roomCapacity);
-            roomDescription = commandRequest.getParameter().get(roomDescriptionPosition).getValue()
+            roomDescription = commandRequest.getParametersByName(descriptionParameter).get(0).getValue()
                     .replace('+', ' ');
             statement.setString(4, roomDescription);
-            statement.executeQuery();
+
+            List<Parameter> labelsParameters = commandRequest.getParametersByName(labelParameter);
+            List<Label> labels = new LinkedList<>();
+            for (Parameter p : labelsParameters) {
+                if (!checkIfLabelAlreadyExists(p.getValue(), connection)) {
+                    throw new SQLException("LABEL NOT VALID !");
+                } else {
+                    labels.add(new Label(p.getValue()));
+                }
+            }
+            statement.executeUpdate();
+            connection.commit();
+            insertLabelsRoom(connection, roomName, labels);
 
         } catch (SQLException e) {
+            commandResult.getResult().add(e.getMessage());
             try {
+                assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
-                ex.getMessage();
+                commandResult.getResult().add(ex.getMessage());
             }
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
-                e.getMessage();
+                commandResult.getResult().add(e.getMessage());
             }
         }
-        commandResult.getResult().add("ROOM INSERTED: ROOM INFO -> ".concat(roomName));
+        if (commandResult.getResult().isEmpty()) {
+            commandResult.getResult().add("ROOM INSERTED: ROOM INFO -> ".concat(roomName));
+        }
         return commandResult;
     }
 

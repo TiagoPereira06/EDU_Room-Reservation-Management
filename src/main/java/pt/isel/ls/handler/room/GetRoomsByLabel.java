@@ -1,6 +1,5 @@
 package pt.isel.ls.handler.room;
 
-import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.model.Room;
 import pt.isel.ls.request.CommandRequest;
@@ -14,9 +13,7 @@ import java.sql.SQLException;
 public class GetRoomsByLabel extends RoomHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
-        final int lidPosition = 0;
         CommandResult commandResult = new CommandResult();
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         Connection connection = null;
         dataSource.setUrl(url);
 
@@ -25,7 +22,7 @@ public class GetRoomsByLabel extends RoomHandler {
             String getRoomsByLabelQuery = "SELECT r.name,r.location,r.capacity,r.description from rooms as r "
                     + "INNER JOIN roomlabels as rm ON r.name = rm.roomName WHERE rm.label = ?";
             PreparedStatement statement = connection.prepareStatement(getRoomsByLabelQuery);
-            statement.setString(1, commandRequest.getParameter().get(lidPosition).getValue());
+            statement.setString(1, commandRequest.getParametersByName(lidArgument).get(0).getValue());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String roomName = resultSet.getString("name");
@@ -37,12 +34,14 @@ public class GetRoomsByLabel extends RoomHandler {
 
         } catch (SQLException e) {
             try {
+                assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
                 ex.getMessage();
             }
         } finally {
             try {
+                assert connection != null;
                 connection.close();
             } catch (SQLException e) {
                 e.getMessage();
