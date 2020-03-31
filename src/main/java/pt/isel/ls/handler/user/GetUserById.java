@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GetUserById extends UserHandler {
-    private final int uidPosition = 0;
 
     @Override
     public CommandResult execute(CommandRequest commandRequest) {

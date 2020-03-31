@@ -29,7 +29,8 @@ public class PostUser extends UserHandler {
             if (checksIfEmailAlreadyExists(email, connection)) {
                 throw new SQLException("EMAIL ALREADY IN USE !");
             }
-            statement.executeQuery();
+            statement.executeUpdate();
+            connection.commit();
 
         } catch (SQLException e) {
             try {

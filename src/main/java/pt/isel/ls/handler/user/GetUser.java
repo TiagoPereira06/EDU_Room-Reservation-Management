@@ -28,12 +28,7 @@ public class GetUser extends UserHandler {
                 commandResult.getResult().add(new User(resultSet.getString("username"), resultSet.getString("email")));
             }
         } catch (SQLException e) {
-            try {
-                assert connection != null;
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            e.getMessage();
         } finally {
             try {
                 assert connection != null;

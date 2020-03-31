@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GetBookingByOwner extends BookingHandler {
-    private final int uidPosition = 0;
 
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
@@ -37,12 +36,7 @@ public class GetBookingByOwner extends BookingHandler {
                 );
             }
         } catch (SQLException e) {
-            try {
-                assert connection != null;
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.getMessage();
-            }
+            e.getMessage();
         } finally {
             try {
                 assert connection != null;

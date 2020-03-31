@@ -32,13 +32,9 @@ public class GetRoomsByLabel extends RoomHandler {
                 commandResult.getResult().add(new Room(roomName, roomLocation, roomCapacity, roomDescription));
             }
 
+
         } catch (SQLException e) {
-            try {
-                assert connection != null;
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.getMessage();
-            }
+            e.getMessage();
         } finally {
             try {
                 assert connection != null;

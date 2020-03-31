@@ -36,13 +36,9 @@ public class GetRoomById extends RoomHandler {
                 commandResult.getResult().add(m);
             }
 
+
         } catch (SQLException e) {
-            try {
-                assert connection != null;
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.getMessage();
-            }
+            e.getMessage();
         } finally {
             try {
                 assert connection != null;

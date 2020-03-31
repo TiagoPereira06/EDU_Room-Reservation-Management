@@ -48,8 +48,8 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
             statement.setString(1, roomName);
             statement.setString(2, l.getName().replace('+', ' '));
             statement.executeUpdate();
-            connection.commit();
         }
+        connection.commit();
     }
 
 }

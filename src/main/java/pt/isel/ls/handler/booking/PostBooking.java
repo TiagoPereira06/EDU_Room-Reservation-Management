@@ -57,7 +57,6 @@ public class PostBooking extends BookingHandler {
                 commandResult.getResult().add(ex.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
             commandResult.getResult().add(e.getMessage());
         } finally {
             try {

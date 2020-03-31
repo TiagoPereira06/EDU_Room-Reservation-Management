@@ -28,12 +28,7 @@ public class GetBooking extends BookingHandler {
                                 resultSet.getString("beginTime"), resultSet.getString("endTime")));
             }
         } catch (SQLException e) {
-            try {
-                assert connection != null;
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.getMessage();
-            }
+            e.getMessage();
         } finally {
             try {
                 assert connection != null;

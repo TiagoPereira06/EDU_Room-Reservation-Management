@@ -25,12 +25,7 @@ public class GetLabel extends LabelHandler {
                 commandResult.getResult().add(new Label(resultSet.getString("name")));
             }
         } catch (SQLException e) {
-            try {
-                assert connection != null;
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.getMessage();
-            }
+            e.getMessage();
         } finally {
             try {
                 assert connection != null;
