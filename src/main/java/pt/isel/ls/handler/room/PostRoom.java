@@ -33,7 +33,6 @@ public class PostRoom extends RoomHandler {
             roomLocation = commandRequest.getParametersByName(locationParameter).get(0).getValue()
                     .replace('+', ' ');
             statement.setString(2, roomLocation);
-            //VOLTAR A VER ROOMCAPACITY
             roomCapacity = Integer.parseInt(commandRequest.getParametersByName(capacityParameter).get(0).getValue());
             statement.setInt(3, roomCapacity);
             roomDescription = commandRequest.getParametersByName(descriptionParameter).get(0).getValue()
