@@ -1,6 +1,7 @@
 package pt.isel.ls.utils;
 
 import pt.isel.ls.request.Parameter;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;

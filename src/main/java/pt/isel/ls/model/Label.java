@@ -1,7 +1,7 @@
 package pt.isel.ls.model;
 
 public class Label {
-    private String name;
+    private final String name;
 
     public Label(String name) {
         this.name = name;

@@ -38,6 +38,14 @@ public abstract class BookingHandler implements CommandHandler {
         }
         return true;
     }
+
+    int getNextBookingId(Connection connection) throws SQLException {
+        String getBookingId = "SELECT bid FROM bookings ORDER BY bid DESC";
+        PreparedStatement statement = connection.prepareStatement(getBookingId);
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt("bid");
+    }
 }
 
 

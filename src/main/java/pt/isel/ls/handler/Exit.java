@@ -2,10 +2,12 @@ package pt.isel.ls.handler;
 
 import pt.isel.ls.request.CommandRequest;
 
+import java.sql.Connection;
+
 public class Exit implements CommandHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) {
-        System.exit(1);
+    public CommandResult execute(CommandRequest commandRequest, Connection connection) {
+        System.exit(0);
         return null;
     }
 

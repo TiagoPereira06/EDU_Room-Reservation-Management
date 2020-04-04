@@ -11,28 +11,13 @@ import java.sql.SQLException;
 
 public class GetLabel extends LabelHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) {
+    public CommandResult execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         CommandResult commandResult = new CommandResult();
-        Connection connection = null;
-        dataSource.setUrl(url);
-
-        try {
-            connection = dataSource.getConnection();
-            String getLabelsQuery = "SELECT * FROM labels";
-            PreparedStatement statement = connection.prepareStatement(getLabelsQuery);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                commandResult.getResult().add(new Label(resultSet.getString("name")));
-            }
-        } catch (SQLException e) {
-            e.getMessage();
-        } finally {
-            try {
-                assert connection != null;
-                connection.close();
-            } catch (SQLException e) {
-                e.getMessage();
-            }
+        String getLabelsQuery = "SELECT * FROM labels";
+        PreparedStatement statement = connection.prepareStatement(getLabelsQuery);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            commandResult.getResult().add(new Label(resultSet.getString("name")));
         }
         return commandResult;
     }

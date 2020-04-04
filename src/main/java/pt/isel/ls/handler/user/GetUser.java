@@ -14,28 +14,13 @@ public class GetUser extends UserHandler {
 
 
     @Override
-    public CommandResult execute(CommandRequest commandRequest) {
+    public CommandResult execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         CommandResult commandResult = new CommandResult();
-        Connection connection = null;
-        dataSource.setUrl(url);
-
-        try {
-            connection = dataSource.getConnection();
-            String getUsersQuery = "SELECT * FROM users";
-            PreparedStatement statement = connection.prepareStatement(getUsersQuery);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                commandResult.getResult().add(new User(resultSet.getString("username"), resultSet.getString("email")));
-            }
-        } catch (SQLException e) {
-            e.getMessage();
-        } finally {
-            try {
-                assert connection != null;
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        String getUsersQuery = "SELECT * FROM users";
+        PreparedStatement statement = connection.prepareStatement(getUsersQuery);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            commandResult.getResult().add(new User(resultSet.getString("username"), resultSet.getString("email")));
         }
         return commandResult;
 

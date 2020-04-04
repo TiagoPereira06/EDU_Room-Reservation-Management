@@ -12,37 +12,21 @@ import java.sql.SQLException;
 
 public class GetRoomsByLabel extends RoomHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) {
+    public CommandResult execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         CommandResult commandResult = new CommandResult();
-        Connection connection = null;
-        dataSource.setUrl(url);
-
-        try {
-            connection = dataSource.getConnection();
-            String getRoomsByLabelQuery = "SELECT r.name,r.location,r.capacity,r.description from rooms as r "
-                    + "INNER JOIN roomlabels as rm ON r.name = rm.roomName WHERE rm.label = ?";
-            PreparedStatement statement = connection.prepareStatement(getRoomsByLabelQuery);
-            statement.setString(1, commandRequest.getParametersByName(lidArgument).get(0).getValue());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                String roomName = resultSet.getString("name");
-                String roomLocation = resultSet.getString("location");
-                int roomCapacity = resultSet.getInt("capacity");
-                String roomDescription = resultSet.getString("description");
-                commandResult.getResult().add(new Room(roomName, roomLocation, roomCapacity, roomDescription));
-            }
-
-
-        } catch (SQLException e) {
-            e.getMessage();
-        } finally {
-            try {
-                assert connection != null;
-                connection.close();
-            } catch (SQLException e) {
-                e.getMessage();
-            }
+        String getRoomsByLabelQuery = "SELECT r.name,r.location,r.capacity,r.description from rooms as r "
+                + "INNER JOIN roomlabels as rm ON r.name = rm.roomName WHERE rm.label = ?";
+        PreparedStatement statement = connection.prepareStatement(getRoomsByLabelQuery);
+        statement.setString(1, commandRequest.getParametersByName(lidArgument).get(0).getValue());
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            String roomName = resultSet.getString("name");
+            String roomLocation = resultSet.getString("location");
+            int roomCapacity = resultSet.getInt("capacity");
+            String roomDescription = resultSet.getString("description");
+            commandResult.getResult().add(new Room(roomName, roomLocation, roomCapacity, roomDescription));
         }
+
         return commandResult;
     }
 

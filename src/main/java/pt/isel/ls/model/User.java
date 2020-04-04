@@ -1,8 +1,8 @@
 package pt.isel.ls.model;
 
 public class User {
-    private String name;
-    private String email;
+    private final String name;
+    private final String email;
 
     public User(String email, String name) {
         this.name = name;

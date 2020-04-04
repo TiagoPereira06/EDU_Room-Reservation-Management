@@ -14,38 +14,21 @@ import java.util.List;
 
 public class GetRoomById extends RoomHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) {
+    public CommandResult execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         CommandResult commandResult = new CommandResult();
-        Connection connection = null;
-        dataSource.setUrl(url);
-
-        try {
-            connection = dataSource.getConnection();
-            String getRoomsByIdQuery = "SELECT * from rooms WHERE name = ?";
-            PreparedStatement statement = connection.prepareStatement(getRoomsByIdQuery);
-            statement.setString(1, commandRequest.getParametersByName(idArgument).get(0).getValue());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                String roomName = resultSet.getString("name");
-                String roomLocation = resultSet.getString("location");
-                int roomCapacity = resultSet.getInt("capacity");
-                String roomDescription = resultSet.getString("description");
-                List<Label> labels = getRoomLabels(connection, roomName);
-                Room m = new Room(roomName, roomLocation, roomCapacity, roomDescription);
-                m.setLabels(labels);
-                commandResult.getResult().add(m);
-            }
-
-
-        } catch (SQLException e) {
-            e.getMessage();
-        } finally {
-            try {
-                assert connection != null;
-                connection.close();
-            } catch (SQLException e) {
-                e.getMessage();
-            }
+        String getRoomsByIdQuery = "SELECT * from rooms WHERE name = ?";
+        PreparedStatement statement = connection.prepareStatement(getRoomsByIdQuery);
+        statement.setString(1, commandRequest.getParametersByName(idArgument).get(0).getValue());
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            String roomName = resultSet.getString("name");
+            String roomLocation = resultSet.getString("location");
+            int roomCapacity = resultSet.getInt("capacity");
+            String roomDescription = resultSet.getString("description");
+            List<Label> labels = getRoomLabels(connection, roomName);
+            Room m = new Room(roomName, roomLocation, roomCapacity, roomDescription);
+            m.setLabels(labels);
+            commandResult.getResult().add(m);
         }
         return commandResult;
     }

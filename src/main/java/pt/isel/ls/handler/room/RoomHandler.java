@@ -22,7 +22,6 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
 
     public List<Label> getRoomLabels(Connection connection, String roomName) throws SQLException {
         List<Label> labels = new LinkedList<>();
-        dataSource.setUrl(url);
         String getLabels = "SELECT label FROM roomlabels WHERE roomname = ?";
         PreparedStatement statement = connection.prepareStatement(getLabels);
         statement.setString(1, roomName);
@@ -49,7 +48,6 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
             statement.setString(2, l.getName().replace('+', ' '));
             statement.executeUpdate();
         }
-        connection.commit();
     }
 
 }

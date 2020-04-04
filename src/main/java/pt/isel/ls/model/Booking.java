@@ -5,10 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Booking {
-    static String pattern = "yyyy-MM-dd HH:mm:ss";
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-    private String reservationOwner;
-    private String roomName;
+    static final String pattern = "yyyy-MM-dd HH:mm:ss";
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+    private final String reservationOwner;
+    private final String roomName;
     private Date beginTime;
     private Date endTime;
 
@@ -38,6 +38,7 @@ public class Booking {
     public Date getEndTime() {
         return endTime;
     }
+
 
     @Override
     public String toString() {

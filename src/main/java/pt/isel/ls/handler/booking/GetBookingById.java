@@ -12,37 +12,26 @@ import java.sql.SQLException;
 public class GetBookingById extends BookingHandler {
 
     @Override
-    public CommandResult execute(CommandRequest commandRequest) {
+    public CommandResult execute(CommandRequest commandRequest, Connection commandConnection) throws SQLException {
         CommandResult commandResult = new CommandResult();
         Connection connection = null;
-        dataSource.setUrl(url);
 
-        try {
-            connection = dataSource.getConnection();
-            String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";
-            PreparedStatement statement = connection.prepareStatement(getBookingsByIdQuery);
-            statement.setInt(1, Integer.parseInt(commandRequest.getParametersByName(idArgument).get(0).getValue()));
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                commandResult.getResult().add(
-                        new Booking(
-                                resultSet.getString("reservationowner"),
-                                resultSet.getString("roomname"),
-                                resultSet.getString("begintime"),
-                                resultSet.getString("endtime")
-                        )
-                );
-            }
-        } catch (SQLException e) {
-            e.getMessage();
-        } finally {
-            try {
-                assert connection != null;
-                connection.close();
-            } catch (SQLException e) {
-                e.getMessage();
-            }
+
+        String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";
+        PreparedStatement statement = connection.prepareStatement(getBookingsByIdQuery);
+        statement.setInt(1, Integer.parseInt(commandRequest.getParametersByName(idArgument).get(0).getValue()));
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            commandResult.getResult().add(
+                    new Booking(
+                            resultSet.getString("reservationowner"),
+                            resultSet.getString("roomname"),
+                            resultSet.getString("begintime"),
+                            resultSet.getString("endtime")
+                    )
+            );
         }
+
         return commandResult;
 
     }

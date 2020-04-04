@@ -10,6 +10,12 @@ public class UserInterface {
         }
     }
 
+    public void show(String s) {
+        System.out.println("\n --CommandResult--");
+        System.out.println(s);
+    }
+
+
     public void askForCommand() {
         System.out.println("\nEnter a command:");
         System.out.println("{Method} {Path} {Arguments}");

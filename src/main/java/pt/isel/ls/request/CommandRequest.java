@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CommandRequest {
-    private Method method;
-    private Path path;
+    private final Method method;
+    private final Path path;
     private List<Parameter> parameter;
 
     public CommandRequest(Method method, Path path, List<Parameter> parameter) {
@@ -39,4 +39,5 @@ public class CommandRequest {
         }
         return list;
     }
+
 }
