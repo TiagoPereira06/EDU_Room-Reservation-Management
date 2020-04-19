@@ -1,6 +1,7 @@
 package pt.isel.ls.handler.booking;
 
-import pt.isel.ls.handler.CommandResult;
+import pt.isel.ls.handler.ResultInterface;
+import pt.isel.ls.handler.booking.result.PostBookingResult;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
 
@@ -8,17 +9,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class PostBooking extends BookingHandler {
 
     @Override
-    public CommandResult execute(CommandRequest commandRequest, Connection connection)
+    public ResultInterface execute(CommandRequest commandRequest, Connection connection)
             throws SQLException, ParseException {
 
-        final long oneMinuteInMillis = 60000;//millisecs
-        final CommandResult commandResult = new CommandResult();
+        final long oneMinuteInMillis = 60000;//millisec
 
         String postBookingsQuery = "INSERT INTO bookings(reservationOwner, roomName, beginTime, endTime)"
                 + "VALUES (?,?,?,?) ";
@@ -42,10 +45,9 @@ public class PostBooking extends BookingHandler {
             throw new SQLException("ROOM IS NOT AVAILABLE !");
         }
         statement.executeUpdate();
-        commandResult.getResult().add("BOOKING INSERTED : BOOKING INFO -> "
-                .concat(String.valueOf(getNextBookingId(connection))));
-
-        return commandResult;
+        List<List<String>> bookingResult = new LinkedList<>();
+        bookingResult.add(Collections.singletonList(String.valueOf(getNextBookingId(connection))));
+        return new PostBookingResult(bookingResult);
     }
 
     @Override

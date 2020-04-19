@@ -1,5 +1,7 @@
 package pt.isel.ls.model;
 
+import java.util.List;
+
 public class Label {
     private final String name;
 
@@ -11,8 +13,12 @@ public class Label {
         return name;
     }
 
+    public List<String> parsePropertiesList() {
+        return List.of(name);
+    }
+
     @Override
     public String toString() {
-        return String.format("LABEL INFO -> %s", name);
+        return (name);
     }
 }

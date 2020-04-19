@@ -1,19 +1,21 @@
 package pt.isel.ls.handler.user;
 
-import pt.isel.ls.handler.CommandResult;
+import pt.isel.ls.handler.ResultInterface;
+import pt.isel.ls.handler.user.result.PostUserResult;
 import pt.isel.ls.request.CommandRequest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class PostUser extends UserHandler {
 
     @Override
-    public CommandResult execute(CommandRequest commandRequest, Connection commandConnection) throws SQLException {
-        final CommandResult commandResult = new CommandResult();
-        Connection connection = null;
+    public ResultInterface execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         String email;
         String postUserQuery = "INSERT INTO users(email, username) VALUES (?,?)";
         PreparedStatement statement = connection.prepareStatement(postUserQuery);
@@ -23,12 +25,13 @@ public class PostUser extends UserHandler {
         statement.setString(2, username);
         /* Verifica se o email já está a ser usado */
         if (checksIfEmailAlreadyExists(email, connection)) {
-            throw new SQLException("EMAIL ALREADY IN USE !");
+            throw new SQLException("EMAIL ALREADY IN USE");
         }
         statement.executeUpdate();
-        commandResult.getResult().add("USER INSERTED: USER INFO -> ".concat(email));
+        List<List<String>> userResult = new LinkedList<>();
+        userResult.add(Collections.singletonList(email));
 
-        return commandResult;
+        return new PostUserResult(userResult);
     }
 
     @Override

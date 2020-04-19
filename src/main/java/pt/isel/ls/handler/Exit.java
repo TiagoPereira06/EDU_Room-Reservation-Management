@@ -6,7 +6,7 @@ import java.sql.Connection;
 
 public class Exit implements CommandHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest, Connection connection) {
+    public ResultInterface execute(CommandRequest commandRequest, Connection connection) {
         System.exit(0);
         return null;
     }

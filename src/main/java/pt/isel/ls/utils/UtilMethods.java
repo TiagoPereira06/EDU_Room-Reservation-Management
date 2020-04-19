@@ -10,13 +10,13 @@ import java.util.stream.Stream;
 
 public class UtilMethods {
 
-    public static List<Parameter> getParameters(String[] rawString) {
+    public static List<Parameter> getParameters(String[] rawInput, int index) {
         List<Parameter> list = new LinkedList<>();
-        if (rawString.length <= 2) {
+        if (index >= rawInput.length) {
             return list;
         }
-        String rawParam = rawString[2];
-        String[] params = rawParam.split("&");
+        String rawString = rawInput[index];
+        String[] params = rawString.split("&");
         for (String st : params) {
             String[] parts = st.split("=");
             list.add(new Parameter(parts[0], parts[1]));

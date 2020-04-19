@@ -2,7 +2,9 @@ package pt.isel.ls.request;
 
 public class Template {
 
-    public static final String OPTION = "/";
+    public static final String SLASH = "/";
+
+    public static final String TIME = "/time";
 
     public static final String ROOMS = "/rooms";
 

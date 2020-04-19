@@ -42,6 +42,16 @@ public class Room {
         this.labels = labels;
     }
 
+    public List<String> parsePropertiesList() {
+        List<String> base = new java.util.ArrayList<>(List.of(name, location, String.valueOf(capacity), description));
+        if (!labels.isEmpty()) {
+            for (Label l : labels) {
+                base.add(l.toString());
+            }
+        }
+        return base;
+    }
+
     @Override
     public String toString() {
         String s = String.format("ROOM INFO: Name -> %s , Location -> %s , Capacity -> %d , Description -> %s ",
@@ -49,7 +59,6 @@ public class Room {
         if (!labels.isEmpty()) {
             return s + String.format(", Labels -> %s", labels);
         }
-
         return s;
     }
 }

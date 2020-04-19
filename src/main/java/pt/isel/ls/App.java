@@ -1,8 +1,10 @@
 package pt.isel.ls;
 
 import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.Exit;
+import pt.isel.ls.handler.option.Option;
+import pt.isel.ls.handler.ResultInterface;
+import pt.isel.ls.handler.time.Time;
 import pt.isel.ls.handler.booking.GetBooking;
 import pt.isel.ls.handler.booking.GetBookingById;
 import pt.isel.ls.handler.booking.GetBookingByOwner;
@@ -21,19 +23,27 @@ import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Path;
 import pt.isel.ls.request.PathTemplate;
 import pt.isel.ls.request.Template;
+import pt.isel.ls.request.Header;
+import pt.isel.ls.request.Parameter;
+import pt.isel.ls.request.HeaderType;
+import pt.isel.ls.request.HeaderValue;
 import pt.isel.ls.router.RouteResult;
 import pt.isel.ls.router.Router;
 import pt.isel.ls.utils.UtilMethods;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class App {
+    public static Router router;
+
     public static void main(String[] args) {
-        Router router = new Router();
+        router = new Router();
         UserInterface ui = new UserInterface();
         String[] rawTask;
         initRoutes(router);
@@ -42,7 +52,7 @@ public class App {
             try {
                 executeTask(router, ui, rawTask);
             } catch (NoSuchMethodException e) {
-                ui.show("ERROR ! : ".concat(e.getMessage()));
+                ui.showError(e.getMessage());
             }
         } else {
             while (true) {
@@ -51,51 +61,91 @@ public class App {
                 try {
                     executeTask(router, ui, rawTask);
                 } catch (NoSuchMethodException e) {
-                    ui.show("ERROR -> ".concat(e.getMessage()));
+                    ui.showError(e.getMessage());
                 }
             }
         }
     }
 
     private static void executeTask(Router router, UserInterface ui, String[] rawTask) throws NoSuchMethodException {
-        CommandRequest userRequest;
-        final Method method;
-        try {
-            method = Method.valueOf(rawTask[0]);
-        } catch (IllegalArgumentException e) {
-            throw new NoSuchMethodException("Request Not Found");
-        }
-        userRequest = new CommandRequest(method, new Path(rawTask[1]),
-                UtilMethods.getParameters(rawTask));
+
+        CommandRequest userRequest = formatUserInput(rawTask);
+
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
+
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
+
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setUrl(System.getenv("JDBC_DATABASE_URL"));
         Connection connection = null;
-        CommandResult commandResult = new CommandResult();
+        ResultInterface resultInterface = null;
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
-            commandResult = routeResult.getHandler().execute(userRequest, connection);
+            resultInterface = routeResult.getHandler().execute(userRequest, connection);
             connection.commit();
         } catch (SQLException | ParseException e) {
             try {
                 assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
-                commandResult.getResult().add("ERROR -> ".concat(ex.getMessage()));
+                ui.showError(ex.getMessage());
             }
-            commandResult.getResult().add("ERROR -> ".concat(e.getMessage()));
+            ui.showError(e.getMessage());
         } finally {
             assert connection != null;
             try {
                 connection.close();
             } catch (SQLException e) {
-                commandResult.getResult().add("ERROR -> ".concat(e.getMessage()));
+                ui.showError(e.getMessage());
             }
         }
-        ui.show(commandResult);
+        try {
+            ui.show(resultInterface, userRequest.getHeader());
+        } catch (IOException e) {
+            ui.showError(e.getMessage());
+        }
+    }
+
+    public static CommandRequest formatUserInput(String[] rawTask) throws NoSuchMethodException {
+        CommandRequest userRequest;
+        final Method method;
+        final Path path;
+        Header header;
+        List<Parameter> parameters;
+        try {
+            method = Method.valueOf(rawTask[0]);
+        } catch (IllegalArgumentException e) {
+            throw new NoSuchMethodException("Request Not Found");
+        }
+        path = new Path(rawTask[1]);
+        //OS HEADERS SÓ APARECEM NA POS 2!
+        try {
+            header = checkHeader(rawTask, 2); //EXISTE HEADER
+            parameters = UtilMethods.getParameters(rawTask, 3); //PARAM OU NÃO EXISTE OU NA POS3
+        } catch (IllegalArgumentException e) {
+            header = new Header();
+            header.addPair(HeaderType.ACCEPT, new HeaderValue("text/plain")); //NÃO EXISTE HEADER
+            parameters = UtilMethods.getParameters(rawTask, 2); //PARAM OU NÃO EXISTE OU NA POS2
+        }
+        return new CommandRequest(method, path, parameters, header);
+    }
+
+    private static Header checkHeader(String[] rawInput, int index) throws IllegalArgumentException {
+        if (index >= rawInput.length) {
+            throw new IllegalArgumentException();
+        }
+        final Header header = new Header();
+        String s = rawInput[index];
+        String[] parts = s.split("\\|");
+        for (String str : parts) {
+            String[] pair = str.split(":");
+            HeaderType type = HeaderType.valueOf(pair[0].toUpperCase().replace("-", ""));
+            HeaderValue value = new HeaderValue(pair[1]);
+            header.addPair(type, value);
+        }
+        return header;
     }
 
     public static void initRoutes(Router router) {
@@ -112,7 +162,9 @@ public class App {
         router.addRoute(Method.POST, new PathTemplate(Template.LABELS), new PostLabel());
         router.addRoute(Method.GET, new PathTemplate(Template.LABELS), new GetLabel());
         router.addRoute(Method.GET, new PathTemplate(Template.LABELS_LID_ROOMS), new GetRoomsByLabel());
-        router.addRoute(Method.EXIT, new PathTemplate(Template.OPTION), new Exit());
+        router.addRoute(Method.EXIT, new PathTemplate(Template.SLASH), new Exit());
+        router.addRoute(Method.GET, new PathTemplate(Template.TIME), new Time());
+        router.addRoute(Method.OPTION, new PathTemplate(Template.SLASH), new Option());
     }
 }
 

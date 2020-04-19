@@ -1,5 +1,7 @@
 package pt.isel.ls.model;
 
+import java.util.List;
+
 public class User {
     private final String name;
     private final String email;
@@ -15,6 +17,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public List<String> parsePropertiesList() {
+        return List.of(name, email);
     }
 
     @Override

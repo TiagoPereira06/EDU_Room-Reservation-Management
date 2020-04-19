@@ -20,6 +20,7 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
     final String descriptionParameter = "description";
     final String labelParameter = "label";
 
+
     public List<Label> getRoomLabels(Connection connection, String roomName) throws SQLException {
         List<Label> labels = new LinkedList<>();
         String getLabels = "SELECT label FROM roomlabels WHERE roomname = ?";

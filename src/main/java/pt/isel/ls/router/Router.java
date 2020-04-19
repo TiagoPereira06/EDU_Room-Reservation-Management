@@ -8,14 +8,14 @@ import pt.isel.ls.request.PathTemplate;
 import pt.isel.ls.utils.UtilMethods;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.List;
 
 
 public class Router {
-    private Map<Key, CommandHandler> routesMap;
+    private final Map<Key, CommandHandler> routesMap;
 
     public Router() {
         routesMap = new HashMap<>();
@@ -65,9 +65,20 @@ public class Router {
         return null;
     }
 
+    public List<List<String>> getRoutes() {
+        LinkedList<List<String>> list = new LinkedList<>();
+        for (Key key : routesMap.keySet()) {
+            List<String> row = new LinkedList<>();
+            row.add(key.method.toString() + " " + key.pathTemplate.getPath());
+            row.add(routesMap.get(key).description());
+            list.add(row);
+        }
+        return list;
+    }
+
     private static class Key {
-        private Method method;
-        private PathTemplate pathTemplate;
+        private final Method method;
+        private final PathTemplate pathTemplate;
 
         private Key(Method method, PathTemplate pathTemplate) {
             this.method = method;

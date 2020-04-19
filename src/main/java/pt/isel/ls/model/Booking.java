@@ -3,6 +3,7 @@ package pt.isel.ls.model;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Booking {
     static final String pattern = "yyyy-MM-dd HH:mm:ss";
@@ -37,6 +38,11 @@ public class Booking {
 
     public Date getEndTime() {
         return endTime;
+    }
+
+    public List<String> parsePropertiesList() {
+        return List.of(reservationOwner, roomName, dateFormat.format(beginTime), dateFormat.format(endTime));
+
     }
 
 

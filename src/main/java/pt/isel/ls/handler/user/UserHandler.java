@@ -11,6 +11,7 @@ public abstract class UserHandler implements CommandHandler {
     final String nameParameter = "name";
     final String emailParameter = "email";
 
+
     public boolean checksIfEmailAlreadyExists(String email, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM users  "
                 + "WHERE email = ?");

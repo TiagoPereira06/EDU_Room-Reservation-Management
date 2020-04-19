@@ -1,6 +1,7 @@
 package pt.isel.ls.handler.room;
 
-import pt.isel.ls.handler.CommandResult;
+import pt.isel.ls.handler.ResultInterface;
+import pt.isel.ls.handler.booking.result.PostBookingResult;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.request.CommandRequest;
 import pt.isel.ls.request.Parameter;
@@ -8,14 +9,14 @@ import pt.isel.ls.request.Parameter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 
 public class PostRoom extends RoomHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest, Connection connection) throws SQLException {
-        final CommandResult commandResult = new CommandResult();
+    public ResultInterface execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         final String roomName;
         final int roomCapacity;
         final String roomDescription;
@@ -45,8 +46,9 @@ public class PostRoom extends RoomHandler {
         }
         statement.executeUpdate();
         insertLabelsRoom(connection, roomName, labels);
-        commandResult.getResult().add("ROOM INSERTED: ROOM INFO -> ".concat(roomName));
-        return commandResult;
+        List<List<String>> roomResult = new LinkedList<>();
+        roomResult.add(Collections.singletonList(roomName));
+        return new PostBookingResult(roomResult);
     }
 
     @Override

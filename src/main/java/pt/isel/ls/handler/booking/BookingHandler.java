@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public abstract class BookingHandler implements CommandHandler {
@@ -18,6 +20,7 @@ public abstract class BookingHandler implements CommandHandler {
     final String beginParameter = "begin";
     final String durationParameter = "duration";
     final String roomIdParameter = "room";
+    List<List<String>> bookingResult = new LinkedList<>();
 
     boolean checkIfRoomIsAvailable(Connection connection, String name,
                                    Date beginDateUser, Date endDateUser)

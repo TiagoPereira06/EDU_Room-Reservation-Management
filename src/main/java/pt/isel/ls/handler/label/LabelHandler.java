@@ -10,6 +10,7 @@ public abstract class LabelHandler implements CommandHandler {
     final String idArgument = "{lid}";
     final String nameParameter = "name";
 
+
     public boolean checkIfLabelAlreadyExists(String label, Connection connection) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM labels WHERE name = ?");
         statement.setString(1, label.replace('+', ' '));
