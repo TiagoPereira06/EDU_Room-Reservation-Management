@@ -19,8 +19,8 @@ public class PostUser extends UserHandler {
         String email;
         String postUserQuery = "INSERT INTO users(email, username) VALUES (?,?)";
         PreparedStatement statement = connection.prepareStatement(postUserQuery);
-        email = commandRequest.getParametersByName(emailParameter).get(0).getValue().replace('+', ' ');
-        String username = commandRequest.getParametersByName(nameParameter).get(0).getValue().replace('+', ' ');
+        email = commandRequest.getParametersByName(emailParameter).get(0);
+        String username = commandRequest.getParametersByName(nameParameter).get(0);
         statement.setString(1, email);
         statement.setString(2, username);
         /* Verifica se o email já está a ser usado */

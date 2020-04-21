@@ -19,7 +19,7 @@ public class GetRoomById extends RoomHandler {
     public ResultInterface execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         String getRoomsByIdQuery = "SELECT * from rooms WHERE name = ?";
         PreparedStatement statement = connection.prepareStatement(getRoomsByIdQuery);
-        statement.setString(1, commandRequest.getParametersByName(idArgument).get(0).getValue());
+        statement.setString(1, commandRequest.getParametersByName(idArgument).get(0));
         ResultSet resultSet = statement.executeQuery();
         Room room = null;
         List<List<String>> roomResult = new LinkedList<>();
@@ -31,7 +31,7 @@ public class GetRoomById extends RoomHandler {
             List<Label> labels = getRoomLabels(connection, roomName);
             room = new Room(roomName, roomLocation, roomCapacity, roomDescription);
             room.setLabels(labels);
-            roomResult.add(room.parsePropertiesList());
+            roomResult.add(room.parsePropertiesList(true));
         }
         return new GetCompleteRoomResult(roomResult, room != null ? room.getLabels().size() : 0);
     }

@@ -3,13 +3,19 @@ package pt.isel.ls.handler.room;
 import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.model.Label;
+import pt.isel.ls.model.Room;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import static pt.isel.ls.utils.UtilMethods.formatDateToString;
+import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public abstract class RoomHandler extends LabelHandler implements CommandHandler {
     final String idArgument = "{rid}";
@@ -17,6 +23,8 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
     final String nameParameter = "name";
     final String locationParameter = "location";
     final String capacityParameter = "capacity";
+    final String beginParameter = "begin";
+    final String durationParameter = "duration";
     final String descriptionParameter = "description";
     final String labelParameter = "label";
 
@@ -49,6 +57,46 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
             statement.setString(2, l.getName().replace('+', ' '));
             statement.executeUpdate();
         }
+    }
+
+    protected List<Room> getAvailableRooms(Connection connection,
+                                           Date beginDate, Date endDate)
+            throws SQLException, ParseException {
+        List<Room> allRoms = getAllRoomsWithLabels(connection);
+        String getAvailableRooms = "SELECT b.begintime, b.endtime, b.roomname, r.location, r.capacity, description "
+                + "FROM bookings as b"
+                + " INNER JOIN rooms as r"
+                + " ON r.name = b.roomname"
+                + " WHERE (endtime::DATE) >= ?::DATE";
+        PreparedStatement statement = connection.prepareStatement(getAvailableRooms);
+        statement.setString(1, formatDateToString(endDate));
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Date beginDateDb = formatStringToDate(resultSet.getString("begintime"));
+            Date endDateDb = formatStringToDate(resultSet.getString("endtime"));
+            if ((beginDate.compareTo(endDateDb) <= 0 && endDate.compareTo(beginDateDb) >= 0)) {
+                String name = resultSet.getString("roomname");
+                allRoms.removeIf(room -> room.getName().equals(name));
+            }
+        }
+        return allRoms;
+    }
+
+    protected List<Room> getAllRoomsWithLabels(Connection connection) throws SQLException {
+        List<Room> allRooms = new LinkedList<>();
+        String getRoomNamesQuery = "SELECT * from rooms";
+        PreparedStatement statement = connection.prepareStatement(getRoomNamesQuery);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            String roomName = resultSet.getString("name");
+            String roomLocation = resultSet.getString("location");
+            int roomCapacity = resultSet.getInt("capacity");
+            String roomDescription = resultSet.getString("description");
+            Room room = new Room(roomName, roomLocation, roomCapacity, roomDescription);
+            room.setLabels(getRoomLabels(connection, roomName));
+            allRooms.add(room);
+        }
+        return allRooms;
     }
 
 }

@@ -27,6 +27,7 @@ public class GetBooking extends BookingHandler {
         return new GetBookingResult(bookingResult);
     }
 
+
     @Override
     public String description() {
         return "Show all bookings";

@@ -14,31 +14,28 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
+
 
 public class PostBooking extends BookingHandler {
 
     @Override
     public ResultInterface execute(CommandRequest commandRequest, Connection connection)
             throws SQLException, ParseException {
-
-        final long oneMinuteInMillis = 60000;//millisec
-
         String postBookingsQuery = "INSERT INTO bookings(reservationOwner, roomName, beginTime, endTime)"
                 + "VALUES (?,?,?,?) ";
         PreparedStatement statement = connection.prepareStatement(postBookingsQuery);
-        String owner = commandRequest.getParametersByName(ownerIdParameter).get(0).getValue();
+        String owner = commandRequest.getParametersByName(ownerIdParameter).get(0);
         statement.setString(1, owner);
-        String name = commandRequest.getParametersByName(roomIdParameter).get(0).getValue();
+        String name = commandRequest.getParametersByName(roomIdParameter).get(0);
         statement.setString(2, name);
-        String begin = commandRequest.getParametersByName(beginParameter).get(0).getValue().replace('+', ' ');
+        String begin = commandRequest.getParametersByName(beginParameter).get(0);
         statement.setString(3, begin);
-        String duration = commandRequest.getParametersByName(durationParameter).get(0).getValue();
-        if (Integer.parseInt(duration) < 10) {
-            throw new SQLException("DURATION MUST BE LONGER !");
-        }
+        String duration = commandRequest.getParametersByName(durationParameter).get(0);
+        checkDuration(duration);
+        Date beginTime = formatStringToDate(begin);
         //Adicionar ao beginTime o valor do duration e converter para string
-        Date beginTime = Booking.dateFormat.parse(begin);
-        Date endTime = new Date(beginTime.getTime() + oneMinuteInMillis * Integer.parseInt(duration));
+        Date endTime = parseDuration(duration, beginTime);
         duration = Booking.dateFormat.format(endTime);
         statement.setString(4, duration);
         if (!checkIfRoomIsAvailable(connection, name, beginTime, endTime)) {
@@ -49,6 +46,7 @@ public class PostBooking extends BookingHandler {
         bookingResult.add(Collections.singletonList(String.valueOf(getNextBookingId(connection))));
         return new PostBookingResult(bookingResult);
     }
+
 
     @Override
     public String description() {

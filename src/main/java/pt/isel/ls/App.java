@@ -2,19 +2,21 @@ package pt.isel.ls;
 
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.handler.Exit;
-import pt.isel.ls.handler.option.Option;
 import pt.isel.ls.handler.ResultInterface;
-import pt.isel.ls.handler.time.Time;
 import pt.isel.ls.handler.booking.GetBooking;
 import pt.isel.ls.handler.booking.GetBookingById;
 import pt.isel.ls.handler.booking.GetBookingByOwner;
 import pt.isel.ls.handler.booking.PostBooking;
+import pt.isel.ls.handler.booking.PutBooking;
+import pt.isel.ls.handler.booking.DeleteBooking;
 import pt.isel.ls.handler.label.GetLabel;
 import pt.isel.ls.handler.label.PostLabel;
+import pt.isel.ls.handler.option.Option;
 import pt.isel.ls.handler.room.GetRoom;
 import pt.isel.ls.handler.room.GetRoomById;
 import pt.isel.ls.handler.room.GetRoomsByLabel;
 import pt.isel.ls.handler.room.PostRoom;
+import pt.isel.ls.handler.time.Time;
 import pt.isel.ls.handler.user.GetUser;
 import pt.isel.ls.handler.user.GetUserById;
 import pt.isel.ls.handler.user.PostUser;
@@ -109,7 +111,6 @@ public class App {
     }
 
     public static CommandRequest formatUserInput(String[] rawTask) throws NoSuchMethodException {
-        CommandRequest userRequest;
         final Method method;
         final Path path;
         Header header;
@@ -153,6 +154,8 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS), new GetRoom());
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID), new GetRoomById());
         router.addRoute(Method.POST, new PathTemplate(Template.BOOKINGS), new PostBooking());
+        router.addRoute(Method.PUT, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new PutBooking());
+        router.addRoute(Method.DELETE, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new DeleteBooking());
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new GetBookingById());
         router.addRoute(Method.POST, new PathTemplate(Template.USERS), new PostUser());
         router.addRoute(Method.GET, new PathTemplate(Template.USERS), new GetUser());
@@ -164,6 +167,7 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate(Template.LABELS_LID_ROOMS), new GetRoomsByLabel());
         router.addRoute(Method.EXIT, new PathTemplate(Template.SLASH), new Exit());
         router.addRoute(Method.GET, new PathTemplate(Template.TIME), new Time());
+        router.addRoute(Method.OPTION, new PathTemplate(Template.SLASH), new Option());
         router.addRoute(Method.OPTION, new PathTemplate(Template.SLASH), new Option());
     }
 }

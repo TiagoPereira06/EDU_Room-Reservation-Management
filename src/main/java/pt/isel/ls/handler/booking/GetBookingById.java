@@ -1,7 +1,6 @@
 package pt.isel.ls.handler.booking;
 
 import pt.isel.ls.handler.booking.result.GetBookingResult;
-
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
 
@@ -19,7 +18,7 @@ public class GetBookingById extends BookingHandler {
 
         String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";
         PreparedStatement statement = connection.prepareStatement(getBookingsByIdQuery);
-        statement.setInt(1, Integer.parseInt(commandRequest.getParametersByName(idArgument).get(0).getValue()));
+        statement.setInt(1, Integer.parseInt(commandRequest.getParametersByName(idArgument).get(0)));
         ResultSet resultSet = statement.executeQuery();
         List<List<String>> bookingResult = new LinkedList<>();
         while (resultSet.next()) {

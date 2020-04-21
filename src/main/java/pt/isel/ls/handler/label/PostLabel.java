@@ -17,7 +17,7 @@ public class PostLabel extends LabelHandler {
         final String labelName;
         String getRoomsQuery = "INSERT INTO labels(name) VALUES (?)";
         PreparedStatement statement = connection.prepareStatement(getRoomsQuery);
-        labelName = commandRequest.getParametersByName(nameParameter).get(0).getValue().replace('+', ' ');
+        labelName = commandRequest.getParametersByName(nameParameter).get(0);
         statement.setString(1, labelName);
         if (checkIfLabelAlreadyExists(labelName, connection)) {
             throw new SQLException("LABEL ALREADY IN USE !");

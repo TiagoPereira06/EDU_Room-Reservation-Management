@@ -16,6 +16,6 @@ public class PostBookingResult extends Result {
 
     @Override
     public String description() {
-        return "POST Booking";
+        return "POST/PUT/DELETE Booking";
     }
 }

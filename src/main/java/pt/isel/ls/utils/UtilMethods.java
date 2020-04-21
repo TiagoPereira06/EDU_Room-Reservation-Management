@@ -1,8 +1,11 @@
 package pt.isel.ls.utils;
 
+import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.Parameter;
 
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +36,14 @@ public class UtilMethods {
     public static List<Parameter> concatTwoLists(List<Parameter> list1, List<Parameter> list2) {
         return Stream.concat(list1.stream(), list2.stream())
                 .collect(Collectors.toList());
+    }
+
+    public static Date formatStringToDate(String date) throws ParseException {
+        return Booking.dateFormat.parse(date);
+    }
+
+    public static String formatDateToString(Date endTime) {
+        return Booking.dateFormat.format(endTime);
     }
 
 }

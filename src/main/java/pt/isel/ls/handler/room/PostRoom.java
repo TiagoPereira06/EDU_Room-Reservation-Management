@@ -4,7 +4,6 @@ import pt.isel.ls.handler.ResultInterface;
 import pt.isel.ls.handler.booking.result.PostBookingResult;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.request.CommandRequest;
-import pt.isel.ls.request.Parameter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,25 +22,22 @@ public class PostRoom extends RoomHandler {
         final String roomLocation;
         String postRoomsQuery = "INSERT INTO rooms(name, location, capacity, description) VALUES (?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(postRoomsQuery);
-        roomName = commandRequest.getParametersByName(nameParameter).get(0).getValue()
-                .replace('+', ' ');
+        roomName = commandRequest.getParametersByName(nameParameter).get(0);
         statement.setString(1, roomName);
-        roomLocation = commandRequest.getParametersByName(locationParameter).get(0).getValue()
-                .replace('+', ' ');
+        roomLocation = commandRequest.getParametersByName(locationParameter).get(0);
         statement.setString(2, roomLocation);
-        roomCapacity = Integer.parseInt(commandRequest.getParametersByName(capacityParameter).get(0).getValue());
+        roomCapacity = Integer.parseInt(commandRequest.getParametersByName(capacityParameter).get(0));
         statement.setInt(3, roomCapacity);
-        roomDescription = commandRequest.getParametersByName(descriptionParameter).get(0).getValue()
-                .replace('+', ' ');
+        roomDescription = commandRequest.getParametersByName(descriptionParameter).get(0);
         statement.setString(4, roomDescription);
 
-        List<Parameter> labelsParameters = commandRequest.getParametersByName(labelParameter);
+        List<String> labelsParameters = commandRequest.getParametersByName(labelParameter);
         List<Label> labels = new LinkedList<>();
-        for (Parameter p : labelsParameters) {
-            if (!checkIfLabelAlreadyExists(p.getValue(), connection)) {
+        for (String labelName : labelsParameters) {
+            if (!checkIfLabelAlreadyExists(labelName, connection)) {
                 throw new SQLException("LABEL NOT VALID!");
             } else {
-                labels.add(new Label(p.getValue()));
+                labels.add(new Label(labelName));
             }
         }
         statement.executeUpdate();

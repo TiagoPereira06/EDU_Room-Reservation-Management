@@ -17,7 +17,7 @@ public class GetBookingByOwner extends BookingHandler {
     public GetBookingResult execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         String getBookingsByOwnerQuery = "SELECT * FROM bookings WHERE reservationOwner = ?";
         PreparedStatement statement = connection.prepareStatement(getBookingsByOwnerQuery);
-        statement.setString(1, commandRequest.getParametersByName(ownerIdArgument).get(0).getValue());
+        statement.setString(1, commandRequest.getParametersByName(ownerIdArgument).get(0));
         ResultSet resultSet = statement.executeQuery();
         List<List<String>> bookingResult = new LinkedList<>();
         while (resultSet.next()) {

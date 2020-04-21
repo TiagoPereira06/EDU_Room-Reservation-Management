@@ -32,11 +32,11 @@ public class CommandRequest {
         this.parameter = parameter;
     }
 
-    public List<Parameter> getParametersByName(String paramName) {
-        List<Parameter> list = new LinkedList<>();
+    public List<String> getParametersByName(String paramName) {
+        List<String> list = new LinkedList<>();
         for (Parameter p : parameter) {
             if (p.getName().equals(paramName)) {
-                list.add(p);
+                list.add(p.getValue().replace("+", " "));
             }
         }
         return list;
@@ -45,4 +45,5 @@ public class CommandRequest {
     public Header getHeader() {
         return header;
     }
+
 }

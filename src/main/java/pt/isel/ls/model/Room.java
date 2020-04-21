@@ -42,9 +42,9 @@ public class Room {
         this.labels = labels;
     }
 
-    public List<String> parsePropertiesList() {
+    public List<String> parsePropertiesList(boolean labelsFlag) {
         List<String> base = new java.util.ArrayList<>(List.of(name, location, String.valueOf(capacity), description));
-        if (!labels.isEmpty()) {
+        if (!labels.isEmpty() && labelsFlag) {
             for (Label l : labels) {
                 base.add(l.toString());
             }

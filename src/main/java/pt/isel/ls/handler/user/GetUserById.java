@@ -19,7 +19,7 @@ public class GetUserById extends UserHandler {
         String getUsersByIdQuery = "SELECT * "
                 + "FROM users WHERE email = ?";
         PreparedStatement statement = connection.prepareStatement(getUsersByIdQuery);
-        statement.setString(1, commandRequest.getParametersByName(idArgument).get(0).getValue());
+        statement.setString(1, commandRequest.getParametersByName(idArgument).get(0));
         ResultSet resultSet = statement.executeQuery();
         List<List<String>> userResult = new LinkedList<>();
         while (resultSet.next()) {

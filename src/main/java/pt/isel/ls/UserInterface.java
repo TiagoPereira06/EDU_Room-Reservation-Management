@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class UserInterface {
     public void show(ResultInterface resultInterface, Header header) throws IOException {
-        if (resultInterface == null) {
+        if (resultInterface == null || resultInterface.values().isEmpty()) {
             showError("Empty Result");
             return;
         }
@@ -50,6 +50,6 @@ public class UserInterface {
     }
 
     public void showError(String s) {
-        System.out.println("ERROR : " + s.toUpperCase() + " !");
+        System.out.println("\nERROR : " + s.toUpperCase() + " !");
     }
 }
