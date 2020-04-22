@@ -35,10 +35,13 @@ public class PostRoom extends RoomHandler {
         List<Label> labels = new LinkedList<>();
         for (String labelName : labelsParameters) {
             if (!checkIfLabelAlreadyExists(labelName, connection)) {
-                throw new SQLException("LABEL NOT VALID!");
+                throw new SQLException("LABEL NOT VALID");
             } else {
                 labels.add(new Label(labelName));
             }
+        }
+        if (checksIfRoomAlreadyExists(roomName,connection)) {
+            throw new SQLException("ROOM ALREADY EXISTS");
         }
         statement.executeUpdate();
         insertLabelsRoom(connection, roomName, labels);

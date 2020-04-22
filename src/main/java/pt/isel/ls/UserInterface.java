@@ -18,25 +18,15 @@ public class UserInterface {
             return;
         }
         showSuccess();
-        TextType outputType = TextType.valueOf(
-                header.getValue(HeaderType.ACCEPT).getValue()
-                        .split("/")[1].toUpperCase());
-
-        HeaderValue hv = header.getValue(HeaderType.FILENAME);
-        String filename = "";
-        if (hv != null) {
-            filename = hv.getValue();
-        }
-
+        TextType outputType = getOutputType(header);
+        String filename = getFilename(header);
         OutputInterface outputInterface = (outputType == TextType.PLAIN)
                 ? new PlainTextOutput(resultInterface) : new HtmlOutput(resultInterface);
-
         if ((filename.isEmpty())) {
             outputInterface.printToConsole();
         } else {
             outputInterface.printToFile(filename);
         }
-
     }
 
     private void showSuccess() {
@@ -51,5 +41,20 @@ public class UserInterface {
 
     public void showError(String s) {
         System.out.println("\nERROR : " + s.toUpperCase() + " !");
+    }
+
+    private String getFilename(Header header) {
+        String filename = "";
+        HeaderValue hv = header.getValue(HeaderType.FILENAME);
+        if (hv != null) {
+            filename = hv.getValue();
+        }
+        return filename;
+    }
+
+    private TextType getOutputType(Header header) {
+        return TextType.valueOf(
+                header.getValue(HeaderType.ACCEPT).getValue()
+                        .split("/")[1].toUpperCase());
     }
 }

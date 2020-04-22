@@ -62,24 +62,34 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
     protected List<Room> getAvailableRooms(Connection connection,
                                            Date beginDate, Date endDate)
             throws SQLException, ParseException {
-        List<Room> allRoms = getAllRoomsWithLabels(connection);
-        String getAvailableRooms = "SELECT b.begintime, b.endtime, b.roomname, r.location, r.capacity, description "
+        List<Room> allRooms = new LinkedList<>();
+        String getAvailableRooms = "SELECT b.begintime, b.endtime, r.name, r.location, r.capacity, r.description "
                 + "FROM bookings as b"
                 + " INNER JOIN rooms as r"
                 + " ON r.name = b.roomname"
                 + " WHERE (endtime::DATE) >= ?::DATE";
         PreparedStatement statement = connection.prepareStatement(getAvailableRooms);
+        //noinspection JpaQueryApiInspection
         statement.setString(1, formatDateToString(endDate));
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             Date beginDateDb = formatStringToDate(resultSet.getString("begintime"));
             Date endDateDb = formatStringToDate(resultSet.getString("endtime"));
-            if ((beginDate.compareTo(endDateDb) <= 0 && endDate.compareTo(beginDateDb) >= 0)) {
-                String name = resultSet.getString("roomname");
-                allRoms.removeIf(room -> room.getName().equals(name));
+            if (!(beginDate.compareTo(endDateDb) <= 0 && endDate.compareTo(beginDateDb) >= 0)) {
+                allRooms.add(getRoom(connection, resultSet));
             }
         }
-        return allRoms;
+        return allRooms;
+    }
+
+    private Room getRoom(Connection connection, ResultSet resultSet) throws SQLException {
+        String roomName = resultSet.getString("name");
+        String roomLocation = resultSet.getString("location");
+        int roomCapacity = resultSet.getInt("capacity");
+        String roomDescription = resultSet.getString("description");
+        Room room = new Room(roomName, roomLocation, roomCapacity, roomDescription);
+        room.setLabels(getRoomLabels(connection, roomName));
+        return room;
     }
 
     protected List<Room> getAllRoomsWithLabels(Connection connection) throws SQLException {
@@ -88,13 +98,7 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
         PreparedStatement statement = connection.prepareStatement(getRoomNamesQuery);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            String roomName = resultSet.getString("name");
-            String roomLocation = resultSet.getString("location");
-            int roomCapacity = resultSet.getInt("capacity");
-            String roomDescription = resultSet.getString("description");
-            Room room = new Room(roomName, roomLocation, roomCapacity, roomDescription);
-            room.setLabels(getRoomLabels(connection, roomName));
-            allRooms.add(room);
+            allRooms.add(getRoom(connection, resultSet));
         }
         return allRooms;
     }

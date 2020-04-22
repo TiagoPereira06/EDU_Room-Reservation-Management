@@ -168,7 +168,6 @@ public class App {
         router.addRoute(Method.EXIT, new PathTemplate(Template.SLASH), new Exit());
         router.addRoute(Method.GET, new PathTemplate(Template.TIME), new Time());
         router.addRoute(Method.OPTION, new PathTemplate(Template.SLASH), new Option());
-        router.addRoute(Method.OPTION, new PathTemplate(Template.SLASH), new Option());
     }
 }
 
