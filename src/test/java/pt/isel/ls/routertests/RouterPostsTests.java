@@ -1,5 +1,6 @@
 package pt.isel.ls.routertests;
 
+
 import junit.framework.Assert;
 import org.junit.Test;
 import pt.isel.ls.App;

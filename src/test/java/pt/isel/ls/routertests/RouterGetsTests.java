@@ -12,6 +12,7 @@ import pt.isel.ls.router.RouteResult;
 import pt.isel.ls.router.Router;
 import pt.isel.ls.utils.UtilMethods;
 
+
 public class RouterGetsTests {
     private Router router;
 
@@ -59,4 +60,39 @@ public class RouterGetsTests {
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
         Assert.assertTrue(routeResult.getHandler() instanceof GetRoom);
     }
+
+    @Test
+    public void routerGetRoomsWithCapacity() throws NoSuchMethodException{
+        String[] rawTask = {"GET", "/rooms", "capacity=25"};
+        CommandRequest userRequest = App.formatUserInput(rawTask);
+        RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
+        userRequest.setParameter(
+                UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
+        Assert.assertTrue(routeResult.getHandler() instanceof GetRoom);
+
+    }
+
+    @Test
+    public void routerGetRoomsWithLabel() throws NoSuchMethodException{
+        String[] rawTask = {"GET", "/rooms", "label=windows"};
+        CommandRequest userRequest = App.formatUserInput(rawTask);
+        RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
+        userRequest.setParameter(
+                UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
+        Assert.assertTrue(routeResult.getHandler() instanceof GetRoom);
+
+    }
+
+    @Test
+    public void routerGetRoomsWithTime() throws NoSuchMethodException{
+        String[] rawTask = {"GET", "/rooms", "begin=2020-04-22+12:00:00"
+                + "&duration=60"};
+        CommandRequest userRequest = App.formatUserInput(rawTask);
+        RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
+        userRequest.setParameter(
+                UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
+        Assert.assertTrue(routeResult.getHandler() instanceof GetRoom);
+
+    }
+
 }
