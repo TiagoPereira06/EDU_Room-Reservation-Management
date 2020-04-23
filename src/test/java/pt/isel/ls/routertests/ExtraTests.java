@@ -3,7 +3,6 @@ package pt.isel.ls.routertests;
 import junit.framework.Assert;
 import org.junit.Test;
 import pt.isel.ls.App;
-
 import pt.isel.ls.handler.booking.DeleteBooking;
 import pt.isel.ls.handler.booking.PutBooking;
 import pt.isel.ls.handler.option.Option;

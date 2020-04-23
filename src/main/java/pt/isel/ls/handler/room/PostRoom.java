@@ -22,14 +22,18 @@ public class PostRoom extends RoomHandler {
         final String roomLocation;
         String postRoomsQuery = "INSERT INTO rooms(name, location, capacity, description) VALUES (?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(postRoomsQuery);
-        roomName = commandRequest.getParametersByName(nameParameter).get(0);
-        statement.setString(1, roomName);
-        roomLocation = commandRequest.getParametersByName(locationParameter).get(0);
-        statement.setString(2, roomLocation);
-        roomCapacity = Integer.parseInt(commandRequest.getParametersByName(capacityParameter).get(0));
-        statement.setInt(3, roomCapacity);
-        roomDescription = commandRequest.getParametersByName(descriptionParameter).get(0);
-        statement.setString(4, roomDescription);
+        try {
+            roomName = commandRequest.getParametersByName(nameParameter).get(0);
+            statement.setString(1, roomName);
+            roomLocation = commandRequest.getParametersByName(locationParameter).get(0);
+            statement.setString(2, roomLocation);
+            roomCapacity = Integer.parseInt(commandRequest.getParametersByName(capacityParameter).get(0));
+            statement.setInt(3, roomCapacity);
+            roomDescription = commandRequest.getParametersByName(descriptionParameter).get(0);
+            statement.setString(4, roomDescription);
+        } catch (IndexOutOfBoundsException exception) {
+            throw new SQLException("Missing Arguments");
+        }
 
         List<String> labelsParameters = commandRequest.getParametersByName(labelParameter);
         List<Label> labels = new LinkedList<>();

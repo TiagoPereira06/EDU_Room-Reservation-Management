@@ -62,7 +62,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetRoomsWithCapacity() throws NoSuchMethodException{
+    public void routerGetRoomsWithCapacity() throws NoSuchMethodException {
         String[] rawTask = {"GET", "/rooms", "capacity=25"};
         CommandRequest userRequest = App.formatUserInput(rawTask);
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
@@ -73,7 +73,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetRoomsWithLabel() throws NoSuchMethodException{
+    public void routerGetRoomsWithLabel() throws NoSuchMethodException {
         String[] rawTask = {"GET", "/rooms", "label=windows"};
         CommandRequest userRequest = App.formatUserInput(rawTask);
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
@@ -84,7 +84,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetRoomsWithTime() throws NoSuchMethodException{
+    public void routerGetRoomsWithTime() throws NoSuchMethodException {
         String[] rawTask = {"GET", "/rooms", "begin=2020-04-22+12:00:00"
                 + "&duration=60"};
         CommandRequest userRequest = App.formatUserInput(rawTask);

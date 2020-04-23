@@ -1,7 +1,6 @@
 package pt.isel.ls.request;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Header {
     private final HashMap<HeaderType, HeaderValue> pairs;
@@ -18,8 +17,5 @@ public class Header {
         return pairs.get(name);
     }
 
-    public HashMap<HeaderType, HeaderValue> getMap() {
-        return pairs;
-    }
 }
 
