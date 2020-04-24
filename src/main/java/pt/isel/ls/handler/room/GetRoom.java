@@ -34,16 +34,16 @@ public class GetRoom extends RoomHandler {
 
     private List<Room> executeGetCommand(CommandRequest request, Connection connection)
             throws ParseException, SQLException {
-        List<Room> result;
+        List<Room> result = getAllRoomsWithLabels(connection);
+
         if (!request.getParametersByName(beginParameter).isEmpty()
                 && !request.getParametersByName(durationParameter).isEmpty()) {
             String begin = request.getParametersByName(beginParameter).get(0);
             String duration = request.getParametersByName(durationParameter).get(0);
             Date beginDate = formatStringToDate(begin);
-            result = getAvailableRooms(connection, beginDate, BookingHandler.parseDuration(duration, beginDate));
-        } else {
-            result = getAllRoomsWithLabels(connection);
+            result = getAvailableRooms(connection, beginDate, BookingHandler.parseDuration(duration, beginDate),result);
         }
+
         if (!request.getParametersByName(capacityParameter).isEmpty()) {
             int capacity = Integer.parseInt(request.getParametersByName(capacityParameter).get(0));
             result.removeIf(room -> room.getCapacity() < capacity);

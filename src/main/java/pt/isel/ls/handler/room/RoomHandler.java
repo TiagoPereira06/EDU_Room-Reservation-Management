@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public abstract class RoomHandler extends LabelHandler implements CommandHandler {
@@ -59,14 +60,16 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
     }
 
     protected List<Room> getAvailableRooms(Connection connection,
-                                           Date beginDate, Date endDate)
+                                           Date beginDate, Date endDate, List<Room> allRooms)
             throws SQLException, ParseException {
-        List<Room> allRooms = getAllRoomsWithLabels(connection);
         String getAvailableRooms = "SELECT b.begintime, b.endtime, r.name, r.location, r.capacity, r.description "
                 + "FROM bookings as b"
                 + " INNER JOIN rooms as r"
-                + " ON r.name = b.roomname";
+                + " ON r.name = b.roomname"
+                + " WHERE (endtime::DATE) >= ?::DATE";
         PreparedStatement statement = connection.prepareStatement(getAvailableRooms);
+        //noinspection JpaQueryApiInspection
+        statement.setString(1, formatDateToString(endDate));
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             Date beginDateDb = formatStringToDate(resultSet.getString("begintime"));
