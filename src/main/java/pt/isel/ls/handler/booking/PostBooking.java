@@ -25,13 +25,21 @@ public class PostBooking extends BookingHandler {
         String postBookingsQuery = "INSERT INTO bookings(reservationOwner, roomName, beginTime, endTime)"
                 + "VALUES (?,?,?,?) ";
         PreparedStatement statement = connection.prepareStatement(postBookingsQuery);
-        String owner = commandRequest.getParametersByName(ownerIdParameter).get(0);
-        statement.setString(1, owner);
-        String name = commandRequest.getParametersByName(roomIdParameter).get(0);
-        statement.setString(2, name);
-        String begin = commandRequest.getParametersByName(beginParameter).get(0);
-        statement.setString(3, begin);
-        String duration = commandRequest.getParametersByName(durationParameter).get(0);
+        String duration;
+        String begin;
+        String name;
+        try {
+            String owner = commandRequest.getParametersByName(ownerIdParameter).get(0);
+            statement.setString(1, owner);
+            name = commandRequest.getParametersByName(roomIdArgument).get(0);
+            statement.setString(2, name);
+            begin = commandRequest.getParametersByName(beginParameter).get(0);
+            statement.setString(3, begin);
+            duration = commandRequest.getParametersByName(durationParameter).get(0);
+        } catch (IndexOutOfBoundsException exception) {
+            throw new SQLException("Missing Arguments");
+        }
+
         checkDuration(duration);
         Date beginTime = formatStringToDate(begin);
         //Adicionar ao beginTime o valor do duration e converter para string
@@ -39,7 +47,7 @@ public class PostBooking extends BookingHandler {
         duration = Booking.dateFormat.format(endTime);
         statement.setString(4, duration);
         if (!checkIfRoomIsAvailable(connection, name, beginTime, endTime)) {
-            throw new SQLException("ROOM IS NOT AVAILABLE !");
+            throw new SQLException("ROOM IS NOT AVAILABLE");
         }
         statement.executeUpdate();
         List<List<String>> bookingResult = new LinkedList<>();

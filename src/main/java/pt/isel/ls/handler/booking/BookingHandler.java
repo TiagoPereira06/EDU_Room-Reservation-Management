@@ -35,6 +35,7 @@ public abstract class BookingHandler implements CommandHandler {
 
         PreparedStatement statement = connection.prepareStatement(getBookingsByIdQuery);
         statement.setString(1, roomName);
+        //noinspection JpaQueryApiInspection
         statement.setString(2, formatDateToString(beginDate));
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
@@ -65,8 +66,9 @@ public abstract class BookingHandler implements CommandHandler {
     }
 
     protected void checkDuration(String duration) throws SQLException {
-        if (Integer.parseInt(duration) < 10) {
-            throw new SQLException("DURATION MUST BE LONGER");
+        int durationTime = Integer.parseInt(duration);
+        if (durationTime < 10 || durationTime % 10 != 0) {
+            throw new SQLException("INVALID DURATION");
         }
     }
 

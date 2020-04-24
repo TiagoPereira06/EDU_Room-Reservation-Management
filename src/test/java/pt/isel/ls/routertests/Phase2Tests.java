@@ -12,11 +12,11 @@ import pt.isel.ls.router.RouteResult;
 import pt.isel.ls.router.Router;
 import pt.isel.ls.utils.UtilMethods;
 
-public class ExtraTests {
+public class Phase2Tests {
 
     private Router router;
 
-    public ExtraTests() {
+    public Phase2Tests() {
         router = new Router();
         App.initRoutes(router);
     }

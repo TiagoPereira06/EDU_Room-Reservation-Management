@@ -153,7 +153,7 @@ public class App {
         router.addRoute(Method.POST, new PathTemplate(Template.ROOMS), new PostRoom());
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS), new GetRoom());
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID), new GetRoomById());
-        router.addRoute(Method.POST, new PathTemplate(Template.BOOKINGS), new PostBooking());
+        router.addRoute(Method.POST, new PathTemplate(Template.ROOMS_RID_BOOKINGS), new PostBooking());
         router.addRoute(Method.PUT, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new PutBooking());
         router.addRoute(Method.DELETE, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new DeleteBooking());
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new GetBookingById());

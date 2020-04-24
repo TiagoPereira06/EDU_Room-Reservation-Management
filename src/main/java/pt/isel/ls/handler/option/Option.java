@@ -15,7 +15,7 @@ public class Option implements CommandHandler {
 
     @Override
     public String description() {
-        return "Shows all Available Commands";
+        return "Shows all available commands";
     }
 }
 

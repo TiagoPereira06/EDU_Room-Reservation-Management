@@ -24,20 +24,29 @@ public class PutBooking extends BookingHandler {
                 + "SET begintime = ?, endtime = ?, reservationowner = ? "
                 + "Where bid = ?";
         PreparedStatement statement = connection.prepareStatement(putBookingQuery);
+        String duration;
+        String beginTime;
+        String roomName;
+        String bookingId;
+        try {
+            beginTime = getBeginTime(commandRequest);
+            statement.setString(1, beginTime);
 
-        String beginTime = getBeginTime(commandRequest);
-        statement.setString(1, beginTime);
+            String reservationOwner = commandRequest.getParametersByName(ownerIdParameter).get(0);
+            statement.setString(3, reservationOwner);
 
-        String reservationOwner = commandRequest.getParametersByName(ownerIdParameter).get(0);
-        statement.setString(3, reservationOwner);
+            bookingId = commandRequest.getParametersByName(idArgument).get(0);
+            statement.setInt(4, Integer.parseInt(bookingId));
 
-        String bookingId = commandRequest.getParametersByName(idArgument).get(0);
-        statement.setInt(4, Integer.parseInt(bookingId));
+            duration = getDuration(commandRequest);
 
-        String duration = getDuration(commandRequest);
-        checkDuration(duration);
+            checkDuration(duration);
 
-        String roomName = commandRequest.getParametersByName(roomIdArgument).get(0);
+            roomName = commandRequest.getParametersByName(roomIdArgument).get(0);
+
+        } catch (IndexOutOfBoundsException exception) {
+            throw new SQLException("Missing Arguments");
+        }
         Date dateBeginTime = formatStringToDate(beginTime);
         Date dateEndTime = parseDuration(duration, dateBeginTime);
         statement.setString(2, formatDateToString(dateEndTime));
@@ -53,6 +62,6 @@ public class PutBooking extends BookingHandler {
 
     @Override
     public String description() {
-        return null;
+        return "Changes booking details";
     }
 }

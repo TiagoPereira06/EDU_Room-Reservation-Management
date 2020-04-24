@@ -57,10 +57,9 @@ public class RouterPostsTests {
 
     @Test
     public void routerPostBooking() throws NoSuchMethodException {
-        String[] rawTask = {"POST", "/bookings", "uid=ttavares@slb.pt"
+        String[] rawTask = {"POST", "/rooms/LS1/bookings", "uid=ttavares@slb.pt"
                 + "&begin=2020-04-08+08:30:00"
-                + "&duration=45"
-                + "&room=LS1"};
+                + "&duration=45"};
         CommandRequest userRequest = App.formatUserInput(rawTask);
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(

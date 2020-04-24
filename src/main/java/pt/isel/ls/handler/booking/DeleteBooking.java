@@ -17,7 +17,12 @@ public class DeleteBooking extends BookingHandler {
         String deleteBooking = "DELETE FROM bookings "
                 + "Where bid = ?";
         PreparedStatement statement = connection.prepareStatement(deleteBooking);
-        String bookingId = commandRequest.getParametersByName(idArgument).get(0);
+        String bookingId;
+        try {
+            bookingId = commandRequest.getParametersByName(idArgument).get(0);
+        } catch (IndexOutOfBoundsException exception) {
+            throw new SQLException("Missing Arguments");
+        }
         statement.setInt(1, Integer.parseInt(bookingId));
         statement.executeUpdate();
         List<List<String>> bookingResult = new LinkedList<>();
