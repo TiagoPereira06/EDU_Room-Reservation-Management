@@ -1,7 +1,7 @@
 package pt.isel.ls.handler.room;
 
 import pt.isel.ls.handler.ResultInterface;
-import pt.isel.ls.handler.booking.result.PostBookingResult;
+import pt.isel.ls.handler.room.result.PostRoomResult;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.request.CommandRequest;
 
@@ -51,7 +51,7 @@ public class PostRoom extends RoomHandler {
         insertLabelsRoom(connection, roomName, labels);
         List<List<String>> roomResult = new LinkedList<>();
         roomResult.add(Collections.singletonList(roomName));
-        return new PostBookingResult(roomResult);
+        return new PostRoomResult(roomResult);
     }
 
     @Override
