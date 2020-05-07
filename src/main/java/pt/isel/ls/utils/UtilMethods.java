@@ -22,7 +22,14 @@ public class UtilMethods {
         String[] params = rawString.split("&");
         for (String st : params) {
             String[] parts = st.split("=");
-            list.add(new Parameter(parts[0], parts[1]));
+            String[] parts2 = parts[1].split(",");
+            
+            if(parts2.length>1) {
+                list.add(new Parameter(parts[0], parts2[0]));
+                list.add(new Parameter(parts[0], parts2[1]));
+            }
+            else  list.add(new Parameter(parts[0], parts[1]));
+
         }
         return list;
     }
