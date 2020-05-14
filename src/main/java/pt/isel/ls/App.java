@@ -11,6 +11,7 @@ import pt.isel.ls.handler.booking.PutBooking;
 import pt.isel.ls.handler.booking.DeleteBooking;
 import pt.isel.ls.handler.label.GetLabel;
 import pt.isel.ls.handler.label.PostLabel;
+import pt.isel.ls.handler.listener.Listen;
 import pt.isel.ls.handler.option.Option;
 import pt.isel.ls.handler.room.GetRoom;
 import pt.isel.ls.handler.room.GetRoomById;
@@ -168,6 +169,7 @@ public class App {
         router.addRoute(Method.EXIT, new PathTemplate(Template.SLASH), new Exit());
         router.addRoute(Method.GET, new PathTemplate(Template.TIME), new Time());
         router.addRoute(Method.OPTION, new PathTemplate(Template.SLASH), new Option());
+        router.addRoute(Method.LISTEN, new PathTemplate(Template.SLASH), new Listen());
     }
 }
 
