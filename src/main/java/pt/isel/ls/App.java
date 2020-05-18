@@ -3,15 +3,10 @@ package pt.isel.ls;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.handler.Exit;
 import pt.isel.ls.handler.ResultInterface;
-import pt.isel.ls.handler.booking.GetBooking;
-import pt.isel.ls.handler.booking.GetBookingById;
-import pt.isel.ls.handler.booking.GetBookingByOwner;
-import pt.isel.ls.handler.booking.PostBooking;
-import pt.isel.ls.handler.booking.PutBooking;
-import pt.isel.ls.handler.booking.DeleteBooking;
+import pt.isel.ls.handler.booking.*;
 import pt.isel.ls.handler.label.GetLabel;
 import pt.isel.ls.handler.label.PostLabel;
-import pt.isel.ls.handler.listener.Listen;
+import pt.isel.ls.handler.httpListen.HttpServlet;
 import pt.isel.ls.handler.option.Option;
 import pt.isel.ls.handler.room.GetRoom;
 import pt.isel.ls.handler.room.GetRoomById;
@@ -21,15 +16,7 @@ import pt.isel.ls.handler.time.Time;
 import pt.isel.ls.handler.user.GetUser;
 import pt.isel.ls.handler.user.GetUserById;
 import pt.isel.ls.handler.user.PostUser;
-import pt.isel.ls.request.CommandRequest;
-import pt.isel.ls.request.Method;
-import pt.isel.ls.request.Path;
-import pt.isel.ls.request.PathTemplate;
-import pt.isel.ls.request.Template;
-import pt.isel.ls.request.Header;
-import pt.isel.ls.request.Parameter;
-import pt.isel.ls.request.HeaderType;
-import pt.isel.ls.request.HeaderValue;
+import pt.isel.ls.request.*;
 import pt.isel.ls.router.RouteResult;
 import pt.isel.ls.router.Router;
 import pt.isel.ls.utils.UtilMethods;
@@ -37,12 +24,11 @@ import pt.isel.ls.utils.UtilMethods;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Scanner;
 
 
-public class App {
+public class App extends javax.servlet.http.HttpServlet {
     public static Router router;
 
     public static void main(String[] args) {
@@ -70,7 +56,7 @@ public class App {
         }
     }
 
-    private static void executeTask(Router router, UserInterface ui, String[] rawTask) throws NoSuchMethodException {
+    public static void executeTask(Router router, OutputResult outputResult, String[] rawTask) throws NoSuchMethodException {
 
         CommandRequest userRequest = formatUserInput(rawTask);
 
@@ -88,26 +74,26 @@ public class App {
             connection.setAutoCommit(false);
             resultInterface = routeResult.getHandler().execute(userRequest, connection);
             connection.commit();
-        } catch (SQLException | ParseException e) {
+        } catch (Exception e) {
             try {
                 assert connection != null;
                 connection.rollback();
             } catch (SQLException ex) {
-                ui.showError(ex.getMessage());
+                outputResult.showError(ex.getMessage());
             }
-            ui.showError(e.getMessage());
+            outputResult.showError(e.getMessage());
         } finally {
             assert connection != null;
             try {
                 connection.close();
             } catch (SQLException e) {
-                ui.showError(e.getMessage());
+                outputResult.showError(e.getMessage());
             }
         }
         try {
-            ui.show(resultInterface, userRequest.getHeader());
+            outputResult.show(resultInterface, userRequest.getHeader()); //SUCCESS!
         } catch (IOException e) {
-            ui.showError(e.getMessage());
+            outputResult.showError(e.getMessage());
         }
     }
 
@@ -169,7 +155,7 @@ public class App {
         router.addRoute(Method.EXIT, new PathTemplate(Template.SLASH), new Exit());
         router.addRoute(Method.GET, new PathTemplate(Template.TIME), new Time());
         router.addRoute(Method.OPTION, new PathTemplate(Template.SLASH), new Option());
-        router.addRoute(Method.LISTEN, new PathTemplate(Template.SLASH), new Listen());
+        router.addRoute(Method.LISTEN, new PathTemplate(Template.SLASH), new HttpServlet());
     }
 }
 

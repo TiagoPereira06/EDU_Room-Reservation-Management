@@ -11,7 +11,8 @@ import pt.isel.ls.request.HeaderValue;
 
 import java.io.IOException;
 
-public class UserInterface {
+public class UserInterface implements OutputResult {
+    @Override
     public void show(ResultInterface resultInterface, Header header) throws IOException {
         if (resultInterface == null || resultInterface.values().isEmpty()) {
             showError("Empty Result");
@@ -38,7 +39,7 @@ public class UserInterface {
         System.out.println("{Method} {Path} {Arguments}");
         System.out.print("-> ");
     }
-
+    @Override
     public void showError(String s) {
         System.out.println("\nERROR : " + s.toUpperCase() + " !");
     }

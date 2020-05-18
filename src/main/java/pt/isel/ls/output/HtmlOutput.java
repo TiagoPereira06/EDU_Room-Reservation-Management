@@ -77,7 +77,7 @@ public class HtmlOutput implements OutputInterface {
 
     @Override
     public void printToConsole() {
-        System.out.println(stringBuilder.toString());
+        System.out.println(getResult());
 
     }
 
@@ -86,6 +86,10 @@ public class HtmlOutput implements OutputInterface {
         PrintWriter writer = new PrintWriter(filename, StandardCharsets.UTF_8);
         writer.println(stringBuilder.toString());
         writer.close();
+    }
+
+    public String getResult(){
+        return stringBuilder.toString();
     }
 
 }

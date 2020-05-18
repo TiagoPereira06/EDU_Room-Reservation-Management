@@ -9,7 +9,7 @@ import java.text.ParseException;
 
 public interface CommandHandler {
 
-    ResultInterface execute(CommandRequest commandRequest, Connection connection) throws SQLException, ParseException;
+    ResultInterface execute(CommandRequest commandRequest, Connection connection) throws Exception;
 
     String description();
 
