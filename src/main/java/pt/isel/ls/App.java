@@ -3,7 +3,12 @@ package pt.isel.ls;
 import org.postgresql.ds.PGSimpleDataSource;
 import pt.isel.ls.handler.Exit;
 import pt.isel.ls.handler.ResultInterface;
-import pt.isel.ls.handler.booking.*;
+import pt.isel.ls.handler.booking.PutBooking;
+import pt.isel.ls.handler.booking.DeleteBooking;
+import pt.isel.ls.handler.booking.GetBookingById;
+import pt.isel.ls.handler.booking.GetBookingByOwner;
+import pt.isel.ls.handler.booking.PostBooking;
+import pt.isel.ls.handler.booking.GetBooking;
 import pt.isel.ls.handler.label.GetLabel;
 import pt.isel.ls.handler.label.PostLabel;
 import pt.isel.ls.handler.httpListen.HttpServlet;
@@ -16,7 +21,15 @@ import pt.isel.ls.handler.time.Time;
 import pt.isel.ls.handler.user.GetUser;
 import pt.isel.ls.handler.user.GetUserById;
 import pt.isel.ls.handler.user.PostUser;
-import pt.isel.ls.request.*;
+import pt.isel.ls.request.Header;
+import pt.isel.ls.request.HeaderType;
+import pt.isel.ls.request.HeaderValue;
+import pt.isel.ls.request.CommandRequest;
+import pt.isel.ls.request.Method;
+import pt.isel.ls.request.Path;
+import pt.isel.ls.request.Template;
+import pt.isel.ls.request.Parameter;
+import pt.isel.ls.request.PathTemplate;
 import pt.isel.ls.router.RouteResult;
 import pt.isel.ls.router.Router;
 import pt.isel.ls.utils.UtilMethods;
@@ -56,7 +69,8 @@ public class App extends javax.servlet.http.HttpServlet {
         }
     }
 
-    public static void executeTask(Router router, OutputResult outputResult, String[] rawTask) throws NoSuchMethodException {
+    public static void executeTask(Router router, OutputResult outputResult, String[] rawTask)
+            throws NoSuchMethodException {
 
         CommandRequest userRequest = formatUserInput(rawTask);
 

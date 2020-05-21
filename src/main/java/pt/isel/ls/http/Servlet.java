@@ -34,7 +34,7 @@ public class Servlet extends HttpServlet {
     }
 
     public void delegateTask(String[] rawTask) throws NoSuchMethodException {
-    App.executeTask(router,serverInterface,rawTask);
+        App.executeTask(router,serverInterface,rawTask);
     }
 
 }

@@ -88,7 +88,7 @@ public class HtmlOutput implements OutputInterface {
         writer.close();
     }
 
-    public String getResult(){
+    public String getResult() {
         return stringBuilder.toString();
     }
 

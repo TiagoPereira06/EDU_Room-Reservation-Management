@@ -39,6 +39,7 @@ public class UserInterface implements OutputResult {
         System.out.println("{Method} {Path} {Arguments}");
         System.out.print("-> ");
     }
+
     @Override
     public void showError(String s) {
         System.out.println("\nERROR : " + s.toUpperCase() + " !");

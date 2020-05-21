@@ -27,7 +27,7 @@ public class HttpServlet implements CommandHandler {
         String status = "Server started";
         log.info(status);
         return new ListenResult(List.of(List.of(status)));
-}
+    }
 
     @Override
     public String description() {
