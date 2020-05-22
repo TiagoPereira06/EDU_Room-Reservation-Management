@@ -1,6 +1,5 @@
 package pt.isel.ls.handler.result.html;
 
-import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,39 +13,11 @@ public class Element implements Node {
         this.name = name;
     }
 
-    public Element addNode(Node node) {
-        nodes.add(node);
-        return this;
-    }
-
-    public Element addNode(Iterable<Node> it) {
-        for (Node node : it) {
-            nodes.add(node);
-        }
-        return this;
-    }
-
-    public Element addNode(Node... n) {
-        for (Node node : n) {
-            this.addNode(node);
-        }
-        return this;
-    }
-
-
-    public Element addAttribute(String name, String value) {
-        attributes.add(new Attribute(name,value));
-        return this;
-    }
-
-
     public static Element html(Node... node) {
-
         return new Element("html").addNode(node);
     }
 
     public static Element head(Node... node) {
-
         return new Element("head").addNode(node);
     }
 
@@ -70,8 +41,25 @@ public class Element implements Node {
         return new Element("h3").addNode(node);
     }
 
-    public static Element table(List<Node> n, Node node) {
-        return new Element("table").addNode(n).addNode(node);
+    public static Element div(Node... node) {
+        return new Element("div").addNode(node);
+    }
+
+    public static Element form(Node... node) {
+        return new Element("form").addNode(node);
+    }
+
+    public static Element label(Node... node) {
+        return new Element("label").addNode(node);
+    }
+
+    public static Element input(Node... node) {
+        return new Element("input").addNode(node);
+    }
+
+
+    public static Element table(Node node, List<Node> n) {
+        return new Element("table").addNode(node).addNode(n);
     }
 
     public static Element tr(Node... node) {
@@ -98,6 +86,10 @@ public class Element implements Node {
         return new Element("li").addNode(node);
     }
 
+    public static Element anchor(Node node) {
+        return new Element("a").addNode(node);
+    }
+
     public static Element paragraph() {
         return new Element("paragraph");
     }
@@ -110,32 +102,46 @@ public class Element implements Node {
         return new Element("append").addAttribute(name, value).addNode(node);
     }
 
+    public Element addNode(Node node) {
+        nodes.add(node);
+        return this;
+    }
 
+    public Element addNode(Iterable<Node> it) {
+        for (Node node : it) {
+            nodes.add(node);
+        }
+        return this;
+    }
 
+    public Element addNode(Node... n) {
+        for (Node node : n) {
+            this.addNode(node);
+        }
+        return this;
+    }
 
-
+    public Element addAttribute(String name, String value) {
+        attributes.add(new Attribute(name, value));
+        return this;
+    }
 
     @Override
-    public void print(PrintStream out, int local) {
-        for (int i = 0; i < local;i++) {
-            out.print('\t');
-        }
-        out.print("<");
-        out.print(name);
+    public String build() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<");
+        sb.append(name);
         for (Attribute attr : attributes) {
-            out.print(" ");
-            out.print(attr);
+            sb.append(" ");
+            sb.append(attr);
         }
-        out.print(">");
+        sb.append(">");
         for (Node node : nodes) {
-            node.print(out,local + 1);
-            out.println();
+            sb.append(node.build());
         }
-        for (int i = 0; i < local; i++) {
-            out.print('\t');
-        }
-        out.print("</");
-        out.print(name);
-        out.print(">");
+        sb.append("</");
+        sb.append(name);
+        sb.append(">");
+        return sb.toString();
     }
 }

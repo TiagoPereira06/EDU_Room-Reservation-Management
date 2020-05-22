@@ -7,9 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public abstract class UserHandler implements CommandHandler {
-    final String idArgument = "{uid}";
-    final String nameParameter = "name";
-    final String emailParameter = "email";
+    public final String idArgument = "{uid}";
+    public final String nameParameter = "name";
+    public final String emailParameter = "email";
 
 
     public boolean checksIfEmailAlreadyExists(String email, Connection connection) throws SQLException {

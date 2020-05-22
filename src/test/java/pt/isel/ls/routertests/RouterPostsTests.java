@@ -4,10 +4,11 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import pt.isel.ls.App;
-import pt.isel.ls.handler.booking.PostBooking;
-import pt.isel.ls.handler.label.PostLabel;
-import pt.isel.ls.handler.room.PostRoom;
-import pt.isel.ls.handler.user.PostUser;
+import pt.isel.ls.LocalInterface;
+import pt.isel.ls.handler.booking.post.PostBooking;
+import pt.isel.ls.handler.label.post.PostLabel;
+import pt.isel.ls.handler.room.post.PostRoom;
+import pt.isel.ls.handler.user.post.PostUser;
 import pt.isel.ls.request.CommandRequest;
 import pt.isel.ls.router.RouteResult;
 import pt.isel.ls.router.Router;
@@ -24,7 +25,7 @@ public class RouterPostsTests {
     @Test
     public void routerPostUser() throws NoSuchMethodException {
         String[] rawTask = {"POST", "/users", "name=Haris+Seferovic&email=haris@slb.pt"};
-        CommandRequest userRequest = App.formatUserInput(rawTask);
+        CommandRequest userRequest = CommandRequest.formatUserInput(rawTask,new LocalInterface());
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
@@ -34,7 +35,7 @@ public class RouterPostsTests {
     @Test
     public void routerPostLabel() throws NoSuchMethodException {
         String[] rawTask = {"POST", "/labels", "name=slow+internet"};
-        CommandRequest userRequest = App.formatUserInput(rawTask);
+        CommandRequest userRequest = CommandRequest.formatUserInput(rawTask,new LocalInterface());
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
@@ -48,7 +49,7 @@ public class RouterPostsTests {
                 + "&location=Building+F+floor+-1"
                 + "&capacity=55"
                 + "&label=monitors&label=windows"};
-        CommandRequest userRequest = App.formatUserInput(rawTask);
+        CommandRequest userRequest = CommandRequest.formatUserInput(rawTask,new LocalInterface());
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
@@ -60,7 +61,7 @@ public class RouterPostsTests {
         String[] rawTask = {"POST", "/rooms/LS1/bookings", "uid=ttavares@slb.pt"
                 + "&begin=2020-04-08+08:30:00"
                 + "&duration=45"};
-        CommandRequest userRequest = App.formatUserInput(rawTask);
+        CommandRequest userRequest = CommandRequest.formatUserInput(rawTask,new LocalInterface());
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));

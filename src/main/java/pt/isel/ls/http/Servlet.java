@@ -14,16 +14,16 @@ import java.util.List;
 
 public class Servlet extends HttpServlet {
     Router router = App.router;
-    ServerInterface serverInterface = new ServerInterface();
+    ServerInterface serverInterface;
 
     @Override
-    public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        process(req,resp);
+    public void service(HttpServletRequest req, HttpServletResponse resp){
+        serverInterface = new ServerInterface(resp);
+        process(req, resp);
     }
 
-    private void process(HttpServletRequest req,HttpServletResponse resp) {
+    private void process(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            serverInterface.setResp(resp);
             List<String> rawTask = new ArrayList<>();
             rawTask.add(req.getMethod());
             rawTask.add(req.getRequestURI());
@@ -34,7 +34,7 @@ public class Servlet extends HttpServlet {
     }
 
     public void delegateTask(String[] rawTask) throws NoSuchMethodException {
-        App.executeTask(router,serverInterface,rawTask);
+        App.executeTask(router, serverInterface, rawTask);
     }
 
 }

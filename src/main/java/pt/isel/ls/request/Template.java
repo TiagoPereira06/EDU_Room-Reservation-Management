@@ -26,4 +26,5 @@ public class Template {
 
     public static final String LABELS_LID_ROOMS = "/labels/{lid}/rooms";
 
+    public static final String ROOMS_SEARCH = "/rooms/search";
 }

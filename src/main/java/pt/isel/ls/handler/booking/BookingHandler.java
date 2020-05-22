@@ -15,20 +15,20 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 
 public abstract class BookingHandler implements CommandHandler {
-    final String idArgument = "{bid}";
-    final String roomIdArgument = "{rid}";
-    final String ownerIdArgument = "{uid}";
-    final String ownerIdParameter = "uid";
-    final String beginParameter = "begin";
-    final String durationParameter = "duration";
-    final String roomIdParameter = "room";
+    public final String idArgument = "{bid}";
+    public final String roomIdArgument = "{rid}";
+    public final String ownerIdArgument = "{uid}";
+    public final String ownerIdParameter = "uid";
+    public final String beginParameter = "begin";
+    public final String durationParameter = "duration";
+    public final String roomIdParameter = "room";
 
     public static Date parseDuration(String duration, Date beginTime) {
         return new Date(beginTime.getTime() + 60000 * Integer.parseInt(duration));
     }
 
-    protected boolean checkIfRoomIsAvailable(Connection connection, String roomName,
-                                             Date beginDate, Date endDate)
+    public boolean checkIfRoomIsAvailable(Connection connection, String roomName,
+                                          Date beginDate, Date endDate)
             throws SQLException, ParseException {
         String getBookingsByIdQuery = "SELECT begintime, endtime FROM bookings "
                 + "WHERE roomname = ? AND (endtime::DATE) >= ?::DATE";
@@ -49,7 +49,7 @@ public abstract class BookingHandler implements CommandHandler {
         return true;
     }
 
-    protected int getNextBookingId(Connection connection) throws SQLException {
+    public int getNextBookingId(Connection connection) throws SQLException {
         String getBookingId = "SELECT bid FROM bookings ORDER BY bid DESC";
         PreparedStatement statement = connection.prepareStatement(getBookingId);
         ResultSet resultSet = statement.executeQuery();
@@ -57,21 +57,20 @@ public abstract class BookingHandler implements CommandHandler {
         return resultSet.getInt("bid");
     }
 
-    protected String getBeginTime(CommandRequest commandRequest) {
+    public String getBeginTime(CommandRequest commandRequest) {
         return commandRequest.getParametersByName(beginParameter).get(0);
     }
 
-    protected String getDuration(CommandRequest commandRequest) {
+    public String getDuration(CommandRequest commandRequest) {
         return commandRequest.getParametersByName(durationParameter).get(0);
     }
 
-    protected void checkDuration(String duration) throws SQLException {
+    public void checkDuration(String duration) throws SQLException {
         int durationTime = Integer.parseInt(duration);
         if (durationTime < 10 || durationTime % 10 != 0) {
             throw new SQLException("INVALID DURATION");
         }
     }
-
 
 }
 

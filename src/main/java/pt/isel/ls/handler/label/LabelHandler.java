@@ -7,8 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public abstract class LabelHandler implements CommandHandler {
-    final String idArgument = "{lid}";
-    final String nameParameter = "name";
+    public final String idArgument = "{lid}";
+    public final String nameParameter = "name";
 
 
     public boolean checkIfLabelAlreadyExists(String label, Connection connection) throws SQLException {

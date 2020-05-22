@@ -40,11 +40,9 @@ public class Booking {
         return endTime;
     }
 
-    public List<String> parsePropertiesList() {
+    public List<String> toList() {
         return List.of(reservationOwner, roomName, dateFormat.format(beginTime), dateFormat.format(endTime));
-
     }
-
 
     @Override
     public String toString() {

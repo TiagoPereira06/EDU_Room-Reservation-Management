@@ -13,9 +13,10 @@ public class Label {
         return name;
     }
 
-    public List<String> parsePropertiesList() {
+    public List<String> toList() {
         return List.of(name);
     }
+
 
     @Override
     public String toString() {

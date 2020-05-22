@@ -3,6 +3,7 @@ package pt.isel.ls.utils;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.Parameter;
 
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
@@ -44,6 +45,10 @@ public class UtilMethods {
 
     public static String formatDateToString(Date endTime) {
         return Booking.dateFormat.format(endTime);
+    }
+
+    public static byte[] getBytes(String target) {
+        return target.getBytes(StandardCharsets.UTF_8);
     }
 
 }

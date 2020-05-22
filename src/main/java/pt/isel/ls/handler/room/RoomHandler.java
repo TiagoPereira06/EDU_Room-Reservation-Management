@@ -18,15 +18,15 @@ import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public abstract class RoomHandler extends LabelHandler implements CommandHandler {
-    final String idArgument = "{rid}";
-    final String lidArgument = "{lid}";
-    final String nameParameter = "name";
-    final String locationParameter = "location";
-    final String capacityParameter = "capacity";
-    final String beginParameter = "begin";
-    final String durationParameter = "duration";
-    final String descriptionParameter = "description";
-    final String labelParameter = "label";
+    public final String idArgument = "{rid}";
+    public final String lidArgument = "{lid}";
+    public final String nameParameter = "name";
+    public final String locationParameter = "location";
+    public final String capacityParameter = "capacity";
+    public final String beginParameter = "begin";
+    public final String durationParameter = "duration";
+    public final String descriptionParameter = "description";
+    public final String labelParameter = "label";
 
 
     public List<Label> getRoomLabels(Connection connection, String roomName) throws SQLException {
@@ -59,8 +59,8 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
         }
     }
 
-    protected List<Room> getAvailableRooms(Connection connection,
-                                           Date beginDate, Date endDate, List<Room> allRooms)
+    public List<Room> getAvailableRooms(Connection connection,
+                                        Date beginDate, Date endDate, List<Room> allRooms)
             throws SQLException, ParseException {
         String getAvailableRooms = "SELECT b.begintime, b.endtime, r.name, r.location, r.capacity, r.description "
                 + "FROM bookings as b"
@@ -82,7 +82,7 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
         return allRooms;
     }
 
-    private Room getRoom(Connection connection, ResultSet resultSet) throws SQLException {
+    public Room getRoom(Connection connection, ResultSet resultSet) throws SQLException {
         String roomName = resultSet.getString("name");
         String roomLocation = resultSet.getString("location");
         int roomCapacity = resultSet.getInt("capacity");
@@ -92,7 +92,7 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
         return room;
     }
 
-    protected List<Room> getAllRoomsWithLabels(Connection connection) throws SQLException {
+    public List<Room> getAllRoomsWithLabels(Connection connection) throws SQLException {
         List<Room> allRooms = new LinkedList<>();
         String getRoomNamesQuery = "SELECT * from rooms";
         PreparedStatement statement = connection.prepareStatement(getRoomNamesQuery);

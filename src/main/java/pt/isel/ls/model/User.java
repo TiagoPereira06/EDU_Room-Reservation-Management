@@ -19,7 +19,7 @@ public class User {
         return email;
     }
 
-    public List<String> parsePropertiesList() {
+    public List<String> toList() {
         return List.of(name, email);
     }
 
