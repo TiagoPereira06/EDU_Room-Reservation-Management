@@ -12,9 +12,13 @@ public class Template {
 
     public static final String LABELS = "/labels";
 
+    public static final String LABELS_LID = "/labels/{lid}";
+
     public static final String BOOKINGS = "/bookings";
 
     public static final String ROOMS_RID = "/rooms/{rid}";
+
+    public static final String ROOMS_SEARCH = "/rooms/search";
 
     public static final String USERS_UID = "/users/{uid}";
 
@@ -26,5 +30,4 @@ public class Template {
 
     public static final String LABELS_LID_ROOMS = "/labels/{lid}/rooms";
 
-    public static final String ROOMS_SEARCH = "/rooms/search";
 }

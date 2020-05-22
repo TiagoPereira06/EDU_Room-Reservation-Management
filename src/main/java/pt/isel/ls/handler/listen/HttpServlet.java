@@ -19,7 +19,7 @@ public class HttpServlet implements CommandHandler {
     @Override
     public ResultView execute(CommandRequest commandRequest, Connection connection) throws Exception {
         //TODO: ACCEPT DIFFERENT PORTS
-        //commandRequest.getParametersByName("port");
+        //String port = commandRequest.getParametersByName("port");
         Server server = new Server(8080);
         ServletHandler handler = new ServletHandler();
         server.setHandler(handler);

@@ -1,5 +1,6 @@
 package pt.isel.ls.http;
 
+import org.eclipse.jetty.server.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.isel.ls.App;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -28,10 +30,14 @@ public class Servlet extends HttpServlet {
         try {
             List<String> rawTask = new ArrayList<>();
             String method = req.getMethod();
-            String reqUri = req.getRequestURI();
-            log.info(String.format("Incoming Request: ME->%s||URI->%s",method,reqUri));
+            String reqUriRaw = ((Request) req).getUri().toString();
+            List<String> reqParts = Arrays.asList(
+                    reqUriRaw.replace("?", " ")
+                            .replace("%20", " ")
+                            .split(" "));
+            log.info(String.format("Incoming Request: ME->%s||URI->%s", method, reqUriRaw));
             rawTask.add(method);
-            rawTask.add(reqUri);
+            rawTask.addAll(reqParts);
             delegateTask(rawTask.toArray(new String[0]));
         } catch (Exception e) {
             serverInterface.showError(e.getMessage());

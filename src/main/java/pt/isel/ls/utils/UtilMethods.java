@@ -23,7 +23,9 @@ public class UtilMethods {
         String[] params = rawString.split("&");
         for (String st : params) {
             String[] parts = st.split("=");
-            list.add(new Parameter(parts[0], parts[1]));
+            if (parts.length > 1) {
+                list.add(new Parameter(parts[0], parts[1]));
+            }
         }
         return list;
     }

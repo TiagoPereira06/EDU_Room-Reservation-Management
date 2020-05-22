@@ -70,7 +70,7 @@ public class Element implements Node {
         return new Element("th").addNode(node);
     }
 
-    public static Element td(Node node) {
+    public static Element td(Node... node) {
         return new Element("td").addNode(node);
     }
 
@@ -86,9 +86,10 @@ public class Element implements Node {
         return new Element("li").addNode(node);
     }
 
-    public static Element dd(Node node) {
+    public static Element dd(Node... node) {
         return new Element("dd").addNode(node);
     }
+
     public static Element dt(Node node) {
         return new Element("dt").addNode(node);
     }
@@ -103,6 +104,10 @@ public class Element implements Node {
 
     public static Element anchor(Node node) {
         return new Element("a").addNode(node);
+    }
+
+    public static Element bold(Node node) {
+        return new Element("b").addNode(node);
     }
 
     public static Element paragraph() {

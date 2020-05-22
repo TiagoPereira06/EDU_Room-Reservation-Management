@@ -1,6 +1,5 @@
 package pt.isel.ls.handler.booking.getall;
 
-
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.model.Booking;
 

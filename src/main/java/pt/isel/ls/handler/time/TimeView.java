@@ -14,7 +14,7 @@ class TimeView extends View {
 
     @Override
     public String name() {
-        return "GET Time";
+        return "current time";
     }
 
     @Override

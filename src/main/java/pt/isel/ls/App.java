@@ -10,6 +10,7 @@ import pt.isel.ls.handler.booking.post.PostBooking;
 import pt.isel.ls.handler.booking.put.PutBooking;
 import pt.isel.ls.handler.exit.Exit;
 import pt.isel.ls.handler.index.Index;
+import pt.isel.ls.handler.label.getbyid.GetLabelById;
 import pt.isel.ls.handler.label.getall.GetLabel;
 import pt.isel.ls.handler.label.post.PostLabel;
 import pt.isel.ls.handler.listen.HttpServlet;
@@ -122,6 +123,7 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate(Template.BOOKINGS), new GetBooking());
         router.addRoute(Method.POST, new PathTemplate(Template.LABELS), new PostLabel());
         router.addRoute(Method.GET, new PathTemplate(Template.LABELS), new GetLabel());
+        router.addRoute(Method.GET, new PathTemplate(Template.LABELS_LID), new GetLabelById());
         router.addRoute(Method.GET, new PathTemplate(Template.LABELS_LID_ROOMS), new GetRoomsByLabel());
         router.addRoute(Method.EXIT, new PathTemplate(Template.SLASH), new Exit());
         router.addRoute(Method.GET, new PathTemplate(Template.TIME), new Time());

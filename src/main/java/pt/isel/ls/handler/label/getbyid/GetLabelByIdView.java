@@ -1,24 +1,25 @@
-package pt.isel.ls.handler.user.getbyid;
+package pt.isel.ls.handler.label.getbyid;
 
 import pt.isel.ls.handler.result.View;
+import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
-import pt.isel.ls.model.User;
+import pt.isel.ls.model.Label;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
-public class GetUserByIdView extends View {
-    private final User model;
+public class GetLabelByIdView extends View {
+    private final Label model;
 
-    public GetUserByIdView(User userById) {
-        this.model = userById;
+    public GetLabelByIdView(Label labelById) {
+        this.model = labelById;
     }
 
     @Override
     public String name() {
-        return "user " + model.getName() + " information";
+        return model.getName() + " label details";
     }
 
     @Override
@@ -29,10 +30,10 @@ public class GetUserByIdView extends View {
                 ),
                 body(
                         h1(text(name())),
-                        dl(listFormat()),
-                        button("All Users","/users"),
+                        Element.dl(listFormat()),
+                        button("All Labels", "/labels"),
                         homeButton(),
-                        button("Bookings",String.format("/users/%s/bookings",model.getEmail()))
+                        button("Rooms", "/rooms%20label=" + model.getName())
                 )
         ).build();
     }
@@ -41,8 +42,6 @@ public class GetUserByIdView extends View {
         LinkedList<Node> listItems = new LinkedList<>();
         listItems.add(li(bold((text("Name:")))));
         listItems.add(dd(text(model.getName())));
-        listItems.add(li(bold((text("Email:")))));
-        listItems.add(dd(text(model.getEmail())));
         return listItems;
     }
 

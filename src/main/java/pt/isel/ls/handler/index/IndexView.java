@@ -7,7 +7,7 @@ import static pt.isel.ls.handler.result.html.Element.*;
 public class IndexView extends View {
     @Override
     public String name() {
-        return "Home";
+        return "home";
     }
 
     @Override
@@ -20,7 +20,7 @@ public class IndexView extends View {
                         h1(text(name())),
                         button("Current Time", "/time"),
                         button("Get Users", "/users"),
-                        button("Room Search", "/rooms/search"),
+                        button("Rooms Search", "/rooms/search"),
                         button("Get Labels", "/labels")
                 )
         ).build();

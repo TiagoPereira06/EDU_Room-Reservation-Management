@@ -19,7 +19,7 @@ public class GetUserView extends View {
 
     @Override
     public String name() {
-        return "All Users";
+        return "all users";
     }
 
     @Override

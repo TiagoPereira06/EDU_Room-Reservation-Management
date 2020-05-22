@@ -45,7 +45,7 @@ public class Router {
             List<Parameter> parameterList = new LinkedList<>();
             int i = 0;
             for (; i < userPath.length; i++) {
-                if (i % 2 != 0) {
+                if (i % 2 != 0 && foundPath[i].contains("{")) {
                     parameterList.add(new Parameter((foundPath[i]), userPath[i]));
                     continue;
                 }
