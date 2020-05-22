@@ -1,8 +1,8 @@
 package pt.isel.ls.handler.booking.put;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
-public class PutBookingView implements ResultView {
+public class PutBookingView extends View {
     public PutBookingView(String putBookingId) {
 
     }

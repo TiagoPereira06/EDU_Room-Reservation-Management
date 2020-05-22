@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.user.getall;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
 import pt.isel.ls.model.User;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
-public class GetUserView implements ResultView {
+public class GetUserView extends View {
     private final List<User> model;
 
     public GetUserView(List<User> allUsers) {
@@ -24,17 +24,18 @@ public class GetUserView implements ResultView {
 
     @Override
     public String htmlOutput() {
-        return Element.html(
-                Element.head(
-                        Element.title(text(name()))
+        return html(
+                head(
+                        title(text(name()))
                 ),
-                Element.body(
-                        Element.h1(text(name())),
+                body(
+                        h1(text(name())),
                         setTable(),
-                        Element.h3(anchor(text("Home")).addAttribute("href","/"))
+                        homeButton()
                 )
         ).build();
     }
+
 
     private Element setTable() {
         return Element.table(
@@ -55,7 +56,7 @@ public class GetUserView implements ResultView {
             list.add(
                     tr(
                             td(text(name)),
-                            td(anchor(text(email)).addAttribute("href",String.format("/users/%s", email)))
+                            td(anchor(text(email)).addAttribute("href", String.format("/users/%s", email)))
                     )
             );
         }

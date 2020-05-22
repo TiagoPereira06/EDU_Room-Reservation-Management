@@ -1,11 +1,11 @@
 package pt.isel.ls.handler.room.getbylabel;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 import pt.isel.ls.model.Room;
 
 import java.util.List;
 
-public class GetRoomByLabelView implements ResultView {
+public class GetRoomByLabelView extends View {
     private final List<Room> model;
 
     public GetRoomByLabelView(List<Room> roomsByLabel) {

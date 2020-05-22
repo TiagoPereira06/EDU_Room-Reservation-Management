@@ -1,10 +1,10 @@
 package pt.isel.ls.handler.index;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
-public class IndexView implements ResultView {
+public class IndexView extends View {
     @Override
     public String name() {
         return "Home";
@@ -18,10 +18,10 @@ public class IndexView implements ResultView {
                 ),
                 body(
                         h1(text(name())),
-                        h2(anchor(text("Current Time")).addAttribute("href", "/time")),
-                        h2(anchor(text("Get Users")).addAttribute("href", "/users")),
-                        h2(anchor(text("Room Search")).addAttribute("href", "/rooms/search")),
-                        h2(anchor(text("Get Labels")).addAttribute("href", "/labels"))
+                        button("Current Time", "/time"),
+                        button("Get Users", "/users"),
+                        button("Room Search", "/rooms/search"),
+                        button("Get Labels", "/labels")
                 )
         ).build();
     }

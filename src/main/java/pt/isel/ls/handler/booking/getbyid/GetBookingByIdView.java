@@ -1,9 +1,9 @@
 package pt.isel.ls.handler.booking.getbyid;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 import pt.isel.ls.model.Booking;
 
-public class GetBookingByIdView implements ResultView {
+public class GetBookingByIdView extends View {
 
     private final Booking model;
 

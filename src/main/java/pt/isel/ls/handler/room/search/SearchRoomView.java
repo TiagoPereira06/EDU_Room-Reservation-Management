@@ -1,10 +1,10 @@
 package pt.isel.ls.handler.room.search;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
-public class SearchRoomView implements ResultView {
+public class SearchRoomView extends View {
     @Override
     public String name() {
         return "Rooms Search Engine";
@@ -46,7 +46,7 @@ public class SearchRoomView implements ResultView {
                                                 .addAttribute("name", "duration")
                                                 .addAttribute("id", "Duration")
                                 ),
-                                input().addAttribute("type","Submit Text")
+                                input().addAttribute("type", "Submit Text")
 
                         ).addAttribute("method", "get")
                                 .addAttribute("action", "/rooms")

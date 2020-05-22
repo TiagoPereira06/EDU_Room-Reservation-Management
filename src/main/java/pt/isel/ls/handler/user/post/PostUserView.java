@@ -1,8 +1,8 @@
 package pt.isel.ls.handler.user.post;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
-public class PostUserView implements ResultView {
+public class PostUserView extends View {
     private final String model;
 
     public PostUserView(String userEmail) {

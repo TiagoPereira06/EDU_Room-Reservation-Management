@@ -1,11 +1,12 @@
 package pt.isel.ls.handler.booking.getall;
 
-import pt.isel.ls.handler.ResultView;
+
+import pt.isel.ls.handler.result.View;
 import pt.isel.ls.model.Booking;
 
 import java.util.List;
 
-public class GetBookingView implements ResultView {
+public class GetBookingView extends View {
     private final List<Booking> model;
 
     public GetBookingView(List<Booking> allBookings) {

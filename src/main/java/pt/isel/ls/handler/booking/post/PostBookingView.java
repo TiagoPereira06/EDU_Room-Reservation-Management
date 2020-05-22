@@ -1,8 +1,8 @@
 package pt.isel.ls.handler.booking.post;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
-public class PostBookingView implements ResultView {
+public class PostBookingView extends View {
     private final String model;
 
     public PostBookingView(String postedBookingId) {

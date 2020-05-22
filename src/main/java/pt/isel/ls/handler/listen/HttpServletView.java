@@ -1,8 +1,8 @@
 package pt.isel.ls.handler.listen;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
-public class HttpServletView implements ResultView {
+public class HttpServletView extends View {
 
     @Override
     public String htmlOutput() {

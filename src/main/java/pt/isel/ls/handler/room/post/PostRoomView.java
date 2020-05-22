@@ -1,8 +1,8 @@
 package pt.isel.ls.handler.room.post;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
-public class PostRoomView implements ResultView {
+public class PostRoomView extends View {
     private final String model;
 
     public PostRoomView(String roomId) {

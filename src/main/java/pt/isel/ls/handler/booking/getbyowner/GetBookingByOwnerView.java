@@ -1,11 +1,11 @@
 package pt.isel.ls.handler.booking.getbyowner;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 import pt.isel.ls.model.Booking;
 
 import java.util.List;
 
-public class GetBookingByOwnerView implements ResultView {
+public class GetBookingByOwnerView extends View {
     private final List<Booking> model;
 
     public GetBookingByOwnerView(List<Booking> ownerBookings) {

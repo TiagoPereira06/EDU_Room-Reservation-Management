@@ -1,10 +1,10 @@
 package pt.isel.ls.handler.option;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
 import java.util.List;
 
-class OptionView implements ResultView {
+class OptionView extends View {
 
     private final List<List<String>> model;
 

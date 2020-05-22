@@ -1,9 +1,9 @@
 package pt.isel.ls.handler.room.getbyid;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 import pt.isel.ls.model.Room;
 
-public class GetRoomByIdView implements ResultView {
+public class GetRoomByIdView extends View {
     private final Room model;
 
     public GetRoomByIdView(Room roomById) {

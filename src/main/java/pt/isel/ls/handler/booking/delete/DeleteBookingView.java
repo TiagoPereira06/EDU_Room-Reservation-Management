@@ -1,8 +1,8 @@
 package pt.isel.ls.handler.booking.delete;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
-public class DeleteBookingView implements ResultView {
+public class DeleteBookingView extends View {
     private final String model;
 
     public DeleteBookingView(String deletedBookingId) {

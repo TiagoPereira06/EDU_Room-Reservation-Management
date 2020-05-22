@@ -1,8 +1,8 @@
 package pt.isel.ls.handler.label.post;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
-public class PostLabelView implements ResultView {
+public class PostLabelView extends View {
     private final String model;
 
     public PostLabelView(String postedLabelName) {

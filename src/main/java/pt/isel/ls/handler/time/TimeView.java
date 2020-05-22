@@ -1,10 +1,10 @@
 package pt.isel.ls.handler.time;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.View;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
-class TimeView implements ResultView {
+class TimeView extends View {
 
     private final String model;
 
@@ -26,7 +26,8 @@ class TimeView implements ResultView {
                 body(
                         h1(text(name())),
                         h2(text(model)),
-                        h3(anchor(text("Home")).addAttribute("href","/"))
+                        homeButton()
+
                 )
         ).build();
     }

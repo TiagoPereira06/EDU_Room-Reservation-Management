@@ -86,6 +86,21 @@ public class Element implements Node {
         return new Element("li").addNode(node);
     }
 
+    public static Element dd(Node node) {
+        return new Element("dd").addNode(node);
+    }
+    public static Element dt(Node node) {
+        return new Element("dt").addNode(node);
+    }
+
+    public static Element dl(Node node) {
+        return new Element("dl").addNode(node);
+    }
+
+    public static Element dl(List<Node> node) {
+        return new Element("dl").addNode(node);
+    }
+
     public static Element anchor(Node node) {
         return new Element("a").addNode(node);
     }
