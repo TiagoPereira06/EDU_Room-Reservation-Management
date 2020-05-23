@@ -34,6 +34,6 @@ class TimeView extends View {
 
     @Override
     public String plainOutput() {
-        return null;
+        return model;
     }
 }

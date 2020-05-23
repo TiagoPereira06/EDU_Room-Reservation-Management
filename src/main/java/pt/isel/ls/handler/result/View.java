@@ -7,7 +7,6 @@ import static pt.isel.ls.handler.result.html.Element.*;
 
 public abstract class View implements ResultView {
 
-
     public Element homeButton() {
         return h3(anchor(text("Home")).addAttribute("href", "/"));
     }

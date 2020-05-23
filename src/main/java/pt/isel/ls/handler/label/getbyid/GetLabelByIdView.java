@@ -33,7 +33,7 @@ public class GetLabelByIdView extends View {
                         Element.dl(listFormat()),
                         button("All Labels", "/labels"),
                         homeButton(),
-                        button("Rooms", "/rooms%20label=" + model.getName())
+                        button("Rooms Compatible", "/rooms%20label=" + model.getName())
                 )
         ).build();
     }
@@ -47,6 +47,6 @@ public class GetLabelByIdView extends View {
 
     @Override
     public String plainOutput() {
-        return null;
+        return model.toString();
     }
 }

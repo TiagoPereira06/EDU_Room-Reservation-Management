@@ -60,6 +60,6 @@ public class GetRoomByIdView extends View {
 
     @Override
     public String plainOutput() {
-        return null;
+        return model.toString();
     }
 }

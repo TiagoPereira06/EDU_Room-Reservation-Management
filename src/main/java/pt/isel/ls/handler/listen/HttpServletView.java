@@ -6,7 +6,7 @@ public class HttpServletView extends View {
 
     @Override
     public String htmlOutput() {
-        return null;
+        return "Only Available on PLAIN TEXT Support";
     }
 
     @Override

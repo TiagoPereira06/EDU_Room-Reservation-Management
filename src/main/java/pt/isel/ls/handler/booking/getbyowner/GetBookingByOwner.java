@@ -22,14 +22,12 @@ public class GetBookingByOwner extends BookingHandler {
         ResultSet resultSet = statement.executeQuery();
         List<Booking> ownerBookings = new LinkedList<>();
         while (resultSet.next()) {
-            ownerBookings.add(
-                    new Booking(
-                            resultSet.getString("reservationOwner"),
-                            resultSet.getString("roomName"),
-                            resultSet.getString("beginTime"),
-                            resultSet.getString("endTime")
-                    )
-            );
+            Booking b = new Booking(resultSet.getString("reservationOwner"),
+                    resultSet.getString("roomName"),
+                    resultSet.getString("beginTime"),
+                    resultSet.getString("endTime"));
+            b.setId(resultSet.getInt("bid"));
+            ownerBookings.add(b);
         }
         return new GetBookingByOwnerView(ownerBookings);
     }

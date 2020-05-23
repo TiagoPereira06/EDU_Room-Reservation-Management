@@ -29,6 +29,6 @@ public class IndexView extends View {
 
     @Override
     public String plainOutput() {
-        return null;
+        return "Only Available on HTML Support";
     }
 }
