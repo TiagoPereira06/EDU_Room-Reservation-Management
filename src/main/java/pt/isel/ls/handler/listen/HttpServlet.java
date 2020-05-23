@@ -18,9 +18,13 @@ public class HttpServlet implements CommandHandler {
 
     @Override
     public ResultView execute(CommandRequest commandRequest, Connection connection) throws Exception {
-        //TODO: ACCEPT DIFFERENT PORTS
-        //String port = commandRequest.getParametersByName("port");
-        Server server = new Server(8080);
+        Server server;
+        /*try {
+            int port = Integer.parseInt(commandRequest.getParametersByName("port").get(0));
+            server = new Server(port);
+        } catch (NumberFormatException e) {*/
+            server = new Server(8080);
+        //}
         ServletHandler handler = new ServletHandler();
         server.setHandler(handler);
         handler.addServletWithMapping(new ServletHolder(new Servlet()), "/*");

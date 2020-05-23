@@ -2,23 +2,36 @@ package pt.isel.ls.handler.booking.put;
 
 import pt.isel.ls.handler.result.View;
 
-public class PutBookingView extends View {
-    public PutBookingView(String putBookingId) {
+import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.handler.result.html.Element.text;
 
+public class PutBookingView extends View {
+    private final String model;
+
+    public PutBookingView(String roomId) {
+        this.model = roomId;
     }
 
     @Override
     public String name() {
-        return null;
+        return model +" room put";
     }
 
     @Override
     public String htmlOutput() {
-        return null;
+        return html(
+                head(
+                        title(text(name()))
+                ),
+                body(
+                        h1(text(name())),
+                        text("booking id: "+model))
+
+        ).build();
     }
 
     @Override
     public String plainOutput() {
-        return null;
+        return model;
     }
 }

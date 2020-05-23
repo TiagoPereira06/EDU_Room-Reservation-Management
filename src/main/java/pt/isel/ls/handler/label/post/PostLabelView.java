@@ -2,6 +2,9 @@ package pt.isel.ls.handler.label.post;
 
 import pt.isel.ls.handler.result.View;
 
+import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.handler.result.html.Element.text;
+
 public class PostLabelView extends View {
     private final String model;
 
@@ -11,16 +14,24 @@ public class PostLabelView extends View {
 
     @Override
     public String name() {
-        return null;
+        return model +" label posted";
     }
 
     @Override
     public String htmlOutput() {
-        return null;
+        return html(
+                head(
+                        title(text(name()))
+                ),
+                body(
+                        h1(text(name())),
+                        text("label id: "+model))
+
+        ).build();
     }
 
     @Override
     public String plainOutput() {
-        return null;
+        return model;
     }
 }

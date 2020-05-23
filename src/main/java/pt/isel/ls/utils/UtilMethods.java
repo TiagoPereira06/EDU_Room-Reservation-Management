@@ -45,8 +45,8 @@ public class UtilMethods {
         return Booking.dateFormat.parse(date);
     }
 
-    public static String formatDateToString(Date endTime) {
-        return Booking.dateFormat.format(endTime);
+    public static String formatDateToString(Date date) {
+        return Booking.dateFormat.format(date);
     }
 
     public static byte[] getBytes(String target) {

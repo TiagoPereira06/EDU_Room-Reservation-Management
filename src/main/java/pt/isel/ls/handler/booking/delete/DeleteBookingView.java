@@ -2,6 +2,9 @@ package pt.isel.ls.handler.booking.delete;
 
 import pt.isel.ls.handler.result.View;
 
+import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.handler.result.html.Element.text;
+
 public class DeleteBookingView extends View {
     private final String model;
 
@@ -11,17 +14,25 @@ public class DeleteBookingView extends View {
 
     @Override
     public String name() {
-        return "Delete Booking";
+        return model +" booking deleted";
     }
 
     @Override
     public String htmlOutput() {
-        return null;
+        return html(
+                head(
+                        title(text(name()))
+                ),
+                body(
+                        h1(text(name())),
+                        text("booking id: "+model))
+
+        ).build();
     }
 
     @Override
     public String plainOutput() {
-        return null;
+        return model;
     }
 
 }

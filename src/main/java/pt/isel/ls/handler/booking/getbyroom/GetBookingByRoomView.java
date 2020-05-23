@@ -1,4 +1,4 @@
-package pt.isel.ls.handler.booking.getall;
+package pt.isel.ls.handler.booking.getbyroom;
 
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
@@ -11,16 +11,16 @@ import java.util.List;
 import static pt.isel.ls.handler.result.html.Element.*;
 import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
-public class GetBookingView extends View {
+public class GetBookingByRoomView extends View {
     private final List<Booking> model;
 
-    public GetBookingView(List<Booking> allBookings) {
-        this.model = allBookings;
+    public GetBookingByRoomView(List<Booking> roomBookings) {
+        this.model = roomBookings;
     }
 
     @Override
     public String name() {
-        return "all bookings";
+        return "booking(s) at "+ model.get(0).getRoomName();
     }
 
     @Override
@@ -63,11 +63,11 @@ public class GetBookingView extends View {
             list.add(
                     tr(
                             td(anchor(text(id)).addAttribute("href", String.format("/rooms/%s/bookings/%s", room,id))),
-                            td(anchor(text(owner)).addAttribute("href", String.format("/users/%s", owner))),
+                            td(text(owner)),
                             td(anchor(text(room)).addAttribute("href", String.format("/rooms/%s", room))),
                             td(text(begin)),
                             td(text(end))
-                    )
+                            )
             );
         }
         return list;

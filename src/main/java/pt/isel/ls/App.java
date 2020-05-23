@@ -6,6 +6,7 @@ import pt.isel.ls.handler.booking.delete.DeleteBooking;
 import pt.isel.ls.handler.booking.getall.GetBooking;
 import pt.isel.ls.handler.booking.getbyid.GetBookingById;
 import pt.isel.ls.handler.booking.getbyowner.GetBookingByOwner;
+import pt.isel.ls.handler.booking.getbyroom.GetBookingByRoom;
 import pt.isel.ls.handler.booking.post.PostBooking;
 import pt.isel.ls.handler.booking.put.PutBooking;
 import pt.isel.ls.handler.exit.Exit;
@@ -88,6 +89,7 @@ public class App {
             try {
                 assert connection != null;
                 connection.rollback();
+                outputInterface.showError(e.getMessage());
             } catch (SQLException ex) {
                 outputInterface.showError(ex.getMessage());
             }
@@ -113,6 +115,7 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS_SEARCH), new SearchRoom());
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID), new GetRoomById());
         router.addRoute(Method.POST, new PathTemplate(Template.ROOMS_RID_BOOKINGS), new PostBooking());
+        router.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID_BOOKINGS), new GetBookingByRoom());
         router.addRoute(Method.PUT, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new PutBooking());
         router.addRoute(Method.DELETE, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new DeleteBooking());
         router.addRoute(Method.GET, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID), new GetBookingById());

@@ -17,7 +17,8 @@ public class GetBookingById extends BookingHandler {
 
         String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";
         PreparedStatement statement = connection.prepareStatement(getBookingsByIdQuery);
-        statement.setInt(1, Integer.parseInt(commandRequest.getParametersByName(idArgument).get(0)));
+        int roomId = Integer.parseInt(commandRequest.getParametersByName(idArgument).get(0));
+        statement.setInt(1,roomId);
         ResultSet resultSet = statement.executeQuery();
         Booking idBookings;
         resultSet.next();
@@ -27,6 +28,7 @@ public class GetBookingById extends BookingHandler {
                 resultSet.getString("begintime"),
                 resultSet.getString("endtime")
         );
+        idBookings.setId(roomId);
         return new GetBookingByIdView(idBookings);
     }
 

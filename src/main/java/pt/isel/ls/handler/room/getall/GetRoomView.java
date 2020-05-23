@@ -56,10 +56,10 @@ public class GetRoomView extends View {
     private LinkedList<Node> tableData() {
         LinkedList<Node> list = new LinkedList<>();
         for (Room room : model) {
-            String name = room.getName();
-            String location = room.getLocation();
-            String capacity = String.valueOf(room.getCapacity());
-            String description = room.getDescription();
+            final String name = room.getName();
+            final String location = room.getLocation();
+            final String capacity = String.valueOf(room.getCapacity());
+            final String description = room.getDescription();
 
             list.add(
                     tr(
@@ -81,8 +81,8 @@ public class GetRoomView extends View {
     private Node[] formatLabels(List<Label> labels) {
         List<Node> nodes = new ArrayList<>();
         for (int i = 0; i < labels.size(); ++i) {
-            Label l = labels.get(i);
-            String name = l.getName();
+            final Label l = labels.get(i);
+            final String name = l.getName();
             nodes.add(anchor(text(name)).addAttribute("href", String.format("/labels/%s", name)));
             if (i != labels.size() - 1) {
                 nodes.add(text("  "));

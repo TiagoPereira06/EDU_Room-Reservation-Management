@@ -33,9 +33,9 @@ public class GetRoom extends RoomHandler {
 
         if (!request.getParametersByName(beginParameter).isEmpty()
                 && !request.getParametersByName(durationParameter).isEmpty()) {
-            String begin = request.getParametersByName(beginParameter).get(0);
-            String duration = request.getParametersByName(durationParameter).get(0);
-            Date beginDate = formatStringToDate(begin);
+            final String begin = request.getParametersByName(beginParameter).get(0);
+            final String duration = request.getParametersByName(durationParameter).get(0);
+            final Date beginDate = formatStringToDate(begin);
             result = getAvailableRooms(
                     connection,
                     beginDate,
@@ -45,7 +45,7 @@ public class GetRoom extends RoomHandler {
         }
 
         if (!request.getParametersByName(capacityParameter).isEmpty()) {
-            int capacity = Integer.parseInt(request.getParametersByName(capacityParameter).get(0));
+            final int capacity = Integer.parseInt(request.getParametersByName(capacityParameter).get(0));
             result.removeIf(room -> room.getCapacity() < capacity);
         }
         if (!request.getParametersByName(labelParameter).isEmpty()) {
