@@ -33,7 +33,7 @@ public class GetRoomsByLabel extends RoomHandler {
             roomResult.add(room);
         }
 
-        return new GetRoomByLabelView(roomResult,labelName);
+        return new GetRoomByLabelView(roomResult, labelName);
     }
 
     @Override

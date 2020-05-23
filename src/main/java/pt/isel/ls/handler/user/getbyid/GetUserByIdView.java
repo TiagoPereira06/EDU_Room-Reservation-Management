@@ -30,9 +30,9 @@ public class GetUserByIdView extends View {
                 body(
                         h1(text(name())),
                         dl(listFormat()),
-                        button("All Users","/users"),
+                        button("All Users", "/users"),
                         homeButton(),
-                        button("Bookings",String.format("/users/%s/bookings",model.getEmail()))
+                        button("Bookings", String.format("/users/%s/bookings", model.getEmail()))
                 )
         ).build();
     }

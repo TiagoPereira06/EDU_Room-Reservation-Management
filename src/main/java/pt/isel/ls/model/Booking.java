@@ -8,9 +8,9 @@ import java.util.List;
 public class Booking {
     static final String pattern = "yyyy-MM-dd HH:mm:ss";
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-    private int id;
     private final String reservationOwner;
     private final String roomName;
+    private int id;
     private Date beginTime;
     private Date endTime;
 
@@ -51,11 +51,11 @@ public class Booking {
                 + dateFormat.format(beginTime) + " / " + dateFormat.format(endTime);
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

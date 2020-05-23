@@ -33,7 +33,7 @@ public class GetRoomByLabelView extends View {
                 body(
                         h1(text(name())),
                         setTable()
-                        )
+                )
         ).build();
     }
 

@@ -54,7 +54,7 @@ public class SearchRoomView extends View {
                                 div(
                                         getLabelsCheckBoxes()
                                 ),
-                                input().addAttribute("type", "submit").addAttribute("value","Search!")
+                                input().addAttribute("type", "submit").addAttribute("value", "Search!")
 
                         ).addAttribute("method", "get")
                                 .addAttribute("action", "/rooms"),
@@ -69,12 +69,12 @@ public class SearchRoomView extends View {
     private Node[] getLabelsCheckBoxes() {
         List<Node> nodes = new ArrayList<>();
         nodes.add(text("available labels:"));
-        for (Label l:model) {
+        for (Label l : model) {
             Node input = input()
                     .addAttribute("type", "checkbox")
                     .addAttribute("name", "label")
                     .addAttribute("id", "label")
-                    .addAttribute("value",l.getName());
+                    .addAttribute("value", l.getName());
             Node label = label(text(l.getName())).addAttribute("for", "label");
             nodes.add(input);
             nodes.add(label);

@@ -18,7 +18,7 @@ public class GetBookingById extends BookingHandler {
         String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";
         PreparedStatement statement = connection.prepareStatement(getBookingsByIdQuery);
         int roomId = Integer.parseInt(commandRequest.getParametersByName(idArgument).get(0));
-        statement.setInt(1,roomId);
+        statement.setInt(1, roomId);
         ResultSet resultSet = statement.executeQuery();
         Booking idBookings;
         resultSet.next();

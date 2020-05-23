@@ -20,7 +20,7 @@ public class GetBookingByRoomView extends View {
 
     @Override
     public String name() {
-        return "booking(s) at "+ model.get(0).getRoomName();
+        return "booking(s) at " + model.get(0).getRoomName();
     }
 
     @Override
@@ -62,12 +62,12 @@ public class GetBookingByRoomView extends View {
             String end = formatDateToString(booking.getEndTime());
             list.add(
                     tr(
-                            td(anchor(text(id)).addAttribute("href", String.format("/rooms/%s/bookings/%s", room,id))),
+                            td(anchor(text(id)).addAttribute("href", String.format("/rooms/%s/bookings/%s", room, id))),
                             td(text(owner)),
                             td(anchor(text(room)).addAttribute("href", String.format("/rooms/%s", room))),
                             td(text(begin)),
                             td(text(end))
-                            )
+                    )
             );
         }
         return list;

@@ -13,7 +13,7 @@ public class PostRoomView extends View {
 
     @Override
     public String name() {
-        return model +" room posted";
+        return model + " room posted";
     }
 
     @Override
@@ -24,7 +24,7 @@ public class PostRoomView extends View {
                 ),
                 body(
                         h1(text(name())),
-                        text("room id: "+model))
+                        text("room id: " + model))
 
         ).build();
     }

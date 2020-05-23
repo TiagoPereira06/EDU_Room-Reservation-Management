@@ -23,7 +23,7 @@ public class HttpServlet implements CommandHandler {
             int port = Integer.parseInt(commandRequest.getParametersByName("port").get(0));
             server = new Server(port);
         } catch (NumberFormatException e) {*/
-            server = new Server(8080);
+        server = new Server(8080);
         //}
         ServletHandler handler = new ServletHandler();
         server.setHandler(handler);

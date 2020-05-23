@@ -3,7 +3,6 @@ package pt.isel.ls.handler.booking.put;
 import pt.isel.ls.handler.result.View;
 
 import static pt.isel.ls.handler.result.html.Element.*;
-import static pt.isel.ls.handler.result.html.Element.text;
 
 public class PutBookingView extends View {
     private final String model;
@@ -14,7 +13,7 @@ public class PutBookingView extends View {
 
     @Override
     public String name() {
-        return model +" room put";
+        return model + " room put";
     }
 
     @Override
@@ -25,7 +24,7 @@ public class PutBookingView extends View {
                 ),
                 body(
                         h1(text(name())),
-                        text("booking id: "+model))
+                        text("booking id: " + model))
 
         ).build();
     }

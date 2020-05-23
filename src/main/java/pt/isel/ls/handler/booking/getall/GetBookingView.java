@@ -62,7 +62,7 @@ public class GetBookingView extends View {
             String end = formatDateToString(booking.getEndTime());
             list.add(
                     tr(
-                            td(anchor(text(id)).addAttribute("href", String.format("/rooms/%s/bookings/%s", room,id))),
+                            td(anchor(text(id)).addAttribute("href", String.format("/rooms/%s/bookings/%s", room, id))),
                             td(anchor(text(owner)).addAttribute("href", String.format("/users/%s", owner))),
                             td(anchor(text(room)).addAttribute("href", String.format("/rooms/%s", room))),
                             td(text(begin)),

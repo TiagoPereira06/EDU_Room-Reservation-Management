@@ -3,7 +3,6 @@ package pt.isel.ls.handler.user.post;
 import pt.isel.ls.handler.result.View;
 
 import static pt.isel.ls.handler.result.html.Element.*;
-import static pt.isel.ls.handler.result.html.Element.text;
 
 public class PostUserView extends View {
     private final String model;
@@ -25,7 +24,7 @@ public class PostUserView extends View {
                 ),
                 body(
                         h1(text(name())),
-                        text("user id: "+model))
+                        text("user id: " + model))
 
         ).build();
     }
