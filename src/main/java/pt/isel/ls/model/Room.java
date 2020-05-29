@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Room {
     private final String name;
-    private final String location;
-    private final Integer capacity;
-    private final String description;
+    private String location;
+    private Integer capacity;
+    private String description;
     private List<Label> labels;
 
     public Room(String name, String location, Integer capacity, String description) {
@@ -16,6 +16,10 @@ public class Room {
         this.capacity = capacity;
         this.description = description;
         labels = new LinkedList<>();
+    }
+
+    public Room(String roomName) {
+        this.name = roomName;
     }
 
     public String getName() {

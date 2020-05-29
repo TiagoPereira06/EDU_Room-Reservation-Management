@@ -25,6 +25,10 @@ public class Element implements Node {
         return new Element("title").addNode(node);
     }
 
+    public static Element nav(Node... node) {
+        return new Element("nav").addNode(node);
+    }
+
     public static Element body(Node... node) {
         return new Element("body").addNode(node);
     }

@@ -4,6 +4,7 @@ import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Node;
 import pt.isel.ls.model.Booking;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,15 +39,22 @@ public class GetBookingByIdView extends View {
     public String htmlOutput() {
         return html(
                 head(
-                        title(text(name()))
+                        title(text(name())),
+                        nav(setNavBar())
                 ),
                 body(
                         h1(text(name())),
-                        dl(listFormat()),
-                        button("Bookings By Room", String.format("/rooms/%s/bookings", room)),
-                        homeButton()
+                        dl(listFormat())
                 )
         ).build();
+    }
+
+    private Node[] setNavBar() {
+        List<Node> navItems = new ArrayList<>();
+        navItems.add(homeButton());
+        navItems.add(text(" | "));
+        navItems.add(button(String.format("%s's Bookings", room), String.format("/rooms/%s/bookings", room)));
+        return navItems.toArray(new Node[0]);
     }
 
     private List<Node> listFormat() {

@@ -2,6 +2,7 @@ package pt.isel.ls.handler.room.getbyid;
 
 import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.room.RoomHandler;
+import pt.isel.ls.model.Booking;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.model.Room;
 import pt.isel.ls.request.CommandRequest;
@@ -10,17 +11,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 
 public class GetRoomById extends RoomHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest, Connection connection) throws SQLException {
-        String getRoomsByIdQuery = "SELECT * from rooms WHERE name = ?";
+    public ResultView execute(CommandRequest commandRequest, Connection connection)
+            throws SQLException, ParseException {
+        String getRoomsByIdQuery = "select * from rooms as r"
+                + " full join bookings as b"
+                + " on r.name = b.roomname"
+                + " where r.name = ?";
         PreparedStatement statement = connection.prepareStatement(getRoomsByIdQuery);
         statement.setString(1, commandRequest.getParametersByName(idArgument).get(0));
         ResultSet resultSet = statement.executeQuery();
         Room roomResult;
+        List<Booking> bookingsResult = new LinkedList<>();
         resultSet.next();
         String roomName = resultSet.getString("name");
         String roomLocation = resultSet.getString("location");
@@ -29,7 +38,33 @@ public class GetRoomById extends RoomHandler {
         List<Label> labels = getRoomLabels(connection, roomName);
         roomResult = new Room(roomName, roomLocation, roomCapacity, roomDescription);
         roomResult.setLabels(labels);
-        return new GetRoomByIdView(roomResult);
+        Booking b;
+        try {
+            b = new Booking(
+                    resultSet.getInt("bid"),
+                    resultSet.getString("reservationOwner"),
+                    resultSet.getString("roomName"),
+                    resultSet.getString("beginTime"),
+                    resultSet.getString("endTime"));
+            bookingsResult.add(b);
+        } catch (NullPointerException e) {
+            return new GetRoomByIdView(roomResult, Collections.emptyList());
+        }
+
+        while (resultSet.next()) {
+            try {
+                b = new Booking(
+                        resultSet.getInt("bid"),
+                        resultSet.getString("reservationOwner"),
+                        resultSet.getString("roomName"),
+                        resultSet.getString("beginTime"),
+                        resultSet.getString("endTime"));
+                bookingsResult.add(b);
+            } catch (NullPointerException e) {
+                break;
+            }
+        }
+        return new GetRoomByIdView(roomResult, bookingsResult);
     }
 
     @Override

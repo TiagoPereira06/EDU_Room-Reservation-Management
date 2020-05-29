@@ -64,7 +64,7 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
             throws SQLException, ParseException {
         String getAvailableRooms = "SELECT b.begintime, b.endtime, r.name, r.location, r.capacity, r.description "
                 + "FROM bookings as b"
-                + " INNER JOIN rooms as r"
+                + " FULL JOIN rooms as r"
                 + " ON r.name = b.roomname"
                 + " WHERE (endtime::DATE) >= ?::DATE";
         PreparedStatement statement = connection.prepareStatement(getAvailableRooms);

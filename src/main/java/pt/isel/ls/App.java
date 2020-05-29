@@ -43,6 +43,7 @@ public class App {
     public static Router router;
 
     public static void main(String[] args) {
+        boolean first = true;
         router = new Router();
         LocalInterface local = new LocalInterface();
         String[] rawTask;
@@ -53,17 +54,21 @@ public class App {
 
                 executeTask(router, local, rawTask);
             } catch (NoSuchMethodException e) {
-                local.showError(e.getMessage());
+                local.showError(e);
             }
         } else {
+            rawTask = new String[]{"LISTEN", "/"};
             while (true) {
-                local.askForCommand();
-                rawTask = new Scanner(System.in).nextLine().split(" ");
+                if (!first) {
+                    local.askForCommand();
+                    rawTask = new Scanner(System.in).nextLine().split(" ");
+                }
                 try {
                     executeTask(router, local, rawTask);
                 } catch (NoSuchMethodException e) {
-                    local.showError(e.getMessage());
+                    local.showError(e);
                 }
+                first = false;
             }
         }
     }
@@ -89,23 +94,23 @@ public class App {
             try {
                 assert connection != null;
                 connection.rollback();
-                outputInterface.showError(e.getMessage());
+                outputInterface.showError(e);
             } catch (SQLException ex) {
-                outputInterface.showError(ex.getMessage());
+                outputInterface.showError(ex);
             }
-            outputInterface.showError(e.getMessage());
+            outputInterface.showError(e);
         } finally {
             assert connection != null;
             try {
                 connection.close();
             } catch (SQLException e) {
-                outputInterface.showError(e.getMessage());
+                outputInterface.showError(e);
             }
         }
         try {
             outputInterface.show(resultView, userRequest.getHeader()); //SUCCESS!
         } catch (IOException e) {
-            outputInterface.showError(e.getMessage());
+            outputInterface.showError(e);
         }
     }
 

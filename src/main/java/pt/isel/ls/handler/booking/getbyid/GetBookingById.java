@@ -9,11 +9,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class GetBookingById extends BookingHandler {
 
     @Override
-    public ResultView execute(CommandRequest commandRequest, Connection connection) throws SQLException {
+    public ResultView execute(CommandRequest commandRequest, Connection connection)
+            throws SQLException, ParseException {
 
         String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";
         PreparedStatement statement = connection.prepareStatement(getBookingsByIdQuery);
@@ -23,12 +25,12 @@ public class GetBookingById extends BookingHandler {
         Booking idBookings;
         resultSet.next();
         idBookings = new Booking(
+                resultSet.getInt("bid"),
                 resultSet.getString("reservationowner"),
                 resultSet.getString("roomname"),
                 resultSet.getString("begintime"),
                 resultSet.getString("endtime")
         );
-        idBookings.setId(roomId);
         return new GetBookingByIdView(idBookings);
     }
 

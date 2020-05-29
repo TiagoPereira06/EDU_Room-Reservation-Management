@@ -1,65 +1,116 @@
 package pt.isel.ls.handler.room.getbyid;
 
 import pt.isel.ls.handler.result.View;
+import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.model.Booking;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.model.Room;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
 public class GetRoomByIdView extends View {
-    private final Room model;
+    private final Room room;
+    private final List<Booking> bookings;
 
-    public GetRoomByIdView(Room roomById) {
-        this.model = roomById;
+    public GetRoomByIdView(Room roomById, List<Booking> bookingsResult) {
+        this.room = roomById;
+        this.bookings = bookingsResult;
     }
 
     @Override
     public String name() {
-        return model.getName() + " room details";
+        return room.getName() + " room details";
     }
 
     @Override
     public String htmlOutput() {
         return html(
                 head(
-                        title(text(name()))
+                        title(text(name())),
+                        nav(setNavBar())
+
                 ),
                 body(
                         h1(text(name())),
                         dl(listFormat()),
-                        button("Bookings", String.format("/rooms/%s/bookings", model.getName())),
-                        homeButton(),
-                        button("All Roms", "/rooms"),
-                        button("Rooms Search", "/rooms/search")
+                        h3(text(String.format("%s Booking(s)", room.getName()))),
+                        setBookingsTable()
                 )
         ).build();
+    }
+
+    private Node[] setNavBar() {
+        List<Node> navItems = new ArrayList<>();
+        navItems.add(homeButton());
+        navItems.add(text(" | "));
+        navItems.add(button("All Roms", "/rooms"));
+        navItems.add(text(" | "));
+        navItems.add(button("Rooms Search", "/rooms/search"));
+        return navItems.toArray(new Node[0]);
     }
 
     private List<Node> listFormat() {
         LinkedList<Node> listItems = new LinkedList<>();
         listItems.add(li(bold(text("Name:"))));
-        listItems.add(dd(text(model.getName())));
+        listItems.add(dd(text(room.getName())));
         listItems.add(li(bold(text("Location:"))));
-        listItems.add(dd(text(model.getLocation())));
+        listItems.add(dd(text(room.getLocation())));
         listItems.add(li(bold(text("Capacity:"))));
-        listItems.add(dd(text(String.valueOf(model.getCapacity()))));
+        listItems.add(dd(text(String.valueOf(room.getCapacity()))));
         listItems.add(li(bold((text("Description:")))));
-        listItems.add(dd(text(model.getDescription())));
+        listItems.add(dd(text(room.getDescription())));
         listItems.add(li(bold((text("Label(s):")))));
-        for (Label l : model.getLabels()) {
+        for (Label l : room.getLabels()) {
             String name = l.getName();
             listItems.add(dd(anchor(text(name)).addAttribute("href", String.format("/labels/%s", name))));
         }
         return listItems;
     }
 
+    private Node setBookingsTable() {
+        if (bookings.size() == 0) {
+            return text("No Bookings !");
+        } else {
+            return Element.table(
+                    tr(
+                            th(text("Id")),
+                            th(text("Owner")),
+                            th(text("Begin")),
+                            th(text("End"))
+                    ),
+                    tableData()
+            ).addAttribute("border", "1");
+        }
+    }
+
+    private LinkedList<Node> tableData() {
+        LinkedList<Node> list = new LinkedList<>();
+        for (Booking booking : bookings) {
+            String id = String.valueOf(booking.getId());
+            String owner = booking.getReservationOwner();
+            String begin = formatDateToString(booking.getBeginTime());
+            String end = formatDateToString(booking.getEndTime());
+            list.add(
+                    tr(
+                            td(anchor(text(id)).addAttribute("href", String.format("/rooms/%s/bookings/%s", room.getName(), id))),
+                            td(anchor(text(owner)).addAttribute("href", String.format("/users/%s", owner))),
+                            td(text(begin)),
+                            td(text(end))
+                    )
+            );
+        }
+        return list;
+    }
+
 
     @Override
     public String plainOutput() {
-        return model.toString();
+        return room.toString();
     }
 }

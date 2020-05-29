@@ -21,22 +21,29 @@ public class GetRoomView extends View {
 
     @Override
     public String name() {
-        return "rooms";
+        return "Rooms";
     }
 
     @Override
     public String htmlOutput() {
         return html(
                 head(
-                        title(text(name()))
+                        title(text(name())),
+                        nav(setNavBar())
                 ),
                 body(
                         h1(text(name())),
-                        setTable(),
-                        button("Rooms Search", "/rooms/search"),
-                        homeButton()
+                        setTable()
                 )
         ).build();
+    }
+
+    private Node[] setNavBar() {
+        List<Node> navItems = new ArrayList<>();
+        navItems.add(homeButton());
+        navItems.add(text(" | "));
+        navItems.add(button("Rooms Search", "/rooms/search"));
+        return navItems.toArray(new Node[0]);
     }
 
     private Element setTable() {

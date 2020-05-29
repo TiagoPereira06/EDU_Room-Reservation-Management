@@ -19,17 +19,22 @@ public class HttpServlet implements CommandHandler {
     @Override
     public ResultView execute(CommandRequest commandRequest, Connection connection) throws Exception {
         Server server;
-        /*try {
+        try {
             int port = Integer.parseInt(commandRequest.getParametersByName("port").get(0));
             server = new Server(port);
-        } catch (NumberFormatException e) {*/
-        server = new Server(8080);
-        //}
+        } catch (Exception e) {
+            String portDef = System.getenv("PORT");
+            if (portDef == null) {
+                server = new Server(8080);
+            } else {
+                server = new Server(Integer.parseInt(portDef));
+            }
+        }
         ServletHandler handler = new ServletHandler();
         server.setHandler(handler);
         handler.addServletWithMapping(new ServletHolder(new Servlet()), "/*");
         server.start();
-        String status = "Server started";
+        String status = "Server started on ";
         log.info(status);
         return new HttpServletView();
     }

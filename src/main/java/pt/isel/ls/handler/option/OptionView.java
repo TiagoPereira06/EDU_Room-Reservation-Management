@@ -25,14 +25,18 @@ class OptionView extends View {
     public String htmlOutput() {
         return html(
                 head(
+                        nav(setNavBar()),
                         title(text(name()))
                 ),
                 body(
                         h1(text(name())),
-                        setTable(),
-                        homeButton()
+                        setTable()
                 )
         ).build();
+    }
+
+    private Node setNavBar() {
+        return homeButton();
     }
 
 

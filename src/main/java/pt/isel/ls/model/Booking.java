@@ -8,22 +8,36 @@ import java.util.List;
 public class Booking {
     static final String pattern = "yyyy-MM-dd HH:mm:ss";
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-    private final String reservationOwner;
-    private final String roomName;
+    private String reservationOwner;
+    private String roomName;
     private int id;
-    private Date beginTime;
-    private Date endTime;
+    private final Date beginTime;
+    private final Date endTime;
 
-    public Booking(String owner, String roomName, String beginTime, String endTime) {
+    public Booking(int id, String owner, String roomName, String beginTime, String endTime) throws ParseException {
+        this.id = id;
         this.reservationOwner = owner;
         this.roomName = roomName;
-        try {
-            this.beginTime = dateFormat.parse(beginTime);
-            this.endTime = dateFormat.parse(endTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        this.beginTime = dateFormat.parse(beginTime);
+        this.endTime = dateFormat.parse(endTime);
+
     }
+
+    public Booking(String owner, String beginTime, String endTime) throws ParseException {
+        this.reservationOwner = owner;
+        this.beginTime = dateFormat.parse(beginTime);
+        this.endTime = dateFormat.parse(endTime);
+
+    }
+
+    public Booking(int id, String roomName, String beginTime, String endTime) throws ParseException {
+        this.roomName = roomName;
+        this.id = id;
+        this.beginTime = dateFormat.parse(beginTime);
+        this.endTime = dateFormat.parse(endTime);
+
+    }
+
 
     public String getReservationOwner() {
         return reservationOwner;

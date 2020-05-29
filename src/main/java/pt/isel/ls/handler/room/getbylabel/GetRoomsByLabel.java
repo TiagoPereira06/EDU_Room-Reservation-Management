@@ -17,7 +17,7 @@ public class GetRoomsByLabel extends RoomHandler {
     @Override
     public ResultView execute(CommandRequest commandRequest, Connection connection) throws SQLException {
         String getRoomsByLabelQuery = "SELECT r.name,r.location,r.capacity,r.description from rooms as r "
-                + "INNER JOIN roomlabels as rm ON r.name = rm.roomName WHERE rm.label = ?";
+                + "FULL JOIN roomlabels as rm ON r.name = rm.roomName WHERE rm.label = ?";
         PreparedStatement statement = connection.prepareStatement(getRoomsByLabelQuery);
         final String labelName = commandRequest.getParametersByName(lidArgument).get(0);
         statement.setString(1, labelName);

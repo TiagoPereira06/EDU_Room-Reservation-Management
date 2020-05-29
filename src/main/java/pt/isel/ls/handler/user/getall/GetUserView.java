@@ -19,21 +19,24 @@ public class GetUserView extends View {
 
     @Override
     public String name() {
-        return "all users";
+        return "All Users";
     }
 
     @Override
     public String htmlOutput() {
         return html(
                 head(
-                        title(text(name()))
+                        title(text(name())),
+                        nav(setNavBar())
                 ),
                 body(
                         h1(text(name())),
-                        setTable(),
-                        homeButton()
-                )
+                        setTable())
         ).build();
+    }
+
+    private Node setNavBar() {
+        return homeButton();
     }
 
 

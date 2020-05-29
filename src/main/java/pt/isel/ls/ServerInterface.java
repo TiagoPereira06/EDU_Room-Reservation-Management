@@ -19,7 +19,7 @@ public class ServerInterface implements OutputInterface {
         try {
             outputStream = resp.getOutputStream();
         } catch (IOException e) {
-            showError(e.getMessage());
+            showError(e);
         }
     }
 
@@ -31,13 +31,15 @@ public class ServerInterface implements OutputInterface {
     }
 
     @Override
-    public void showError(String s) {
+    public void showError(Exception e) {
+        AppError errors = new AppError();
+        int status = errors.getStatusCode(e);
         try {
-            resp.setStatus(404);
-            outputStream.print("ERROR : " + s.toUpperCase() + " !");
+            resp.setStatus(status);
+            outputStream.print("ERROR : " + e.getMessage().toUpperCase() + " !");
             outputStream.flush();
-        } catch (IOException e) {
-            showError(e.getMessage());
+        } catch (IOException es) {
+            showError(es);
         }
 
     }

@@ -18,14 +18,15 @@ public class SearchRoomView extends View {
 
     @Override
     public String name() {
-        return "rooms search engine";
+        return "Rooms Search Engine";
     }
 
     @Override
     public String htmlOutput() {
         return html(
                 head(
-                        title(text(name()))
+                        title(text(name())),
+                        nav(setNavBar())
                 ),
                 body(
                         h1(text(name())),
@@ -57,13 +58,14 @@ public class SearchRoomView extends View {
                                 input().addAttribute("type", "submit").addAttribute("value", "Search!")
 
                         ).addAttribute("method", "get")
-                                .addAttribute("action", "/rooms"),
-                        div(
-                                homeButton()
-                        )
+                                .addAttribute("action", "/rooms")
                 )
 
         ).build();
+    }
+
+    private Node setNavBar() {
+        return homeButton();
     }
 
     private Node[] getLabelsCheckBoxes() {

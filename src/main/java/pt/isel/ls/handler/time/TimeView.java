@@ -1,6 +1,7 @@
 package pt.isel.ls.handler.time;
 
 import pt.isel.ls.handler.result.View;
+import pt.isel.ls.handler.result.html.Node;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
@@ -14,22 +15,26 @@ class TimeView extends View {
 
     @Override
     public String name() {
-        return "current time";
+        return "Current Time";
     }
 
     @Override
     public String htmlOutput() {
         return html(
                 head(
-                        title(text(name()))
+                        title(text(name())),
+                        nav(setNavBar())
                 ),
                 body(
                         h1(text(name())),
-                        h2(text(model)),
-                        homeButton()
+                        h2(text(model))
 
                 )
         ).build();
+    }
+
+    private Node setNavBar() {
+        return homeButton();
     }
 
     @Override

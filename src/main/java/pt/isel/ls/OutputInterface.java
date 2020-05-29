@@ -9,5 +9,5 @@ public interface OutputInterface {
 
     void show(ResultView resultView, Header header) throws IOException;
 
-    void showError(String s);
+    void showError(Exception e);
 }

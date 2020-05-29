@@ -9,6 +9,7 @@ import pt.isel.ls.request.Header;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 
 import static pt.isel.ls.request.Header.getFilename;
 import static pt.isel.ls.request.Header.getOutputType;
@@ -17,7 +18,7 @@ public class LocalInterface implements OutputInterface {
     @Override
     public void show(ResultView resultView, Header header) throws IOException {
         if (resultView == null /*|| resultView.values().isEmpty()*/) {
-            showError("Empty Result");
+            showError(new InvalidObjectException("Empty Result"));
             return;
         }
         showSuccess();
@@ -47,8 +48,9 @@ public class LocalInterface implements OutputInterface {
     }
 
     @Override
-    public void showError(String s) {
-        System.out.println("\nERROR : " + s.toUpperCase() + " !");
+    public void showError(Exception e) {
+        //System.out.println("\nERROR : " + s.toUpperCase() + " !");
+        System.out.println(e.getMessage());
     }
 
 }

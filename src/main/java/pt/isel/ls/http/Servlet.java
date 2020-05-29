@@ -1,6 +1,5 @@
 package pt.isel.ls.http;
 
-import org.eclipse.jetty.server.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.isel.ls.App;
@@ -30,7 +29,7 @@ public class Servlet extends HttpServlet {
         try {
             List<String> rawTask = new ArrayList<>();
             String method = req.getMethod();
-            String reqUriRaw = ((Request) req).getUri().toString();
+            String reqUriRaw = req.getRequestURI();
             List<String> reqParts = Arrays.asList(
                     reqUriRaw.replace("?", " ")
                             .replace("%20", " ")
@@ -40,7 +39,7 @@ public class Servlet extends HttpServlet {
             rawTask.addAll(reqParts);
             delegateTask(rawTask.toArray(new String[0]));
         } catch (Exception e) {
-            serverInterface.showError(e.getMessage());
+            serverInterface.showError(e);
         }
     }
 

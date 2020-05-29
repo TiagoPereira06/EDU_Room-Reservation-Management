@@ -20,21 +20,26 @@ public class GetBookingByRoomView extends View {
 
     @Override
     public String name() {
-        return "booking(s) at " + model.get(0).getRoomName();
+        return String.format("%s's Bookings", model.get(0).getRoomName());
     }
 
     @Override
     public String htmlOutput() {
         return html(
                 head(
-                        title(text(name()))
+                        title(text(name())),
+                        nav(setNavBar())
+
                 ),
                 body(
                         h1(text(name())),
-                        setTable(),
-                        homeButton()
+                        setTable()
                 )
         ).build();
+    }
+
+    private Node setNavBar() {
+        return homeButton();
     }
 
 

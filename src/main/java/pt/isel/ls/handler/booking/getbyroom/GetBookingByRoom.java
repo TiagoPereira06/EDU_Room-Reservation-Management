@@ -20,11 +20,12 @@ public class GetBookingByRoom extends BookingHandler {
         ResultSet resultSet = statement.executeQuery();
         List<Booking> roomBookings = new LinkedList<>();
         while (resultSet.next()) {
-            Booking b = new Booking(resultSet.getString("reservationOwner"),
+            Booking b = new Booking(
+                    resultSet.getInt("bid"),
+                    resultSet.getString("reservationOwner"),
                     resultSet.getString("roomName"),
                     resultSet.getString("beginTime"),
                     resultSet.getString("endTime"));
-            b.setId(resultSet.getInt("bid"));
             roomBookings.add(b);
         }
         return new GetBookingByRoomView(roomBookings);

@@ -1,15 +1,42 @@
-drop table if exists students;
-drop table if exists courses;
+drop table if exists roomLabels;
+drop table if exists labels;
+drop table if exists bookings;
+drop table if exists users;
+drop table if exists rooms;
 
-create table courses
+CREATE TABLE users
 (
-    cid  serial primary key,
-    name varchar(80)
+    email    VARCHAR(80) PRIMARY KEY,
+    username VARCHAR(80)
 );
 
-create table students
+CREATE TABLE rooms
 (
-    number int primary key,
-    name   varchar(80),
-    course int references courses (cid)
+    name     VARCHAR(80) PRIMARY KEY,
+    location VARCHAR(80),
+    capacity INTEGER,
+    description VARCHAR(500)
+
+);
+
+CREATE TABLE labels
+(
+    name VARCHAR(80) PRIMARY KEY
+);
+
+CREATE TABLE bookings
+(
+    bid serial,
+    reservationOwner VARCHAR(80) REFERENCES users (email),
+    roomName         VARCHAR(80) REFERENCES rooms (name),
+    beginTime        VARCHAR(80),
+    endTime          VARCHAR(80),
+    PRIMARY KEY (roomName,beginTime,endTime)
+);
+
+CREATE TABLE roomLabels
+(
+    roomName VARCHAR(80) REFERENCES rooms (name),
+    label    VARCHAR(80) REFERENCES labels (name),
+    PRIMARY KEY (roomName, label)
 );

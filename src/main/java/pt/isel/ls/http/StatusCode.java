@@ -14,6 +14,6 @@ public enum StatusCode {
     }
 
     public int codeValue() {
-        return code;
+        return this.code;
     }
 }
