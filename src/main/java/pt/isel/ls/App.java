@@ -57,11 +57,11 @@ public class App {
             }
         } else {
             rawTask = new String[]{"LISTEN", "/"};
-            while (true) {
+           /* while (true) {
                 if (!first) {
                     local.askForCommand();
                     rawTask = new Scanner(System.in).nextLine().split(" ");
-                }
+                }*/
                 try {
                     executeTask(router, local, rawTask);
                 } catch (NoSuchMethodException | SQLException e) {
@@ -69,7 +69,7 @@ public class App {
                 }
                 first = false;
             }
-        }
+        //}
     }
 
     public static void executeTask(Router router, OutputInterface outputInterface, String[] rawTask)
