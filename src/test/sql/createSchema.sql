@@ -12,9 +12,9 @@ CREATE TABLE users
 
 CREATE TABLE rooms
 (
-    name     VARCHAR(80) PRIMARY KEY,
-    location VARCHAR(80),
-    capacity INTEGER,
+    name        VARCHAR(80) PRIMARY KEY,
+    location    VARCHAR(80),
+    capacity    INTEGER,
     description VARCHAR(500)
 
 );
@@ -26,12 +26,12 @@ CREATE TABLE labels
 
 CREATE TABLE bookings
 (
-    bid serial,
+    bid              serial,
     reservationOwner VARCHAR(80) REFERENCES users (email),
     roomName         VARCHAR(80) REFERENCES rooms (name),
     beginTime        VARCHAR(80),
     endTime          VARCHAR(80),
-    PRIMARY KEY (roomName,beginTime,endTime)
+    PRIMARY KEY (roomName, beginTime, endTime)
 );
 
 CREATE TABLE roomLabels

@@ -1,6 +1,8 @@
 package pt.isel.ls;
 
 import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.result.html.ErrorTemplate;
+import pt.isel.ls.http.StatusCode;
 import pt.isel.ls.print.HtmlPrint;
 import pt.isel.ls.print.PrintInterface;
 import pt.isel.ls.request.Header;
@@ -8,6 +10,7 @@ import pt.isel.ls.request.Header;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class ServerInterface implements OutputInterface {
 
@@ -26,17 +29,16 @@ public class ServerInterface implements OutputInterface {
     @Override
     public void show(ResultView resultView, Header header) throws IOException {
         PrintInterface htmlPrint = new HtmlPrint(resultView);
-        resp.setStatus(200);
+        resp.setStatus(StatusCode.Ok.getCodeValue());
         htmlPrint.printTo(outputStream);
     }
 
     @Override
     public void showError(Exception e) {
-        AppError errors = new AppError();
-        int status = errors.getStatusCode(e);
+        int status = AppError.getStatusCode(e);
         try {
             resp.setStatus(status);
-            outputStream.print("ERROR : " + e.getMessage().toUpperCase() + " !");
+            outputStream.write(ErrorTemplate.errorTemplate(e.getMessage()).getBytes(Charset.defaultCharset()));
             outputStream.flush();
         } catch (IOException es) {
             showError(es);

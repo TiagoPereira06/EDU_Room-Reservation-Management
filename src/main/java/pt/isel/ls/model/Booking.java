@@ -8,11 +8,11 @@ import java.util.List;
 public class Booking {
     static final String pattern = "yyyy-MM-dd HH:mm:ss";
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+    private final Date beginTime;
+    private final Date endTime;
     private String reservationOwner;
     private String roomName;
     private int id;
-    private final Date beginTime;
-    private final Date endTime;
 
     public Booking(int id, String owner, String roomName, String beginTime, String endTime) throws ParseException {
         this.id = id;

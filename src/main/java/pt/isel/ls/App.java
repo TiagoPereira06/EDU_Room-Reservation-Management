@@ -33,7 +33,6 @@ import pt.isel.ls.router.RouteResult;
 import pt.isel.ls.router.Router;
 import pt.isel.ls.utils.UtilMethods;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -53,7 +52,7 @@ public class App {
             try {
 
                 executeTask(router, local, rawTask);
-            } catch (NoSuchMethodException e) {
+            } catch (NoSuchMethodException | SQLException e) {
                 local.showError(e);
             }
         } else {
@@ -65,7 +64,7 @@ public class App {
                 }
                 try {
                     executeTask(router, local, rawTask);
-                } catch (NoSuchMethodException e) {
+                } catch (NoSuchMethodException | SQLException e) {
                     local.showError(e);
                 }
                 first = false;
@@ -74,7 +73,7 @@ public class App {
     }
 
     public static void executeTask(Router router, OutputInterface outputInterface, String[] rawTask)
-            throws NoSuchMethodException {
+            throws NoSuchMethodException, SQLException {
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, outputInterface);
         RouteResult routeResult = router.findRoute(userRequest.getMethod(), userRequest.getPath());
 
@@ -84,33 +83,22 @@ public class App {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setUrl(System.getenv("JDBC_DATABASE_URL"));
         Connection connection = null;
-        ResultView resultView = null;
+        ResultView resultView;
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
             resultView = routeResult.getHandler().execute(userRequest, connection);
             connection.commit();
+            outputInterface.show(resultView, userRequest.getHeader());
         } catch (Exception e) {
             try {
                 assert connection != null;
                 connection.rollback();
                 outputInterface.showError(e);
-            } catch (SQLException ex) {
-                outputInterface.showError(ex);
-            }
-            outputInterface.showError(e);
-        } finally {
-            assert connection != null;
-            try {
+            } finally {
+                assert connection != null;
                 connection.close();
-            } catch (SQLException e) {
-                outputInterface.showError(e);
             }
-        }
-        try {
-            outputInterface.show(resultView, userRequest.getHeader()); //SUCCESS!
-        } catch (IOException e) {
-            outputInterface.showError(e);
         }
     }
 

@@ -7,17 +7,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DbTests {
-    private final String url = "jdbc:postgresql://localhost:5432/school?user=postgres&password=1234";
     private Connection con;
-    private PGSimpleDataSource ds;
 
 
     @Test
     public void isDbConnectable() throws SQLException {
-        ds = new PGSimpleDataSource();
-        ds.setUrl(url);
+        PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        dataSource.setUrl(System.getenv("JDBC_DATABASE_URL"));
         try {
-            con = ds.getConnection();
+            con = dataSource.getConnection();
         } finally {
             con.close();
         }

@@ -4,7 +4,7 @@ public enum StatusCode {
     Ok(200),
     BadRequest(400),
     NotFound(404),
-    MethodNotAllowed(405),
+    NotImplemented(501),
     InternalServerError(500);
 
     private final int code;
@@ -13,7 +13,7 @@ public enum StatusCode {
         this.code = code;
     }
 
-    public int codeValue() {
+    public int getCodeValue() {
         return this.code;
     }
 }

@@ -1,6 +1,6 @@
 package pt.isel.ls.routertests;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 import pt.isel.ls.App;
 import pt.isel.ls.LocalInterface;
@@ -16,7 +16,7 @@ import pt.isel.ls.utils.UtilMethods;
 
 public class Phase2Tests {
 
-    private Router router;
+    private final Router router;
 
     public Phase2Tests() {
         router = new Router();
@@ -26,7 +26,7 @@ public class Phase2Tests {
     @Test
     public void deleteBooking() throws NoSuchMethodException {
         String[] rawTask = {"DELETE", "/rooms/bernassilva@slb.pt/bookings/6"};
-        CommandRequest request = CommandRequest.formatUserInput(rawTask,new LocalInterface());
+        CommandRequest request = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = router.findRoute(request.getMethod(), request.getPath());
         request.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), request.getParameter()));
@@ -38,7 +38,7 @@ public class Phase2Tests {
         String[] rawTask = {"PUT", "/rooms/ttavares@slb.pt/bookings/4", "uid=ttavares@slb.pt"
                 + "&begin=2020-04-24+09:30:00"
                 + "&duration=90"};
-        CommandRequest request = CommandRequest.formatUserInput(rawTask,new LocalInterface());
+        CommandRequest request = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = router.findRoute(request.getMethod(), request.getPath());
         request.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), request.getParameter()));
@@ -48,7 +48,7 @@ public class Phase2Tests {
     @Test
     public void getTime() throws NoSuchMethodException {
         String[] rawTask = {"GET", "/time"};
-        CommandRequest request = CommandRequest.formatUserInput(rawTask,new LocalInterface());
+        CommandRequest request = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = router.findRoute(request.getMethod(), request.getPath());
         request.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), request.getParameter()));
@@ -58,7 +58,7 @@ public class Phase2Tests {
     @Test
     public void testOption() throws NoSuchMethodException {
         String[] rawTask = {"OPTIONS", "/"};
-        CommandRequest request = CommandRequest.formatUserInput(rawTask,new LocalInterface());
+        CommandRequest request = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = router.findRoute(request.getMethod(), request.getPath());
         request.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), request.getParameter()));
