@@ -35,7 +35,6 @@ import pt.isel.ls.utils.UtilMethods;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 
 public class App {
@@ -57,18 +56,18 @@ public class App {
             }
         } else {
             rawTask = new String[]{"LISTEN", "/"};
-           /* while (true) {
+            /* while (true) {
                 if (!first) {
                     local.askForCommand();
                     rawTask = new Scanner(System.in).nextLine().split(" ");
                 }*/
-                try {
-                    executeTask(router, local, rawTask);
-                } catch (NoSuchMethodException | SQLException e) {
-                    local.showError(e);
-                }
-                first = false;
+            try {
+                executeTask(router, local, rawTask);
+            } catch (NoSuchMethodException | SQLException e) {
+                local.showError(e);
             }
+            first = false;
+        }
         //}
     }
 
