@@ -13,11 +13,11 @@ VALUES ('LS1', 'Building F floor -1', 53, 'Software-LabI'),
        ('LH1', 'Building F floor 0', 33, 'Hardware-LabI');
 
 INSERT INTO labels(name)
-VALUES ('easy access'),
-       ('video projector availability'),
+VALUES ('easy-access'),
+       ('video-projector'),
        ('windows'),
        ('microphone'),
-       ('no chairs');
+       ('no-chairs');
 
 INSERT INTO bookings(reservationOwner, roomName, beginTime, endTime)
 VALUES ('marciogarcia@gmail.com', 'LS1', '2020-04-01 10:00:00', '2020-04-01 11:00:00'),
@@ -28,12 +28,12 @@ VALUES ('marciogarcia@gmail.com', 'LS1', '2020-04-01 10:00:00', '2020-04-01 11:0
        ('bernassilva@slb.pt', 'AURS', '2020-04-27 09:00:00', '2020-04-28 09:00:00');
 
 INSERT INTO roomLabels(roomName, label)
-VALUES ('LS1', 'easy access'),
-       ('LS2', 'video projector availability'),
-       ('LS2', 'easy access'),
+VALUES ('LS1', 'easy-access'),
+       ('LS2', 'video-projector'),
+       ('LS2', 'easy-access'),
        ('AURS', 'windows'),
-       ('AURS', 'video projector availability'),
-       ('AURS', 'easy access'),
-       ('LAC', 'no chairs'),
+       ('AURS', 'video-projector'),
+       ('AURS', 'easy-access'),
+       ('LAC', 'no-chairs'),
        ('LAC', 'microphone'),
        ('LH1', 'windows');

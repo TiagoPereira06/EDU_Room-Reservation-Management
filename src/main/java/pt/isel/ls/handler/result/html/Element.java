@@ -146,7 +146,7 @@ public class Element implements Node {
     }
 
     public Element addAttribute(String name, String value) {
-        attributes.add(new Attribute(name, value));
+        attributes.add(new Attribute(name, value.replace(" ","%20")));
         return this;
     }
 
