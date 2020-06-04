@@ -35,40 +35,35 @@ import pt.isel.ls.utils.UtilMethods;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 
 public class App {
     public static Router router;
 
     public static void main(String[] args) {
-        boolean first = true;
-        router = new Router();
         LocalInterface local = new LocalInterface();
         String[] rawTask;
-        initRoutes(router);
+        router = initRouterBehaviour();
         if (args.length > 0) {
             rawTask = args;
             try {
-
                 executeTask(router, local, rawTask);
             } catch (NoSuchMethodException | SQLException e) {
                 local.showError(e);
             }
         } else {
-            rawTask = new String[]{"LISTEN", "/"};
-            /* while (true) {
-                if (!first) {
-                    local.askForCommand();
-                    rawTask = new Scanner(System.in).nextLine().split(" ");
-                }*/
-            try {
-                executeTask(router, local, rawTask);
-            } catch (NoSuchMethodException | SQLException e) {
-                local.showError(e);
+            while (true) {
+                local.askForCommand();
+                rawTask = new Scanner(System.in).nextLine().split(" ");
+                try {
+                    executeTask(router, local, rawTask);
+
+                } catch (NoSuchMethodException | SQLException e) {
+                    local.showError(e);
+                }
             }
-            first = false;
         }
-        //}
     }
 
     public static void executeTask(Router router, OutputInterface outputInterface, String[] rawTask)
@@ -91,12 +86,14 @@ public class App {
             outputInterface.show(resultView, userRequest.getHeader());
         } catch (Exception e) {
             try {
-                assert connection != null;
-                connection.rollback();
+                if (connection != null) {
+                    connection.rollback();
+                }
                 outputInterface.showError(e);
             } finally {
-                assert connection != null;
-                connection.close();
+                if (connection != null) {
+                    connection.close();
+                }
             }
         }
     }
@@ -125,6 +122,12 @@ public class App {
         router.addRoute(Method.OPTIONS, new PathTemplate(Template.SLASH), new Option());
         router.addRoute(Method.GET, new PathTemplate(Template.SLASH), new Index());
         router.addRoute(Method.LISTEN, new PathTemplate(Template.SLASH), new HttpServlet());
+    }
+
+    public static Router initRouterBehaviour() {
+        Router router = new Router();
+        App.initRoutes(router);
+        return router;
     }
 }
 

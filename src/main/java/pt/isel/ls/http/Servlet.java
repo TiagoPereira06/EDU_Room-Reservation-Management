@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Servlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(Servlet.class);
-    Router router = App.router;
+    Router router = App.initRouterBehaviour();
     ServerInterface serverInterface;
 
     @Override

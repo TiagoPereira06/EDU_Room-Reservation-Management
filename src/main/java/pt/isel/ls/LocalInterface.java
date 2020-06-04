@@ -49,8 +49,8 @@ public class LocalInterface implements OutputInterface {
 
     @Override
     public void showError(Exception e) {
-        //System.out.println("\nERROR : " + s.toUpperCase() + " !");
-        System.out.println(e.getMessage());
+        System.out.println("\nERROR : " + e.getMessage() + " !");
+
     }
 
 }
