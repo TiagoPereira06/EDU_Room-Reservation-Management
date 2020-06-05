@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.user.getbyid;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
@@ -14,12 +15,16 @@ import static pt.isel.ls.handler.result.html.Element.*;
 import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
 public class GetUserByIdView extends View {
-    private final User user;
-    private final List<Booking> bookingsOwned;
+    private User user;
+    private List<Booking> bookingsOwned;
 
     public GetUserByIdView(User userById, List<Booking> bookingResult) {
         this.user = userById;
         this.bookingsOwned = bookingResult;
+    }
+
+    public GetUserByIdView() {
+
     }
 
     @Override
@@ -98,5 +103,11 @@ public class GetUserByIdView extends View {
     @Override
     public String plainOutput() {
         return user.toString();
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.user = (User) resultModel.getPrimaryData();
+        this.bookingsOwned = (List<Booking>) resultModel.getSecondaryData();
     }
 }

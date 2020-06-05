@@ -1,10 +1,9 @@
 package pt.isel.ls.handler.booking.put;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.request.CommandRequest;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -15,43 +14,44 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public class PutBooking extends BookingHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest, Connection connection)
-            throws SQLException, ParseException {
-        String putBookingQuery = "UPDATE bookings "
-                + "SET begintime = ?, endtime = ?, reservationowner = ? "
-                + "Where bid = ?";
-        PreparedStatement statement = connection.prepareStatement(putBookingQuery);
-        String duration;
-        String beginTime;
-        String roomName;
-        String bookingId;
-        try {
-            beginTime = getBeginTime(commandRequest);
-            statement.setString(1, beginTime);
+    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+        return commandRequest.transactionManager.execute((connection) -> {
+            String putBookingQuery = "UPDATE bookings "
+                    + "SET begintime = ?, endtime = ?, reservationowner = ? "
+                    + "Where bid = ?";
+            PreparedStatement statement = connection.prepareStatement(putBookingQuery);
+            String duration;
+            String beginTime;
+            String roomName;
+            String bookingId;
+            try {
+                beginTime = getBeginTime(commandRequest);
+                statement.setString(1, beginTime);
 
-            String reservationOwner = commandRequest.getParametersByName(ownerIdParameter).get(0);
-            statement.setString(3, reservationOwner);
+                String reservationOwner = commandRequest.getParametersByName(ownerIdParameter).get(0);
+                statement.setString(3, reservationOwner);
 
-            bookingId = commandRequest.getParametersByName(idArgument).get(0);
-            statement.setInt(4, Integer.parseInt(bookingId));
+                bookingId = commandRequest.getParametersByName(idArgument).get(0);
+                statement.setInt(4, Integer.parseInt(bookingId));
 
-            duration = getDuration(commandRequest);
+                duration = getDuration(commandRequest);
 
-            checkDuration(duration);
+                checkDuration(duration);
 
-            roomName = commandRequest.getParametersByName(roomIdArgument).get(0);
+                roomName = commandRequest.getParametersByName(roomIdArgument).get(0);
 
-        } catch (IndexOutOfBoundsException exception) {
-            throw new SQLException("Missing Arguments");
-        }
-        Date dateBeginTime = formatStringToDate(beginTime);
-        Date dateEndTime = parseDuration(duration, dateBeginTime);
-        statement.setString(2, formatDateToString(dateEndTime));
-        if (!checkIfRoomIsAvailable(connection, roomName, dateBeginTime, dateEndTime)) {
-            throw new SQLException("ROOM IS NOT AVAILABLE");
-        }
-        statement.executeUpdate();
-        return new PutBookingView(bookingId);
+            } catch (IndexOutOfBoundsException exception) {
+                throw new SQLException("Missing Arguments");
+            }
+            Date dateBeginTime = formatStringToDate(beginTime);
+            Date dateEndTime = parseDuration(duration, dateBeginTime);
+            statement.setString(2, formatDateToString(dateEndTime));
+            if (!checkIfRoomIsAvailable(connection, roomName, dateBeginTime, dateEndTime)) {
+                throw new SQLException("ROOM IS NOT AVAILABLE");
+            }
+            statement.executeUpdate();
+            return new Model(bookingId);
+        });
     }
 
 

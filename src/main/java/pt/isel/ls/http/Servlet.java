@@ -4,39 +4,38 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.isel.ls.App;
 import pt.isel.ls.ServerInterface;
-import pt.isel.ls.router.Router;
+import pt.isel.ls.router.CommandRouter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
 public class Servlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(Servlet.class);
-    Router router = App.initRouterBehaviour();
+    CommandRouter commandRouter = App.initCommandRouterBehaviour();
     ServerInterface serverInterface;
 
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) {
         serverInterface = new ServerInterface(resp);
-        process(req, resp);
+        process(req);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp) {
+    private void process(HttpServletRequest req) {
         try {
             List<String> rawTask = new ArrayList<>();
             String method = req.getMethod();
-            String reqUriRaw = req.getRequestURI();
-            List<String> reqParts = Arrays.asList(
-                    reqUriRaw.replace("?", " ")
-                            .replace("%20", " ")
-                            .split(" "));
-            log.info(String.format("Incoming Request: ME->%s||URI->%s", method, reqUriRaw));
+            String requestUri = req.getRequestURI();
+            log.info(String.format("Incoming Request: ME->%s||URI->%s", method, requestUri));
+            String parameters = req.getQueryString();
+            List<String> reqParts = formatUrl(parameters);
             rawTask.add(method);
+            rawTask.add(requestUri);
             rawTask.addAll(reqParts);
             delegateTask(rawTask.toArray(new String[0]));
         } catch (Exception e) {
@@ -44,8 +43,24 @@ public class Servlet extends HttpServlet {
         }
     }
 
-    public void delegateTask(String[] rawTask) throws NoSuchMethodException, SQLException {
-        App.executeTask(router, serverInterface, rawTask);
+    private List<String> formatUrl(String reqUriRaw) {
+        if (reqUriRaw == null) {
+            return Collections.emptyList();
+        }
+        String replace = reqUriRaw
+                .replace("?", " ")
+                .replace("%20", " ");
+        if (reqUriRaw.contains("%3A")) {
+            replace = replace.replace("%3A", ":")
+                    .replace("T", "+");
+        }
+
+        return Arrays.asList(replace.split(" "));
+
+    }
+
+    public void delegateTask(String[] rawTask) throws Exception {
+        App.executeTask(commandRouter, serverInterface, rawTask);
     }
 
 }

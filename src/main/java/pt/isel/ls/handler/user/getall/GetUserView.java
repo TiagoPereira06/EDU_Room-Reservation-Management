@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.user.getall;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
@@ -11,10 +12,14 @@ import java.util.List;
 import static pt.isel.ls.handler.result.html.Element.*;
 
 public class GetUserView extends View {
-    private final List<User> model;
+    private List<User> model;
 
-    public GetUserView(List<User> allUsers) {
-        this.model = allUsers;
+    public GetUserView(Object allUsers) {
+        this.model = (List<User>) allUsers;
+    }
+
+    public GetUserView() {
+
     }
 
     @Override
@@ -69,5 +74,10 @@ public class GetUserView extends View {
     @Override
     public String plainOutput() {
         return model.toString();
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (List<User>) resultModel.getPrimaryData();
     }
 }

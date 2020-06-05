@@ -8,4 +8,5 @@ public interface ResultView {
 
     String plainOutput();
 
+    void setModel(Model resultModel);
 }

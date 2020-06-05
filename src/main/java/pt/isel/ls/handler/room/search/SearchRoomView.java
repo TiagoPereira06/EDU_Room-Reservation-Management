@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.room.search;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Node;
 import pt.isel.ls.model.Label;
@@ -10,10 +11,9 @@ import java.util.List;
 import static pt.isel.ls.handler.result.html.Element.*;
 
 public class SearchRoomView extends View {
-    private final List<Label> model;
+    private List<Label> model;
 
-    public SearchRoomView(List<Label> labelList) {
-        this.model = labelList;
+    public SearchRoomView() {
     }
 
     @Override
@@ -32,21 +32,21 @@ public class SearchRoomView extends View {
                         h1(text(name())),
                         form(
                                 div(
-                                        label(text("capacity")).addAttribute("for", "capacity"),
+                                        label(text("Capacity ")).addAttribute("for", "capacity"),
                                         input()
                                                 .addAttribute("type", "number")
                                                 .addAttribute("name", "capacity")
                                                 .addAttribute("id", "capacity")
                                 ),
                                 div(
-                                        label(text("begin")).addAttribute("for", "begin"),
+                                        label(text("Begin Time ")).addAttribute("for", "begin"),
                                         input()
                                                 .addAttribute("type", "datetime-local")
                                                 .addAttribute("name", "begin")
                                                 .addAttribute("id", "begin")
                                 ),
                                 div(
-                                        label(text("duration")).addAttribute("for", "duration"),
+                                        label(text("Duration ")).addAttribute("for", "duration"),
                                         input()
                                                 .addAttribute("type", "number")
                                                 .addAttribute("name", "duration")
@@ -70,7 +70,7 @@ public class SearchRoomView extends View {
 
     private Node[] getLabelsCheckBoxes() {
         List<Node> nodes = new ArrayList<>();
-        nodes.add(text("available labels:"));
+        nodes.add(text("Available Labels: "));
         for (Label l : model) {
             Node input = input()
                     .addAttribute("type", "checkbox")
@@ -86,6 +86,12 @@ public class SearchRoomView extends View {
 
     @Override
     public String plainOutput() {
-        return model.toString();
+        return "Only Available on HTML Support";
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (List<Label>) resultModel.getPrimaryData();
+
     }
 }

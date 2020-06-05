@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.room.getbyid;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
@@ -15,12 +16,16 @@ import static pt.isel.ls.handler.result.html.Element.*;
 import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
 public class GetRoomByIdView extends View {
-    private final Room room;
-    private final List<Booking> bookings;
+    private Room room;
+    private List<Booking> bookings;
 
     public GetRoomByIdView(Room roomById, List<Booking> bookingsResult) {
         this.room = roomById;
         this.bookings = bookingsResult;
+    }
+
+    public GetRoomByIdView() {
+
     }
 
     @Override
@@ -112,5 +117,11 @@ public class GetRoomByIdView extends View {
     @Override
     public String plainOutput() {
         return room.toString();
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.room = (Room) resultModel.getPrimaryData();
+        this.bookings = (List<Booking>) resultModel.getSecondaryData();
     }
 }

@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.option;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
@@ -9,12 +10,16 @@ import java.util.List;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
-class OptionView extends View {
+public class OptionView extends View {
 
-    private final List<List<String>> model;
+    private List<List<String>> model;
 
     public OptionView(List<List<String>> routes) {
         this.model = routes;
+    }
+
+    public OptionView() {
+
     }
 
     @Override
@@ -70,5 +75,10 @@ class OptionView extends View {
     @Override
     public String plainOutput() {
         return model.toString();
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (List<List<String>>) resultModel.getPrimaryData();
     }
 }

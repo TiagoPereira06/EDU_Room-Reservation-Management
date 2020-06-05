@@ -16,4 +16,5 @@ public abstract class View implements ResultView {
         return (anchor(text(value)).addAttribute("href", link));
     }
 
+
 }

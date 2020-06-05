@@ -1,16 +1,16 @@
 package pt.isel.ls.handler.option;
 
-import pt.isel.ls.App;
 import pt.isel.ls.handler.CommandHandler;
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.request.CommandRequest;
 
-import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.ParseException;
 
 public class Option implements CommandHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest, Connection connection) {
-        return new OptionView(App.router.getRoutes());
+    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+        return new Model();
     }
 
     @Override

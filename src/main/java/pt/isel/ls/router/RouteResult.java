@@ -1,16 +1,16 @@
 package pt.isel.ls.router;
 
-import pt.isel.ls.handler.CommandHandler;
+import pt.isel.ls.CommandPackage;
 import pt.isel.ls.request.Parameter;
 
 import java.util.List;
 
 public class RouteResult {
-    private CommandHandler handler;
+    private CommandPackage commandPackage;
     private List<Parameter> parameters;
 
-    public RouteResult(CommandHandler handler, List<Parameter> parameters) {
-        this.handler = handler;
+    public RouteResult(CommandPackage commandPackage, List<Parameter> parameters) {
+        this.commandPackage = commandPackage;
         this.parameters = parameters;
     }
 
@@ -22,11 +22,11 @@ public class RouteResult {
         this.parameters = parameters;
     }
 
-    public CommandHandler getHandler() {
-        return handler;
+    public CommandPackage getCommandPackage() {
+        return commandPackage;
     }
 
-    public void setHandler(CommandHandler handler) {
-        this.handler = handler;
+    public void setCommandPackage(CommandPackage commandPackage) {
+        this.commandPackage = commandPackage;
     }
 }

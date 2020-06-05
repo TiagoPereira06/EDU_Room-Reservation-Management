@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.booking.getbyid;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Node;
 import pt.isel.ls.model.Booking;
@@ -13,12 +14,12 @@ import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
 public class GetBookingByIdView extends View {
 
-    private final Booking model;
-    private final String id;
-    private final String owner;
-    private final String room;
-    private final String begin;
-    private final String end;
+    private Booking model;
+    private String id;
+    private String owner;
+    private String room;
+    private String begin;
+    private String end;
 
 
     public GetBookingByIdView(Booking bookingResult) {
@@ -28,6 +29,9 @@ public class GetBookingByIdView extends View {
         this.room = model.getRoomName();
         this.begin = formatDateToString(model.getBeginTime());
         this.end = formatDateToString(model.getEndTime());
+    }
+
+    public GetBookingByIdView() {
     }
 
     @Override
@@ -76,4 +80,10 @@ public class GetBookingByIdView extends View {
     public String plainOutput() {
         return model.toString();
     }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (Booking) resultModel.getPrimaryData();
+    }
+
 }

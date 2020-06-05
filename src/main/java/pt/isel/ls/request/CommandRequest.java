@@ -2,6 +2,7 @@ package pt.isel.ls.request;
 
 import pt.isel.ls.LocalInterface;
 import pt.isel.ls.OutputInterface;
+import pt.isel.ls.handler.TransactionManager;
 import pt.isel.ls.utils.UtilMethods;
 
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ public class CommandRequest {
     private final Method method;
     private final Path path;
     private final Header header;
+    public TransactionManager transactionManager;
     private List<Parameter> parameter;
 
     public CommandRequest(Method method, Path path, List<Parameter> parameter, Header header) {
@@ -20,6 +22,7 @@ public class CommandRequest {
         this.path = path;
         this.header = header;
         this.parameter = parameter;
+        transactionManager = new TransactionManager();
     }
 
     public static CommandRequest formatUserInput(String[] rawTask, OutputInterface outputInterface)

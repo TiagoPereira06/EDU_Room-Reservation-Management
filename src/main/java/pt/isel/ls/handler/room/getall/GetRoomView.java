@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.room.getall;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
@@ -13,10 +14,13 @@ import java.util.List;
 import static pt.isel.ls.handler.result.html.Element.*;
 
 public class GetRoomView extends View {
-    private final List<Room> model;
+    private List<Room> model;
 
     public GetRoomView(List<Room> allRooms) {
         this.model = allRooms;
+    }
+
+    public GetRoomView() {
     }
 
     @Override
@@ -102,4 +106,10 @@ public class GetRoomView extends View {
     public String plainOutput() {
         return model.toString();
     }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (List<Room>) resultModel.getPrimaryData();
+    }
+
 }

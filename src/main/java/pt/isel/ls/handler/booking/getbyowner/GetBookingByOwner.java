@@ -1,11 +1,10 @@
 package pt.isel.ls.handler.booking.getbyowner;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,23 +15,24 @@ import java.util.List;
 public class GetBookingByOwner extends BookingHandler {
 
     @Override
-    public ResultView execute(CommandRequest commandRequest, Connection connection)
-            throws SQLException, ParseException {
-        String getBookingsByOwnerQuery = "SELECT * FROM bookings WHERE reservationOwner = ?";
-        PreparedStatement statement = connection.prepareStatement(getBookingsByOwnerQuery);
-        statement.setString(1, commandRequest.getParametersByName(ownerIdArgument).get(0));
-        ResultSet resultSet = statement.executeQuery();
-        List<Booking> ownerBookings = new LinkedList<>();
-        while (resultSet.next()) {
-            Booking b = new Booking(
-                    resultSet.getInt("bid"),
-                    resultSet.getString("reservationOwner"),
-                    resultSet.getString("roomName"),
-                    resultSet.getString("beginTime"),
-                    resultSet.getString("endTime"));
-            ownerBookings.add(b);
-        }
-        return new GetBookingByOwnerView(ownerBookings);
+    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+        return commandRequest.transactionManager.execute((connection) -> {
+            String getBookingsByOwnerQuery = "SELECT * FROM bookings WHERE reservationOwner = ?";
+            PreparedStatement statement = connection.prepareStatement(getBookingsByOwnerQuery);
+            statement.setString(1, commandRequest.getParametersByName(ownerIdArgument).get(0));
+            ResultSet resultSet = statement.executeQuery();
+            List<Booking> ownerBookings = new LinkedList<>();
+            while (resultSet.next()) {
+                Booking b = new Booking(
+                        resultSet.getInt("bid"),
+                        resultSet.getString("reservationOwner"),
+                        resultSet.getString("roomName"),
+                        resultSet.getString("beginTime"),
+                        resultSet.getString("endTime"));
+                ownerBookings.add(b);
+            }
+            return new Model(ownerBookings);
+        });
     }
 
     @Override

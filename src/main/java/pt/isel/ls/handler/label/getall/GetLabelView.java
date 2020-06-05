@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.label.getall;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
@@ -11,10 +12,14 @@ import java.util.List;
 import static pt.isel.ls.handler.result.html.Element.*;
 
 public class GetLabelView extends View {
-    private final List<Label> model;
+    private List<Label> model;
 
     public GetLabelView(List<Label> allLabels) {
         this.model = allLabels;
+    }
+
+    public GetLabelView() {
+
     }
 
     @Override
@@ -67,5 +72,10 @@ public class GetLabelView extends View {
     @Override
     public String plainOutput() {
         return model.toString();
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (List<Label>) resultModel.getPrimaryData();
     }
 }

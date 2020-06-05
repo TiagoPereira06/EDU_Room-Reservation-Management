@@ -1,16 +1,21 @@
 package pt.isel.ls.handler.time;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Node;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
-class TimeView extends View {
+public class TimeView extends View {
 
-    private final String model;
+    private String model;
 
     public TimeView(String currentTime) {
         this.model = currentTime;
+    }
+
+    public TimeView() {
+
     }
 
     @Override
@@ -40,5 +45,10 @@ class TimeView extends View {
     @Override
     public String plainOutput() {
         return model;
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (String) resultModel.getPrimaryData();
     }
 }

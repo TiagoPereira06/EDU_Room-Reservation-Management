@@ -1,14 +1,18 @@
 package pt.isel.ls.handler.booking.post;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
 public class PostBookingView extends View {
-    private final String model;
+    private String model;
 
     public PostBookingView(String postedBookingId) {
         this.model = postedBookingId;
+    }
+
+    public PostBookingView() {
     }
 
     @Override
@@ -32,5 +36,10 @@ public class PostBookingView extends View {
     @Override
     public String plainOutput() {
         return model;
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (String) resultModel.getPrimaryData();
     }
 }

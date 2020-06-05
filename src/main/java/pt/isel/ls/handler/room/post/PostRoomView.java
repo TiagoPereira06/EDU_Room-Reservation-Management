@@ -1,14 +1,18 @@
 package pt.isel.ls.handler.room.post;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 
 import static pt.isel.ls.handler.result.html.Element.*;
 
 public class PostRoomView extends View {
-    private final String model;
+    private String model;
 
-    public PostRoomView(String roomId) {
-        this.model = roomId;
+    public PostRoomView(Object roomId) {
+        this.model = (String) roomId;
+    }
+
+    public PostRoomView() {
     }
 
     @Override
@@ -33,4 +37,11 @@ public class PostRoomView extends View {
     public String plainOutput() {
         return model;
     }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (String) resultModel.getPrimaryData();
+    }
+
 }
+

@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.room.getbylabel;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
@@ -11,12 +12,16 @@ import java.util.List;
 import static pt.isel.ls.handler.result.html.Element.*;
 
 public class GetRoomByLabelView extends View {
-    private final List<Room> model;
-    private final String labelName;
+    private List<Room> model;
+    private String labelName;
 
     public GetRoomByLabelView(List<Room> roomsByLabel, String labelName) {
         this.model = roomsByLabel;
         this.labelName = labelName;
+    }
+
+    public GetRoomByLabelView() {
+
     }
 
     @Override
@@ -68,5 +73,11 @@ public class GetRoomByLabelView extends View {
     @Override
     public String plainOutput() {
         return model.toString();
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (List<Room>) resultModel.getPrimaryData();
+        this.labelName = (String) resultModel.getSecondaryData();
     }
 }

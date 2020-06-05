@@ -1,15 +1,16 @@
 package pt.isel.ls.handler.index;
 
 import pt.isel.ls.handler.CommandHandler;
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.request.CommandRequest;
 
-import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.ParseException;
 
 public class Index implements CommandHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest, Connection connection) {
-        return new IndexView();
+    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+        return new Model();
     }
 
     @Override

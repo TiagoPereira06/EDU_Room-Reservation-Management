@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.index;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Node;
 
@@ -41,5 +42,10 @@ public class IndexView extends View {
     @Override
     public String plainOutput() {
         return "Only Available on HTML Support";
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+
     }
 }

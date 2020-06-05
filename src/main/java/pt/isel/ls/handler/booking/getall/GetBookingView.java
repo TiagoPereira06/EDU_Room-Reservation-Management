@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.booking.getall;
 
+import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.result.html.Element;
 import pt.isel.ls.handler.result.html.Node;
@@ -12,10 +13,14 @@ import static pt.isel.ls.handler.result.html.Element.*;
 import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
 public class GetBookingView extends View {
-    private final List<Booking> model;
+    private List<Booking> model;
 
     public GetBookingView(List<Booking> allBookings) {
         this.model = allBookings;
+    }
+
+    public GetBookingView() {
+
     }
 
     @Override
@@ -76,5 +81,10 @@ public class GetBookingView extends View {
     @Override
     public String plainOutput() {
         return model.toString();
+    }
+
+    @Override
+    public void setModel(Model resultModel) {
+        this.model = (List<Booking>) resultModel.getPrimaryData();
     }
 }
