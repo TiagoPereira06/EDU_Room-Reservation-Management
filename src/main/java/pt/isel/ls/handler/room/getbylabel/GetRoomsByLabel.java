@@ -7,15 +7,13 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 
 
 public class GetRoomsByLabel extends RoomHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getRoomsByLabelQuery = "SELECT r.name,r.location,r.capacity,r.description from rooms as r "
                     + "FULL JOIN roomlabels as rm ON r.name = rm.roomName WHERE rm.label = ?";

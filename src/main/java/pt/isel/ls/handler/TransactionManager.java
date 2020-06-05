@@ -1,21 +1,18 @@
 package pt.isel.ls.handler;
 
 import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.DataBaseCommand;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.ParseException;
 
 public class TransactionManager {
-    private static PGSimpleDataSource dataSource;
+    private final PGSimpleDataSource dataSource;
 
     public TransactionManager() {
         dataSource = new PGSimpleDataSource();
         dataSource.setUrl(System.getenv("JDBC_DATABASE_URL"));
     }
 
-    public Model execute(DataBaseCommand command) throws SQLException, ParseException {
+    public Model execute(DataBaseCommand command) throws Exception {
         Connection connection = null;
         Model resultModel = null;
         try {

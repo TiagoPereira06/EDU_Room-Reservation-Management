@@ -6,13 +6,12 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
 
 
 public class PostUser extends UserHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String email;
             String username;

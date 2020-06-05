@@ -7,7 +7,6 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 
 import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
@@ -16,7 +15,7 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 public class PostBooking extends BookingHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String postBookingsQuery = "INSERT INTO bookings(reservationOwner, roomName, beginTime, endTime)"
                     + "VALUES (?,?,?,?) ";

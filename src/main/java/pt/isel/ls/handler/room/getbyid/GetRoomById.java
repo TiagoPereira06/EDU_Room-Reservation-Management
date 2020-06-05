@@ -9,8 +9,6 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
 
 public class GetRoomById extends RoomHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
 
         return commandRequest.transactionManager.execute((connection) -> {
             String getRoomsByIdQuery = "select * from rooms as r"

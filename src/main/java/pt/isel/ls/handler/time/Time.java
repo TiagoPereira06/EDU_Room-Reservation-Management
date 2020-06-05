@@ -5,13 +5,11 @@ import pt.isel.ls.handler.Model;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
 
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 
 public class Time implements CommandHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) {
         return new Model(Booking.dateFormat.format(new Date()));
     }
 

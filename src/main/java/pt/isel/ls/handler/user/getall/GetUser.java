@@ -7,8 +7,6 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
 public class GetUser extends UserHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersQuery = "SELECT * FROM users";
             PreparedStatement statement = connection.prepareStatement(getUsersQuery);

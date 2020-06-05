@@ -10,15 +10,16 @@ public class AppError {
 
     public static int getStatusCode(Exception e) {
         StatusCode code;
-        if (e.getClass().equals(NoSuchMethodException.class)) {
+        final Class<? extends Exception> exceptionClass = e.getClass();
+        if (exceptionClass.equals(NoSuchMethodException.class)) {
             code = StatusCode.NotImplemented;
         } else if (
-                e.getClass().equals(SQLException.class)
+                exceptionClass.equals(SQLException.class)
                         ||
-                        e.getClass().equals(PSQLException.class)
+                        exceptionClass.equals(PSQLException.class)
         ) {
             code = StatusCode.InternalServerError;
-        } else if (e.getClass().equals(ParseException.class)) {
+        } else if (exceptionClass.equals(ParseException.class)) {
             code = StatusCode.BadRequest;
         } else {
             code = StatusCode.NotFound;

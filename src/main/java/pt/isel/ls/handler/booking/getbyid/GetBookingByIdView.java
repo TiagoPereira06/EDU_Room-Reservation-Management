@@ -21,16 +21,6 @@ public class GetBookingByIdView extends View {
     private String begin;
     private String end;
 
-
-    public GetBookingByIdView(Booking bookingResult) {
-        this.model = bookingResult;
-        this.id = String.valueOf(model.getId());
-        this.owner = model.getReservationOwner();
-        this.room = model.getRoomName();
-        this.begin = formatDateToString(model.getBeginTime());
-        this.end = formatDateToString(model.getEndTime());
-    }
-
     public GetBookingByIdView() {
     }
 
@@ -84,6 +74,11 @@ public class GetBookingByIdView extends View {
     @Override
     public void setModel(Model resultModel) {
         this.model = (Booking) resultModel.getPrimaryData();
+        this.id = String.valueOf(model.getId());
+        this.owner = model.getReservationOwner();
+        this.room = model.getRoomName();
+        this.begin = formatDateToString(model.getBeginTime());
+        this.end = formatDateToString(model.getEndTime());
     }
 
 }

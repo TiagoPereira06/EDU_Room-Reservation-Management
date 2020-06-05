@@ -15,13 +15,7 @@ public class GetRoomByLabelView extends View {
     private List<Room> model;
     private String labelName;
 
-    public GetRoomByLabelView(List<Room> roomsByLabel, String labelName) {
-        this.model = roomsByLabel;
-        this.labelName = labelName;
-    }
-
     public GetRoomByLabelView() {
-
     }
 
     @Override

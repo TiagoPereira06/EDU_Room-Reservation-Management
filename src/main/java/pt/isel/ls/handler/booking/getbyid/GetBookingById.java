@@ -7,13 +7,11 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 
 public class GetBookingById extends BookingHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
 
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";

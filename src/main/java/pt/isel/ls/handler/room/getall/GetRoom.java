@@ -16,7 +16,7 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public class GetRoom extends RoomHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) ->
                 new Model(executeGetCommand(commandRequest, connection)));
     }

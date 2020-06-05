@@ -8,15 +8,13 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class GetLabelById extends LabelHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersByIdQuery = "select * from labels"
                     + " as l FULL join roomlabels as rm"

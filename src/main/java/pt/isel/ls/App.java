@@ -1,5 +1,6 @@
 package pt.isel.ls;
 
+import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.Model;
 import pt.isel.ls.handler.booking.delete.DeleteBooking;
 import pt.isel.ls.handler.booking.delete.DeleteBookingView;
@@ -29,6 +30,7 @@ import pt.isel.ls.handler.listen.HttpServlet;
 import pt.isel.ls.handler.listen.HttpServletView;
 import pt.isel.ls.handler.option.Option;
 import pt.isel.ls.handler.option.OptionView;
+import pt.isel.ls.handler.result.View;
 import pt.isel.ls.handler.room.getall.GetRoom;
 import pt.isel.ls.handler.room.getall.GetRoomView;
 import pt.isel.ls.handler.room.getbyid.GetRoomById;
@@ -94,10 +96,11 @@ public class App {
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
 
-        Model resultModel;
-        resultModel = routeResult.getCommandPackage().handler.execute(userRequest);
-        routeResult.getCommandPackage().view.setModel(resultModel);
-        outputInterface.show(routeResult.getCommandPackage().view, userRequest.getHeader());
+        CommandHandler foundHandler = routeResult.getCommandPackage().handler;
+        View foundView = routeResult.getCommandPackage().view;
+        Model resultModel = foundHandler.execute(userRequest);
+        foundView.setModel(resultModel);
+        outputInterface.show(foundView, userRequest.getHeader());
 
     }
 

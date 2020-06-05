@@ -8,10 +8,6 @@ import static pt.isel.ls.handler.result.html.Element.*;
 public class PostRoomView extends View {
     private String model;
 
-    public PostRoomView(Object roomId) {
-        this.model = (String) roomId;
-    }
-
     public PostRoomView() {
     }
 

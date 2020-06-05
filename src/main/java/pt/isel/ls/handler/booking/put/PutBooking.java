@@ -6,7 +6,6 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 
 import static pt.isel.ls.utils.UtilMethods.formatDateToString;
@@ -14,7 +13,7 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public class PutBooking extends BookingHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String putBookingQuery = "UPDATE bookings "
                     + "SET begintime = ?, endtime = ?, reservationowner = ? "

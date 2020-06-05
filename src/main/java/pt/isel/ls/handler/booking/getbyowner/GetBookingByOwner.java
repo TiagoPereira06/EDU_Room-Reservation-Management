@@ -7,15 +7,13 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class GetBookingByOwner extends BookingHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws SQLException, ParseException {
+    public Model execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsByOwnerQuery = "SELECT * FROM bookings WHERE reservationOwner = ?";
             PreparedStatement statement = connection.prepareStatement(getBookingsByOwnerQuery);
