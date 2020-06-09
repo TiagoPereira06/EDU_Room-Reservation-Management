@@ -1,4 +1,4 @@
-package pt.isel.ls.print;
+package pt.isel.ls.userinterfaces.format;
 
 import java.io.IOException;
 import java.io.OutputStream;

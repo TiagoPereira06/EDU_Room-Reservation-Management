@@ -1,6 +1,6 @@
 package pt.isel.ls.request;
 
-import pt.isel.ls.print.TextType;
+import pt.isel.ls.userinterfaces.format.TextType;
 
 import java.util.HashMap;
 

@@ -1,27 +1,23 @@
 package pt.isel.ls.handler.booking.getall;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
-import pt.isel.ls.handler.result.html.Element;
-import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.handler.View;
 import pt.isel.ls.model.Booking;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Element;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
 public class GetBookingView extends View {
-    private List<Booking> model;
+    private final List<Booking> model;
 
     public GetBookingView(List<Booking> allBookings) {
         this.model = allBookings;
     }
 
-    public GetBookingView() {
-
-    }
 
     @Override
     public String name() {
@@ -83,8 +79,4 @@ public class GetBookingView extends View {
         return model.toString();
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (List<Booking>) resultModel.getPrimaryData();
-    }
 }

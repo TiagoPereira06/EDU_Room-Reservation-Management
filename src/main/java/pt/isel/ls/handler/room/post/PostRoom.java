@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.room.post;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.room.RoomHandler;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.request.CommandRequest;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PostRoom extends RoomHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
 
             final String roomName;
@@ -49,7 +49,7 @@ public class PostRoom extends RoomHandler {
             }
             statement.executeUpdate();
             insertLabelsRoom(connection, roomName, labels);
-            return new Model(roomName);
+            return new PostRoomView(roomName);
         });
     }
 

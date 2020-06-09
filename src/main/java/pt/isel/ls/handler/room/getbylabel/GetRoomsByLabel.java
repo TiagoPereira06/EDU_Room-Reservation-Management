@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.room.getbylabel;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.room.RoomHandler;
 import pt.isel.ls.model.Room;
 import pt.isel.ls.request.CommandRequest;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetRoomsByLabel extends RoomHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getRoomsByLabelQuery = "SELECT r.name,r.location,r.capacity,r.description from rooms as r "
                     + "FULL JOIN roomlabels as rm ON r.name = rm.roomName WHERE rm.label = ?";
@@ -32,7 +32,7 @@ public class GetRoomsByLabel extends RoomHandler {
                 roomResult.add(room);
             }
 
-            return new Model(roomResult, labelName);
+            return new GetRoomByLabelView(roomResult, labelName);
         });
     }
 

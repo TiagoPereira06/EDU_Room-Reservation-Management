@@ -1,6 +1,6 @@
-package pt.isel.ls.handler.result.html;
+package pt.isel.ls.userinterfaces.format.html.htmlemitter;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class ErrorTemplate {
     public static String errorTemplate(String msg) {

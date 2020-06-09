@@ -1,20 +1,16 @@
 package pt.isel.ls.handler.user.post;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
+import pt.isel.ls.handler.View;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class PostUserView extends View {
-    private String model;
+    private final String model;
 
     public PostUserView(String userEmail) {
         this.model = userEmail;
     }
 
-    public PostUserView() {
-
-    }
 
     @Override
     public String name() {
@@ -39,8 +35,4 @@ public class PostUserView extends View {
         return model;
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (String) resultModel.getPrimaryData();
-    }
 }

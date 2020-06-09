@@ -1,14 +1,13 @@
-package pt.isel.ls;
+package pt.isel.ls.userinterfaces.interfaces;
 
 import pt.isel.ls.handler.ResultView;
-import pt.isel.ls.print.HtmlPrint;
-import pt.isel.ls.print.PlainTextPrint;
-import pt.isel.ls.print.PrintInterface;
-import pt.isel.ls.print.TextType;
 import pt.isel.ls.request.Header;
+import pt.isel.ls.userinterfaces.format.PrintInterface;
+import pt.isel.ls.userinterfaces.format.TextType;
+import pt.isel.ls.userinterfaces.format.html.HtmlPrint;
+import pt.isel.ls.userinterfaces.format.plain.PlainTextPrint;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InvalidObjectException;
 
 import static pt.isel.ls.request.Header.getFilename;
@@ -16,8 +15,8 @@ import static pt.isel.ls.request.Header.getOutputType;
 
 public class LocalInterface implements OutputInterface {
     @Override
-    public void show(ResultView resultView, Header header) throws IOException {
-        if (resultView == null /*|| resultView.values().isEmpty()*/) {
+    public void show(ResultView resultView, Header header) throws Exception {
+        if (resultView == null) {
             showError(new InvalidObjectException("Empty Result"));
             return;
         }

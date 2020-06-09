@@ -1,7 +1,6 @@
 package pt.isel.ls.handler.listen;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
+import pt.isel.ls.handler.View;
 
 public class HttpServletView extends View {
 
@@ -19,12 +18,6 @@ public class HttpServletView extends View {
     @Override
     public String name() {
         return "App is now HTTP compatible";
-    }
-
-
-    @Override
-    public void setModel(Model resultModel) {
-
     }
 
 }

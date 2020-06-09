@@ -7,6 +7,4 @@ public interface ResultView {
     String htmlOutput();
 
     String plainOutput();
-
-    void setModel(Model resultModel);
 }

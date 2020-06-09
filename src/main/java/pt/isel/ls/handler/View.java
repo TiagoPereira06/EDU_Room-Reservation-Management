@@ -1,10 +1,10 @@
-package pt.isel.ls.handler.result;
+package pt.isel.ls.handler;
 
 import pt.isel.ls.handler.ResultView;
-import pt.isel.ls.handler.result.html.Element;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Element;
 
-import static pt.isel.ls.handler.result.html.Element.anchor;
-import static pt.isel.ls.handler.result.html.Element.text;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.anchor;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.text;
 
 public abstract class View implements ResultView {
 

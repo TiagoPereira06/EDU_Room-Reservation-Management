@@ -1,4 +1,4 @@
-package pt.isel.ls.handler.room.search;
+package pt.isel.ls.handler.room.post.getform;
 
 import pt.isel.ls.handler.View;
 import pt.isel.ls.model.Label;
@@ -9,17 +9,17 @@ import java.util.List;
 
 import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
-public class SearchRoomView extends View {
+public class PostRoomFormView extends View {
     private final List<Label> model;
 
-    public SearchRoomView(List<Label> model) {
+    public PostRoomFormView(List<Label> model) {
         this.model = model;
     }
-    //TODO: FIX REQUEST WITH SECONDS
+
 
     @Override
     public String name() {
-        return "Rooms Search Engine";
+        return "Room Creator";
     }
 
     @Override
@@ -33,25 +33,36 @@ public class SearchRoomView extends View {
                         h1(text(name())),
                         form(
                                 div(
+                                        label(text("Name ")).addAttribute("for", "name"),
+                                        input()
+                                                .addAttribute("type", "text")
+                                                .addAttribute("name", "name")
+                                                .addAttribute("id", "name")
+                                                .addAttribute("required", "true")
+                                ),
+                                div(
+                                        label(text("Location ")).addAttribute("for", "location"),
+                                        input()
+                                                .addAttribute("type", "text")
+                                                .addAttribute("name", "location")
+                                                .addAttribute("id", "location")
+                                                .addAttribute("required", "true")
+                                ),
+                                div(
                                         label(text("Capacity ")).addAttribute("for", "capacity"),
                                         input()
                                                 .addAttribute("type", "number")
                                                 .addAttribute("name", "capacity")
                                                 .addAttribute("id", "capacity")
+                                                .addAttribute("required", "true")
                                 ),
                                 div(
-                                        label(text("Begin Time ")).addAttribute("for", "begin"),
+                                        label(text("Description ")).addAttribute("for", "description"),
                                         input()
-                                                .addAttribute("type", "datetime-local")
-                                                .addAttribute("name", "begin")
-                                                .addAttribute("id", "begin")
-                                ),
-                                div(
-                                        label(text("Duration ")).addAttribute("for", "duration"),
-                                        input()
-                                                .addAttribute("type", "number")
-                                                .addAttribute("name", "duration")
-                                                .addAttribute("id", "Duration")
+                                                .addAttribute("type", "text")
+                                                .addAttribute("name", "description")
+                                                .addAttribute("id", "description")
+                                                .addAttribute("required", "true")
                                 ),
                                 div(
                                         getLabelsCheckBoxes()
@@ -85,8 +96,10 @@ public class SearchRoomView extends View {
         return nodes.toArray(new Node[0]);
     }
 
+
     @Override
     public String plainOutput() {
         return "Only Available on HTML Support";
     }
+
 }

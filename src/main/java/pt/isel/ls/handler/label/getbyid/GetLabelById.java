@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.label.getbyid;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.model.Room;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GetLabelById extends LabelHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersByIdQuery = "select * from labels"
                     + " as l FULL join roomlabels as rm"
@@ -34,7 +34,7 @@ public class GetLabelById extends LabelHandler {
                 r = new Room(resultSet.getString("roomname"));
                 roomsResult.add(r);
             } catch (NullPointerException e) {
-                return new Model(labelResult, Collections.emptyList());
+                return new GetLabelByIdView(labelResult, Collections.emptyList());
             }
             while (resultSet.next()) {
                 try {
@@ -44,7 +44,7 @@ public class GetLabelById extends LabelHandler {
                     break;
                 }
             }
-            return new Model(labelResult, roomsResult);
+            return new GetLabelByIdView(labelResult, roomsResult);
         });
     }
 

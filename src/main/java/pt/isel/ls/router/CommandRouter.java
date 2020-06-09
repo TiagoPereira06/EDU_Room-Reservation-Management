@@ -1,29 +1,31 @@
 package pt.isel.ls.router;
 
-import pt.isel.ls.CommandPackage;
 import pt.isel.ls.CommandUri;
+import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Parameter;
 import pt.isel.ls.request.Path;
 import pt.isel.ls.utils.UtilMethods;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class CommandRouter {
-    private final Map<CommandUri, CommandPackage> routesMap;
+    private final List<Operation> routes;
 
     public CommandRouter() {
-        routesMap = new HashMap<>();
+        routes = new LinkedList<>();
     }
 
-    public void addRoute(CommandUri commandUri, CommandPackage commandPackage) {
-        routesMap.put(commandUri, commandPackage);
+    public void addRoute(CommandUri commandUri, CommandHandler handler) {
+        routes.add(new Operation(commandUri, handler));
     }
 
     public RouteResult findRoute(Method method, Path path) throws NoSuchMethodException {
         RouteResult result = null;
-        Iterator<CommandUri> itr = routesMap.keySet().iterator();
+        Iterator<Operation> itr = routes.iterator();
         while (itr.hasNext() && result == null) {
             result = checkPathMatch(itr.next(), method, path);
         }
@@ -33,29 +35,28 @@ public class CommandRouter {
         return result;
     }
 
-    private RouteResult checkPathMatch(CommandUri routesMapKey, Method method, Path path) {
-        String[] userPath = path.getPath().split("/");
-        userPath = UtilMethods.filterStringArray(userPath);
+    private RouteResult checkPathMatch(Operation insertedOperation, Method method, Path path) {
+        String[] insertedPath = path.getPath().split("/");
+        insertedPath = UtilMethods.filterStringArray(insertedPath);
 
-        String[] foundPath = routesMapKey.pathTemplate.getPath().split("/");
-        foundPath = UtilMethods.filterStringArray(foundPath);
+        String[] referencePath = insertedOperation.commandUri.pathTemplate.getPath().split("/");
+        referencePath = UtilMethods.filterStringArray(referencePath);
 
-        if (routesMapKey.method == method && foundPath.length == userPath.length) {
-            //PALAVRA/ARG/PALAVRA/ARG...-> Percorrer até fazer match
+        if (insertedOperation.commandUri.method == method && referencePath.length == insertedPath.length) {
             List<Parameter> parameterList = new LinkedList<>();
             int i = 0;
-            for (; i < userPath.length; i++) {
-                if (i % 2 != 0 && foundPath[i].contains("{") && foundPath[i].contains("}")) {
-                    parameterList.add(new Parameter((foundPath[i]), userPath[i]));
+            for (; i < insertedPath.length; ++i) {
+                if (referencePath[i].contains("{") && referencePath[i].contains("}")) {
+                    parameterList.add(new Parameter((referencePath[i]), insertedPath[i]));
                     continue;
                 }
-                if (!(userPath[i].equals(foundPath[i]))) {
-                    break;
+                if (!(insertedPath[i].equals(referencePath[i]))) {
+                    return null;
                 }
             }
-            //Chegou ao fim da verificação porque fez match
-            if (i == userPath.length) {
-                return new RouteResult(routesMap.get(routesMapKey), parameterList);
+            if (i == insertedPath.length) {
+
+                return new RouteResult(insertedOperation.commandHandler, parameterList);
             }
         }
         return null;
@@ -63,13 +64,22 @@ public class CommandRouter {
 
     public List<List<String>> getRoutes() {
         LinkedList<List<String>> list = new LinkedList<>();
-        for (CommandUri key : routesMap.keySet()) {
+        for (Operation operation : routes) {
             List<String> row = new LinkedList<>();
-            row.add(key.method.toString() + " " + key.pathTemplate.getPath());
-            row.add(routesMap.get(key).handler.description());
+            row.add(operation.commandUri.method.toString() + " " + operation.commandUri.pathTemplate.getPath());
+            row.add(operation.commandHandler.description());
             list.add(row);
         }
         return list;
     }
 
+    private class Operation {
+        public CommandUri commandUri;
+        public CommandHandler commandHandler;
+
+        public Operation(CommandUri commandUri, CommandHandler commandHandler) {
+            this.commandUri = commandUri;
+            this.commandHandler = commandHandler;
+        }
+    }
 }

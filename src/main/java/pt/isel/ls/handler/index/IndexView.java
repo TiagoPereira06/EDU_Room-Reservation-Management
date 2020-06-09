@@ -1,18 +1,17 @@
 package pt.isel.ls.handler.index;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
-import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.handler.View;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class IndexView extends View {
     @Override
     public String name() {
-        return "Group's 06 Application";
+        return "Group 6's Application";
     }
 
     @Override
@@ -20,8 +19,8 @@ public class IndexView extends View {
         return html(
                 head(
                         title(text(name())),
-                        h1(text("Welcome to " + name())),
-                        nav(setNavBar())
+                        h1(text("Welcome to " + name())).addAttribute("style", "text-align:center"),
+                        nav(setNavBar()).addAttribute("style", "text-align:center")
                 )
         ).build();
     }
@@ -44,8 +43,4 @@ public class IndexView extends View {
         return "Only Available on HTML Support";
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-
-    }
 }

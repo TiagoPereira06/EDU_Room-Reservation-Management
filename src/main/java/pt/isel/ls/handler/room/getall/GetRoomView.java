@@ -1,27 +1,24 @@
 package pt.isel.ls.handler.room.getall;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
-import pt.isel.ls.handler.result.html.Element;
-import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.handler.View;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.model.Room;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Element;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class GetRoomView extends View {
-    private List<Room> model;
+    private final List<Room> model;
 
     public GetRoomView(List<Room> allRooms) {
         this.model = allRooms;
     }
 
-    public GetRoomView() {
-    }
 
     @Override
     public String name() {
@@ -50,7 +47,10 @@ public class GetRoomView extends View {
         return navItems.toArray(new Node[0]);
     }
 
-    private Element setTable() {
+    private Node setTable() {
+        if (model.size() == 0) {
+            return text("No Rooms !");
+        }
         return Element.table(
                 tr(
                         th(text("Name")),
@@ -105,11 +105,6 @@ public class GetRoomView extends View {
     @Override
     public String plainOutput() {
         return model.toString();
-    }
-
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (List<Room>) resultModel.getPrimaryData();
     }
 
 }

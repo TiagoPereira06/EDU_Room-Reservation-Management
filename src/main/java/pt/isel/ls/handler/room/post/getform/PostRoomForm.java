@@ -1,7 +1,7 @@
-package pt.isel.ls.handler.label.getall;
+package pt.isel.ls.handler.room.post.getform;
 
+import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.handler.ResultView;
-import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.request.CommandRequest;
 
@@ -10,8 +10,7 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
-
-public class GetLabel extends LabelHandler {
+public class PostRoomForm implements CommandHandler {
     @Override
     public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
@@ -25,12 +24,12 @@ public class GetLabel extends LabelHandler {
                                 resultSet.getString("name"))
                 );
             }
-            return new GetLabelView(labelsResult);
+            return new PostRoomFormView(labelsResult);
         });
     }
 
     @Override
     public String description() {
-        return "Show all labels";
+        return null;
     }
 }

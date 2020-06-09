@@ -8,8 +8,8 @@ import java.util.List;
 public class Booking {
     static final String pattern = "yyyy-MM-dd HH:mm:ss";
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-    private final Date beginTime;
-    private final Date endTime;
+    private Date beginTime;
+    private Date endTime;
     private String reservationOwner;
     private String roomName;
     private int id;
@@ -35,6 +35,10 @@ public class Booking {
         this.id = id;
         this.beginTime = dateFormat.parse(beginTime);
         this.endTime = dateFormat.parse(endTime);
+
+    }
+
+    public Booking() {
 
     }
 

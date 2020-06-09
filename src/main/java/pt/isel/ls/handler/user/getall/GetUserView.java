@@ -1,25 +1,20 @@
 package pt.isel.ls.handler.user.getall;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
-import pt.isel.ls.handler.result.html.Element;
-import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.handler.View;
 import pt.isel.ls.model.User;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Element;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class GetUserView extends View {
-    private List<User> model;
+    private final List<User> model;
 
-    public GetUserView(Object allUsers) {
-        this.model = (List<User>) allUsers;
-    }
-
-    public GetUserView() {
-
+    public GetUserView(List<User> allUsers) {
+        this.model = allUsers;
     }
 
     @Override
@@ -76,8 +71,4 @@ public class GetUserView extends View {
         return model.toString();
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (List<User>) resultModel.getPrimaryData();
-    }
 }

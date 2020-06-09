@@ -1,8 +1,7 @@
 package pt.isel.ls.request;
 
-import pt.isel.ls.LocalInterface;
-import pt.isel.ls.OutputInterface;
-import pt.isel.ls.handler.TransactionManager;
+import pt.isel.ls.userinterfaces.interfaces.LocalInterface;
+import pt.isel.ls.userinterfaces.interfaces.OutputInterface;
 import pt.isel.ls.utils.UtilMethods;
 
 import java.util.LinkedList;

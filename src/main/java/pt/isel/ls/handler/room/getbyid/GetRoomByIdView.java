@@ -1,18 +1,17 @@
 package pt.isel.ls.handler.room.getbyid;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
-import pt.isel.ls.handler.result.html.Element;
-import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.handler.View;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.model.Room;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Element;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
 public class GetRoomByIdView extends View {
@@ -24,9 +23,6 @@ public class GetRoomByIdView extends View {
         this.bookings = bookingsResult;
     }
 
-    public GetRoomByIdView() {
-
-    }
 
     @Override
     public String name() {
@@ -119,9 +115,4 @@ public class GetRoomByIdView extends View {
         return room.toString();
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.room = (Room) resultModel.getPrimaryData();
-        this.bookings = (List<Booking>) resultModel.getSecondaryData();
-    }
 }

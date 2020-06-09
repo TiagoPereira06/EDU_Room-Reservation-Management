@@ -1,7 +1,6 @@
 package pt.isel.ls.handler.exit;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
+import pt.isel.ls.handler.View;
 
 public class ExitView extends View {
     @Override
@@ -19,8 +18,4 @@ public class ExitView extends View {
         return null;
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-
-    }
 }

@@ -1,25 +1,20 @@
 package pt.isel.ls.handler.option;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
-import pt.isel.ls.handler.result.html.Element;
-import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.handler.View;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Element;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class OptionView extends View {
 
-    private List<List<String>> model;
+    private final List<List<String>> model;
 
     public OptionView(List<List<String>> routes) {
         this.model = routes;
-    }
-
-    public OptionView() {
-
     }
 
     @Override
@@ -77,8 +72,4 @@ public class OptionView extends View {
         return model.toString();
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (List<List<String>>) resultModel.getPrimaryData();
-    }
 }

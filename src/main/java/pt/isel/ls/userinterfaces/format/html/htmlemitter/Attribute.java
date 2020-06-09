@@ -1,4 +1,4 @@
-package pt.isel.ls.handler.result.html;
+package pt.isel.ls.userinterfaces.format.html.htmlemitter;
 
 public class Attribute {
 

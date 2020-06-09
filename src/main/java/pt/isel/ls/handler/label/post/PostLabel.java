@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.label.post;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.request.CommandRequest;
 
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class PostLabel extends LabelHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
 
             final String labelName;
@@ -25,7 +25,7 @@ public class PostLabel extends LabelHandler {
                 throw new SQLException("LABEL ALREADY IN USE !");
             }
             statement.executeUpdate();
-            return new Model(labelName);
+            return new PostLabelView(labelName);
         });
     }
 

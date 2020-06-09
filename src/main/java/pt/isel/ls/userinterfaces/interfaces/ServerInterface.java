@@ -1,11 +1,12 @@
-package pt.isel.ls;
+package pt.isel.ls.userinterfaces.interfaces;
 
+import pt.isel.ls.AppError;
 import pt.isel.ls.handler.ResultView;
-import pt.isel.ls.handler.result.html.ErrorTemplate;
 import pt.isel.ls.http.StatusCode;
-import pt.isel.ls.print.HtmlPrint;
-import pt.isel.ls.print.PrintInterface;
 import pt.isel.ls.request.Header;
+import pt.isel.ls.userinterfaces.format.PrintInterface;
+import pt.isel.ls.userinterfaces.format.html.HtmlPrint;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.ErrorTemplate;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,7 @@ public class ServerInterface implements OutputInterface {
     }
 
     @Override
-    public void show(ResultView resultView, Header header) throws IOException {
+    public void show(ResultView resultView, Header header) throws Exception {
         PrintInterface htmlPrint = new HtmlPrint(resultView);
         resp.setStatus(StatusCode.Ok.getCodeValue());
         htmlPrint.printTo(outputStream);

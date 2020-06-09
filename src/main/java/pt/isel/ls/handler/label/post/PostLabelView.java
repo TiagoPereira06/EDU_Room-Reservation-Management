@@ -1,19 +1,14 @@
 package pt.isel.ls.handler.label.post;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
+import pt.isel.ls.handler.View;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class PostLabelView extends View {
-    private String model;
+    private final String model;
 
     public PostLabelView(String postedLabelName) {
         this.model = postedLabelName;
-    }
-
-    public PostLabelView() {
-
     }
 
     @Override
@@ -39,8 +34,4 @@ public class PostLabelView extends View {
         return model;
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (String) resultModel.getPrimaryData();
-    }
 }

@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.user.getall;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.user.UserHandler;
 import pt.isel.ls.model.User;
 import pt.isel.ls.request.CommandRequest;
@@ -14,7 +14,7 @@ import java.util.List;
 public class GetUser extends UserHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersQuery = "SELECT * FROM users";
             PreparedStatement statement = connection.prepareStatement(getUsersQuery);
@@ -23,7 +23,7 @@ public class GetUser extends UserHandler {
             while (resultSet.next()) {
                 userResult.add(new User(resultSet.getString("email"), resultSet.getString("username")));
             }
-            return new Model(userResult);
+            return new GetUserView(userResult);
         });
     }
 

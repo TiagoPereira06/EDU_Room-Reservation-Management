@@ -1,13 +1,14 @@
 package pt.isel.ls.handler.option;
 
+import pt.isel.ls.App;
 import pt.isel.ls.handler.CommandHandler;
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.request.CommandRequest;
 
 public class Option implements CommandHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) {
-        return new Model();
+    public ResultView execute(CommandRequest commandRequest) {
+        return new OptionView(App.commandRouter.getRoutes());
     }
 
     @Override

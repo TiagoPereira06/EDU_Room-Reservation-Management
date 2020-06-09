@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.booking.getbyowner;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
@@ -13,7 +13,7 @@ import java.util.List;
 public class GetBookingByOwner extends BookingHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsByOwnerQuery = "SELECT * FROM bookings WHERE reservationOwner = ?";
             PreparedStatement statement = connection.prepareStatement(getBookingsByOwnerQuery);
@@ -29,7 +29,7 @@ public class GetBookingByOwner extends BookingHandler {
                         resultSet.getString("endTime"));
                 ownerBookings.add(b);
             }
-            return new Model(ownerBookings);
+            return new GetBookingByOwnerView(ownerBookings);
         });
     }
 

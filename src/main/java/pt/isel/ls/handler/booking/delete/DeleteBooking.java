@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.booking.delete;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.request.CommandRequest;
 
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class DeleteBooking extends BookingHandler {
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String deleteBooking = "DELETE FROM bookings "
                     + "Where bid = ?";
@@ -22,7 +22,7 @@ public class DeleteBooking extends BookingHandler {
             }
             statement.setInt(1, Integer.parseInt(bookingId));
             statement.executeUpdate();
-            return new Model(bookingId);
+            return new DeleteBookingView(bookingId);
         });
     }
 

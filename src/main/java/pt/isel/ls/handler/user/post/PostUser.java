@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.user.post;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.user.UserHandler;
 import pt.isel.ls.request.CommandRequest;
 
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class PostUser extends UserHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String email;
             String username;
@@ -29,7 +29,7 @@ public class PostUser extends UserHandler {
                 throw new SQLException("EMAIL ALREADY IN USE");
             }
             statement.executeUpdate();
-            return new Model(email);
+            return new PostUserView(email);
         });
     }
 

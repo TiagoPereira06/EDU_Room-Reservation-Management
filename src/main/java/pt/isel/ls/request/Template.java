@@ -28,6 +28,8 @@ public class Template {
 
     public static final String ROOMS_RID_BOOKINGS = "/rooms/{rid}/bookings";
 
+    public static final String ROOMS_CREATE = "/rooms/create";
+
     public static final String LABELS_LID_ROOMS = "/labels/{lid}/rooms";
 
 }

@@ -1,19 +1,14 @@
 package pt.isel.ls.handler.booking.delete;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
+import pt.isel.ls.handler.View;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class DeleteBookingView extends View {
-    private String model;
+    private final String model;
 
     public DeleteBookingView(String deletedBookingId) {
         this.model = deletedBookingId;
-    }
-
-    public DeleteBookingView() {
-
     }
 
     @Override
@@ -39,9 +34,5 @@ public class DeleteBookingView extends View {
         return model;
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (String) resultModel.getPrimaryData();
-    }
 
 }

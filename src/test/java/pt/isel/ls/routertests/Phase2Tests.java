@@ -3,7 +3,7 @@ package pt.isel.ls.routertests;
 import org.junit.Assert;
 import org.junit.Test;
 import pt.isel.ls.App;
-import pt.isel.ls.LocalInterface;
+import pt.isel.ls.userinterfaces.interfaces.LocalInterface;
 import pt.isel.ls.handler.booking.delete.DeleteBooking;
 import pt.isel.ls.handler.booking.put.PutBooking;
 import pt.isel.ls.handler.option.Option;
@@ -30,7 +30,7 @@ public class Phase2Tests {
         RouteResult routeResult = commandRouter.findRoute(request.getMethod(), request.getPath());
         request.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), request.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof DeleteBooking);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof DeleteBooking);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class Phase2Tests {
         RouteResult routeResult = commandRouter.findRoute(request.getMethod(), request.getPath());
         request.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), request.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof PutBooking);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof PutBooking);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class Phase2Tests {
         RouteResult routeResult = commandRouter.findRoute(request.getMethod(), request.getPath());
         request.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), request.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof Time);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof Time);
     }
 
     @Test
@@ -62,6 +62,6 @@ public class Phase2Tests {
         RouteResult routeResult = commandRouter.findRoute(request.getMethod(), request.getPath());
         request.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), request.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof Option);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof Option);
     }
 }

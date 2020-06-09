@@ -1,27 +1,26 @@
 package pt.isel.ls.handler.booking.getbyid;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
-import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.handler.View;
 import pt.isel.ls.model.Booking;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 import static pt.isel.ls.utils.UtilMethods.formatDateToString;
 
 public class GetBookingByIdView extends View {
 
-    private Booking model;
-    private String id;
-    private String owner;
-    private String room;
-    private String begin;
-    private String end;
+    private final Booking model;
+    private final String roomName;
+    private final String owner;
 
-    public GetBookingByIdView() {
+    public GetBookingByIdView(Booking data) {
+        this.model = data;
+        roomName = model.getRoomName();
+        owner = model.getReservationOwner();
     }
 
     @Override
@@ -47,22 +46,23 @@ public class GetBookingByIdView extends View {
         List<Node> navItems = new ArrayList<>();
         navItems.add(homeButton());
         navItems.add(text(" | "));
-        navItems.add(button(String.format("%s's Bookings", room), String.format("/rooms/%s/bookings", room)));
+        navItems.add(button(String.format("%s's Bookings", roomName),
+                String.format("/rooms/%s/bookings", roomName)));
         return navItems.toArray(new Node[0]);
     }
 
     private List<Node> listFormat() {
         LinkedList<Node> listItems = new LinkedList<>();
         listItems.add(li(bold((text("Id:")))));
-        listItems.add(dd(text(id)));
+        listItems.add(dd(text(String.valueOf(model.getId()))));
         listItems.add(li(bold((text("Owner:")))));
         listItems.add(dd(anchor(text(owner)).addAttribute("href", String.format("/users/%s", owner))));
         listItems.add(li(bold((text("Room:")))));
-        listItems.add(dd(anchor(text(room)).addAttribute("href", String.format("/rooms/%s", room))));
+        listItems.add(dd(anchor(text(roomName)).addAttribute("href", String.format("/rooms/%s", roomName))));
         listItems.add(li(bold((text("Begin:")))));
-        listItems.add(dd(text(begin)));
+        listItems.add(dd(text(formatDateToString(model.getBeginTime()))));
         listItems.add(li(bold((text("End:")))));
-        listItems.add(dd(text(end)));
+        listItems.add(dd(text(formatDateToString(model.getEndTime()))));
         return listItems;
     }
 
@@ -71,14 +71,5 @@ public class GetBookingByIdView extends View {
         return model.toString();
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (Booking) resultModel.getPrimaryData();
-        this.id = String.valueOf(model.getId());
-        this.owner = model.getReservationOwner();
-        this.room = model.getRoomName();
-        this.begin = formatDateToString(model.getBeginTime());
-        this.end = formatDateToString(model.getEndTime());
-    }
 
 }

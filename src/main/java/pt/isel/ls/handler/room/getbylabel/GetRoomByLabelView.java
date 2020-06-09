@@ -1,21 +1,22 @@
 package pt.isel.ls.handler.room.getbylabel;
 
-import pt.isel.ls.handler.Model;
-import pt.isel.ls.handler.result.View;
-import pt.isel.ls.handler.result.html.Element;
-import pt.isel.ls.handler.result.html.Node;
+import pt.isel.ls.handler.View;
 import pt.isel.ls.model.Room;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Element;
+import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static pt.isel.ls.handler.result.html.Element.*;
+import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class GetRoomByLabelView extends View {
-    private List<Room> model;
-    private String labelName;
+    private final List<Room> model;
+    private final String labelName;
 
-    public GetRoomByLabelView() {
+    public GetRoomByLabelView(List<Room> model, String labelName) {
+        this.model = model;
+        this.labelName = labelName;
     }
 
     @Override
@@ -69,9 +70,4 @@ public class GetRoomByLabelView extends View {
         return model.toString();
     }
 
-    @Override
-    public void setModel(Model resultModel) {
-        this.model = (List<Room>) resultModel.getPrimaryData();
-        this.labelName = (String) resultModel.getSecondaryData();
-    }
 }

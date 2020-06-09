@@ -3,8 +3,8 @@ package pt.isel.ls.http;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.isel.ls.App;
-import pt.isel.ls.ServerInterface;
 import pt.isel.ls.router.CommandRouter;
+import pt.isel.ls.userinterfaces.interfaces.ServerInterface;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Servlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(Servlet.class);
-    CommandRouter commandRouter = App.initCommandRouterBehaviour();
+    CommandRouter commandRouter = App.initRouterBehaviour();
     ServerInterface serverInterface;
 
     @Override

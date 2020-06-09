@@ -3,7 +3,7 @@ package pt.isel.ls.routertests;
 import org.junit.Assert;
 import org.junit.Test;
 import pt.isel.ls.App;
-import pt.isel.ls.LocalInterface;
+import pt.isel.ls.userinterfaces.interfaces.LocalInterface;
 import pt.isel.ls.handler.booking.getall.GetBooking;
 import pt.isel.ls.handler.label.getall.GetLabel;
 import pt.isel.ls.handler.room.getall.GetRoom;
@@ -29,7 +29,7 @@ public class RouterGetsTests {
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof GetUser);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof GetUser);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class RouterGetsTests {
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof GetLabel);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof GetLabel);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class RouterGetsTests {
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof GetBooking);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof GetBooking);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class RouterGetsTests {
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof GetRoom);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof GetRoom);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class RouterGetsTests {
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof GetRoom);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof GetRoom);
 
     }
 
@@ -80,7 +80,7 @@ public class RouterGetsTests {
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof GetRoom);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof GetRoom);
 
     }
 
@@ -92,7 +92,7 @@ public class RouterGetsTests {
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
                 UtilMethods.concatTwoLists(routeResult.getParameters(), userRequest.getParameter()));
-        Assert.assertTrue(routeResult.getCommandPackage().handler instanceof GetRoom);
+        Assert.assertTrue(routeResult.getCommandHandler() instanceof GetRoom);
 
     }
 

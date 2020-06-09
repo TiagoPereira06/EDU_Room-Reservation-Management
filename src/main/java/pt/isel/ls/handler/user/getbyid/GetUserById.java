@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.user.getbyid;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.user.UserHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.model.User;
@@ -15,7 +15,7 @@ import java.util.List;
 public class GetUserById extends UserHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersByIdQuery = "select * from users"
                     + " as u FULL join bookings as b"
@@ -37,7 +37,7 @@ public class GetUserById extends UserHandler {
                         resultSet.getString("beginTime"), resultSet.getString("endTime"));
                 bookingResult.add(b);
             } catch (NullPointerException e) {
-                return new Model(userResult, Collections.emptyList());
+                return new GetUserByIdView(userResult, Collections.emptyList());
             }
 
             while (resultSet.next()) {
@@ -50,7 +50,7 @@ public class GetUserById extends UserHandler {
                 }
 
             }
-            return new Model(userResult, bookingResult);
+            return new GetUserByIdView(userResult, bookingResult);
         });
 
     }

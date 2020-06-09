@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.booking.getbyid;
 
-import pt.isel.ls.handler.Model;
+import pt.isel.ls.handler.ResultView;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 public class GetBookingById extends BookingHandler {
 
     @Override
-    public Model execute(CommandRequest commandRequest) throws Exception {
+    public ResultView execute(CommandRequest commandRequest) throws Exception {
 
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";
@@ -28,7 +28,7 @@ public class GetBookingById extends BookingHandler {
                     resultSet.getString("begintime"),
                     resultSet.getString("endtime")
             );
-            return new Model(idBookings);
+            return new GetBookingByIdView(idBookings);
         });
     }
 
