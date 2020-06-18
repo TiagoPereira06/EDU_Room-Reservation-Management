@@ -6,7 +6,7 @@ import pt.isel.ls.request.Template;
 
 public class CommandUri {
     static final CommandUri POST_ROOMS_URL =
-            new CommandUri(Method.POST, new PathTemplate(Template.ROOMS));
+            new CommandUri(Method.POST, new PathTemplate(Template.ROOMS_CREATE));
 
     static final CommandUri GET_ROOMS_URL =
             new CommandUri(Method.GET, new PathTemplate(Template.ROOMS));
@@ -16,6 +16,12 @@ public class CommandUri {
 
     static final CommandUri GET_POST_ROOM_FORM_URL =
             new CommandUri(Method.GET, new PathTemplate(Template.ROOMS_CREATE));
+
+    static final CommandUri GET_POST_USER_FORM_URL =
+            new CommandUri(Method.GET, new PathTemplate(Template.USERS_CREATE));
+
+    static final CommandUri GET_POST_LABEL_FORM_URL =
+            new CommandUri(Method.GET, new PathTemplate(Template.LABELS_CREATE));
 
     static final CommandUri GET_ROOM_BY_ID_URL =
             new CommandUri(Method.GET, new PathTemplate(Template.ROOMS_RID));
@@ -36,7 +42,7 @@ public class CommandUri {
             new CommandUri(Method.GET, new PathTemplate(Template.ROOMS_RID_BOOKINGS_BID));
 
     static final CommandUri POST_USER_URL =
-            new CommandUri(Method.POST, new PathTemplate(Template.USERS));
+            new CommandUri(Method.POST, new PathTemplate(Template.USERS_CREATE));
 
     static final CommandUri GET_USER_URL =
             new CommandUri(Method.GET, new PathTemplate(Template.USERS));
@@ -51,7 +57,7 @@ public class CommandUri {
             new CommandUri(Method.GET, new PathTemplate(Template.BOOKINGS));
 
     static final CommandUri POST_LABEL_URL =
-            new CommandUri(Method.POST, new PathTemplate(Template.LABELS));
+            new CommandUri(Method.POST, new PathTemplate(Template.LABELS_CREATE));
 
     static final CommandUri GET_LABEL_URL =
             new CommandUri(Method.GET, new PathTemplate(Template.LABELS));

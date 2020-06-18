@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.user.getbyid;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.user.UserHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.model.User;
@@ -8,6 +8,8 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 public class GetUserById extends UserHandler {
 
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersByIdQuery = "select * from users"
                     + " as u FULL join bookings as b"
@@ -31,28 +33,30 @@ public class GetUserById extends UserHandler {
                     resultSet.getString("email"),
                     resultSet.getString("username")
             );
-            Booking b;
             try {
-                b = new Booking(resultSet.getInt("bid"), resultSet.getString("roomname"),
-                        resultSet.getString("beginTime"), resultSet.getString("endTime"));
-                bookingResult.add(b);
+                getBooking(resultSet, bookingResult);
             } catch (NullPointerException e) {
-                return new GetUserByIdView(userResult, Collections.emptyList());
+                return new GetUserByIdResult(userResult, Collections.emptyList());
             }
 
             while (resultSet.next()) {
                 try {
-                    b = new Booking(resultSet.getInt("bid"), resultSet.getString("roomname"),
-                            resultSet.getString("beginTime"), resultSet.getString("endTime"));
-                    bookingResult.add(b);
+                    getBooking(resultSet, bookingResult);
                 } catch (NullPointerException e) {
                     break;
                 }
 
             }
-            return new GetUserByIdView(userResult, bookingResult);
+            return new GetUserByIdResult(userResult, bookingResult);
         });
 
+    }
+
+    private void getBooking(ResultSet resultSet, List<Booking> bookingResult) throws ParseException, SQLException {
+        Booking b;
+        b = new Booking(resultSet.getInt("bid"), resultSet.getString("roomname"),
+                resultSet.getString("beginTime"), resultSet.getString("endTime"));
+        bookingResult.add(b);
     }
 
     @Override

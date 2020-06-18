@@ -3,6 +3,7 @@ package pt.isel.ls.routertests;
 import org.junit.Assert;
 import org.junit.Test;
 import pt.isel.ls.App;
+import pt.isel.ls.errors.router.RouterException;
 import pt.isel.ls.userinterfaces.interfaces.LocalInterface;
 import pt.isel.ls.handler.booking.getall.GetBooking;
 import pt.isel.ls.handler.label.getall.GetLabel;
@@ -23,7 +24,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetUsers() throws NoSuchMethodException {
+    public void routerGetUsers() throws RouterException {
         String[] rawTask = {"GET", "/users"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
@@ -33,7 +34,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetLabels() throws NoSuchMethodException {
+    public void routerGetLabels() throws RouterException {
         String[] rawTask = {"GET", "/labels"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
@@ -43,7 +44,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetBookings() throws NoSuchMethodException {
+    public void routerGetBookings() throws RouterException {
         String[] rawTask = {"GET", "/bookings"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
@@ -53,7 +54,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetRooms() throws NoSuchMethodException {
+    public void routerGetRooms() throws RouterException {
         String[] rawTask = {"GET", "/rooms"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
@@ -63,7 +64,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetRoomsWithCapacity() throws NoSuchMethodException {
+    public void routerGetRoomsWithCapacity() throws RouterException {
         String[] rawTask = {"GET", "/rooms", "capacity=25"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
@@ -74,7 +75,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetRoomsWithLabel() throws NoSuchMethodException {
+    public void routerGetRoomsWithLabel() throws RouterException {
         String[] rawTask = {"GET", "/rooms", "label=windows"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
@@ -85,7 +86,7 @@ public class RouterGetsTests {
     }
 
     @Test
-    public void routerGetRoomsWithTime() throws NoSuchMethodException {
+    public void routerGetRoomsWithTime() throws RouterException {
         String[] rawTask = {"GET", "/rooms", "begin=2020-04-22+12:00:00"
                 + "&duration=60"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());

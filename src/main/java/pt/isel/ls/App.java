@@ -1,7 +1,7 @@
 package pt.isel.ls;
 
 import pt.isel.ls.handler.CommandHandler;
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.delete.DeleteBooking;
 import pt.isel.ls.handler.booking.getall.GetBooking;
 import pt.isel.ls.handler.booking.getbyid.GetBookingById;
@@ -14,6 +14,7 @@ import pt.isel.ls.handler.index.Index;
 import pt.isel.ls.handler.label.getall.GetLabel;
 import pt.isel.ls.handler.label.getbyid.GetLabelById;
 import pt.isel.ls.handler.label.post.PostLabel;
+import pt.isel.ls.handler.label.post.getform.PostLabelForm;
 import pt.isel.ls.handler.listen.HttpServlet;
 import pt.isel.ls.handler.option.Option;
 import pt.isel.ls.handler.room.getall.GetRoom;
@@ -26,6 +27,7 @@ import pt.isel.ls.handler.time.Time;
 import pt.isel.ls.handler.user.getall.GetUser;
 import pt.isel.ls.handler.user.getbyid.GetUserById;
 import pt.isel.ls.handler.user.post.PostUser;
+import pt.isel.ls.handler.user.post.getform.PostUserForm;
 import pt.isel.ls.request.CommandRequest;
 import pt.isel.ls.request.Parameter;
 import pt.isel.ls.router.CommandRouter;
@@ -83,8 +85,8 @@ public class App {
         userRequest.setParameter(parameterList);
 
         CommandHandler foundHandler = routeResult.getCommandHandler();
-        ResultView resultView = foundHandler.execute(userRequest);
-        outputInterface.show(resultView, userRequest.getHeader());
+        CommandResult commandResult = foundHandler.execute(userRequest);
+        outputInterface.show(commandResult, userRequest.getHeader());
 
     }
 
@@ -95,6 +97,12 @@ public class App {
         commandRouter
                 .addRoute(
                         GET_POST_ROOM_FORM_URL, new PostRoomForm());
+        commandRouter
+                .addRoute(
+                        GET_POST_LABEL_FORM_URL, new PostLabelForm());
+        commandRouter
+                .addRoute(
+                        GET_POST_USER_FORM_URL, new PostUserForm());
         commandRouter
                 .addRoute(
                         GET_SEARCH_ROOM_URL, new SearchRoom());

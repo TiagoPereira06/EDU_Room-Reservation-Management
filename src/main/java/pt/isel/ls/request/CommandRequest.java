@@ -1,5 +1,6 @@
 package pt.isel.ls.request;
 
+import pt.isel.ls.errors.router.RouterException;
 import pt.isel.ls.userinterfaces.interfaces.LocalInterface;
 import pt.isel.ls.userinterfaces.interfaces.OutputInterface;
 import pt.isel.ls.utils.UtilMethods;
@@ -15,6 +16,7 @@ public class CommandRequest {
     private final Header header;
     public TransactionManager transactionManager;
     private List<Parameter> parameter;
+    private PostParameters postParameters;
 
     public CommandRequest(Method method, Path path, List<Parameter> parameter, Header header) {
         this.method = method;
@@ -22,10 +24,13 @@ public class CommandRequest {
         this.header = header;
         this.parameter = parameter;
         transactionManager = new TransactionManager();
+        //TODO : APENAS EM POST
+        postParameters = new PostParameters(parameter);
+
     }
 
     public static CommandRequest formatUserInput(String[] rawTask, OutputInterface outputInterface)
-            throws NoSuchMethodException {
+            throws RouterException {
         final Method method;
         final Path path;
         Header header;
@@ -33,7 +38,7 @@ public class CommandRequest {
         try {
             method = Method.valueOf(rawTask[0]);
         } catch (IllegalArgumentException e) {
-            throw new NoSuchMethodException("Request Not Found");
+            throw new RouterException();
         }
         path = new Path(rawTask[1]);
         //OS HEADERS SÓ APARECEM NA POS 2!
@@ -79,8 +84,24 @@ public class CommandRequest {
         return list;
     }
 
+    public String getParameterByName(String paramName) {
+        for (Parameter p : parameter) {
+            if (p.getName().equals(paramName)) {
+                return p.getValue();
+            }
+        }
+        return null;
+    }
+
     public Header getHeader() {
         return header;
     }
 
+    public PostParameters getPostParameters() {
+        return postParameters;
+    }
+
+    public void setPostParameters(PostParameters postParameters) {
+        this.postParameters = postParameters;
+    }
 }

@@ -6,7 +6,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.isel.ls.handler.CommandHandler;
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.http.Servlet;
 import pt.isel.ls.request.CommandRequest;
 
@@ -15,7 +15,7 @@ public class HttpServlet implements CommandHandler {
     private static final Logger log = LoggerFactory.getLogger(HttpServlet.class);
 
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         Server server;
         try {
             int port = Integer.parseInt(commandRequest.getParametersByName("port").get(0));
@@ -34,7 +34,7 @@ public class HttpServlet implements CommandHandler {
         server.start();
         String status = "Server started on ";
         log.info(status);
-        return new HttpServletView();
+        return new HttpServletResult();
     }
 
     @Override

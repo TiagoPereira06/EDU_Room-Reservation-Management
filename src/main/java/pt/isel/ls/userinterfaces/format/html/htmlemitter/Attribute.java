@@ -11,6 +11,10 @@ public class Attribute {
     }
 
     public String toString() {
-        return name + "=" + value;
+        if (name.length() != 0) {
+            return name + "=" + "\"" + value + "\"";
+        } else {
+            return value;
+        }
     }
 }

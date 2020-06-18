@@ -1,11 +1,11 @@
 package pt.isel.ls.request;
 
 import org.postgresql.ds.PGSimpleDataSource;
+import pt.isel.ls.errors.database.InternalDataBaseException;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.DataBaseFetch;
-import pt.isel.ls.handler.ResultView;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class TransactionManager {
     private final PGSimpleDataSource dataSource;
@@ -15,9 +15,9 @@ public class TransactionManager {
         dataSource.setUrl(System.getenv("JDBC_DATABASE_URL"));
     }
 
-    public ResultView execute(DataBaseFetch command) throws Exception {
+    public CommandResult execute(DataBaseFetch command) throws Exception {
         Connection connection = null;
-        ResultView resultCommandResult;
+        CommandResult resultCommandResult;
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
@@ -27,9 +27,13 @@ public class TransactionManager {
             if (connection != null) {
                 connection.rollback();
                 connection.close();
-                throw new Exception(e);
+                throw e;
             } else {
-                throw new SQLException("Database is Unreachable");
+                throw new InternalDataBaseException();
+            }
+        } finally {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
             }
         }
         return resultCommandResult;

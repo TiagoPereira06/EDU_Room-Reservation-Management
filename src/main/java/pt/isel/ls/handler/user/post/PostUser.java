@@ -1,36 +1,52 @@
 package pt.isel.ls.handler.user.post;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.errors.handler.InvalidArgumentException;
+import pt.isel.ls.errors.handler.MissingArgumentsException;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.user.UserHandler;
+import pt.isel.ls.handler.user.post.getform.PostUserFormResult;
 import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import static pt.isel.ls.utils.UtilMethods.checkValid;
 
 
 public class PostUser extends UserHandler {
 
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String email;
             String username;
             String postUserQuery = "INSERT INTO users(email, username) VALUES (?,?)";
             PreparedStatement statement = connection.prepareStatement(postUserQuery);
             try {
-                email = commandRequest.getParametersByName(emailParameter).get(0);
-                username = commandRequest.getParametersByName(nameParameter).get(0);
-            } catch (IndexOutOfBoundsException exception) {
-                throw new SQLException("Missing Arguments");
+                email = commandRequest.getParameterByName(emailParameter);
+                checkValid(email, emailParameter);
+                statement.setString(1, email);
+
+                username = commandRequest.getParameterByName(nameParameter);
+                checkValid(email, nameParameter);
+                statement.setString(2, username);
+
+            } catch (Exception exception) {
+                String tag = exception.getMessage();
+                commandRequest.getPostParameters().addErrorMsg(tag, "Missing " + tag);
+                throw new MissingArgumentsException(getPostUserFormResult(commandRequest));
             }
-            statement.setString(1, email);
-            statement.setString(2, username);
+
             if (checksIfEmailAlreadyExists(email, connection)) {
-                throw new SQLException("EMAIL ALREADY IN USE");
+                commandRequest.getPostParameters().addErrorMsg("email", "Duplicate Email Found");
+                throw new InvalidArgumentException(getPostUserFormResult(commandRequest));
             }
             statement.executeUpdate();
-            return new PostUserView(email);
+            return new PostUserResult(email, "/users/" + email);
         });
+    }
+
+    private PostUserFormResult getPostUserFormResult(CommandRequest commandRequest) {
+        return new PostUserFormResult(commandRequest.getPostParameters());
     }
 
     @Override

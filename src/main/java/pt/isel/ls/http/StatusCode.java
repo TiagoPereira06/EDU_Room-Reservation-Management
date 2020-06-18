@@ -2,9 +2,10 @@ package pt.isel.ls.http;
 
 public enum StatusCode {
     Ok(200),
+    Created(201),
+    SeeOther(303),
     BadRequest(400),
     NotFound(404),
-    NotImplemented(501),
     InternalServerError(500);
 
     private final int code;

@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.label.getall;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.request.CommandRequest;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetLabel extends LabelHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getLabelsQuery = "SELECT * FROM labels";
             PreparedStatement statement = connection.prepareStatement(getLabelsQuery);
@@ -25,7 +25,7 @@ public class GetLabel extends LabelHandler {
                                 resultSet.getString("name"))
                 );
             }
-            return new GetLabelView(labelsResult);
+            return new GetLabelResult(labelsResult);
         });
     }
 

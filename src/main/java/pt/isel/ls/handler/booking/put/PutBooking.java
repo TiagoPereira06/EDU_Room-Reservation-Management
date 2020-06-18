@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.booking.put;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.request.CommandRequest;
 
@@ -13,7 +13,7 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public class PutBooking extends BookingHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String putBookingQuery = "UPDATE bookings "
                     + "SET begintime = ?, endtime = ?, reservationowner = ? "
@@ -49,7 +49,7 @@ public class PutBooking extends BookingHandler {
                 throw new SQLException("ROOM IS NOT AVAILABLE");
             }
             statement.executeUpdate();
-            return new PutBookingView(bookingId);
+            return new PutBookingResult(bookingId);
         });
     }
 

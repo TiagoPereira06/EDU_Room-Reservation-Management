@@ -3,6 +3,7 @@ package pt.isel.ls.routertests;
 import org.junit.Assert;
 import org.junit.Test;
 import pt.isel.ls.App;
+import pt.isel.ls.errors.router.RouterException;
 import pt.isel.ls.userinterfaces.interfaces.LocalInterface;
 import pt.isel.ls.handler.booking.delete.DeleteBooking;
 import pt.isel.ls.handler.booking.put.PutBooking;
@@ -24,7 +25,7 @@ public class Phase2Tests {
     }
 
     @Test
-    public void deleteBooking() throws NoSuchMethodException {
+    public void deleteBooking() throws RouterException {
         String[] rawTask = {"DELETE", "/rooms/bernassilva@slb.pt/bookings/6"};
         CommandRequest request = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(request.getMethod(), request.getPath());
@@ -34,7 +35,7 @@ public class Phase2Tests {
     }
 
     @Test
-    public void putBooking() throws NoSuchMethodException {
+    public void putBooking() throws RouterException {
         String[] rawTask = {"PUT", "/rooms/ttavares@slb.pt/bookings/4", "uid=ttavares@slb.pt"
                 + "&begin=2020-04-24+09:30:00"
                 + "&duration=90"};
@@ -46,7 +47,7 @@ public class Phase2Tests {
     }
 
     @Test
-    public void getTime() throws NoSuchMethodException {
+    public void getTime() throws RouterException {
         String[] rawTask = {"GET", "/time"};
         CommandRequest request = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(request.getMethod(), request.getPath());
@@ -56,7 +57,7 @@ public class Phase2Tests {
     }
 
     @Test
-    public void testOption() throws NoSuchMethodException {
+    public void testOption() throws RouterException {
         String[] rawTask = {"OPTIONS", "/"};
         CommandRequest request = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(request.getMethod(), request.getPath());

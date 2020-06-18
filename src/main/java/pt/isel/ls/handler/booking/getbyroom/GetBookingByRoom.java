@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.booking.getbyroom;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GetBookingByRoom extends BookingHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsByRoomQuery = "SELECT * FROM bookings WHERE roomname = ?";
             PreparedStatement statement = connection.prepareStatement(getBookingsByRoomQuery);
@@ -28,7 +28,7 @@ public class GetBookingByRoom extends BookingHandler {
                         resultSet.getString("endTime"));
                 roomBookings.add(b);
             }
-            return new GetBookingByRoomView(roomBookings);
+            return new GetBookingByRoomResult(roomBookings);
         });
     }
 

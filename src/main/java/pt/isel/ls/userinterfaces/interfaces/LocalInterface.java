@@ -1,6 +1,6 @@
 package pt.isel.ls.userinterfaces.interfaces;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.request.Header;
 import pt.isel.ls.userinterfaces.format.PrintInterface;
 import pt.isel.ls.userinterfaces.format.TextType;
@@ -15,8 +15,8 @@ import static pt.isel.ls.request.Header.getOutputType;
 
 public class LocalInterface implements OutputInterface {
     @Override
-    public void show(ResultView resultView, Header header) throws Exception {
-        if (resultView == null) {
+    public void show(CommandResult commandResult, Header header) throws Exception {
+        if (commandResult == null) {
             showError(new InvalidObjectException("Empty Result"));
             return;
         }
@@ -25,9 +25,9 @@ public class LocalInterface implements OutputInterface {
         String filename = getFilename(header);
         PrintInterface printInterface;
         if (outputType == TextType.PLAIN) {
-            printInterface = new PlainTextPrint(resultView);
+            printInterface = new PlainTextPrint(commandResult);
         } else {
-            printInterface = new HtmlPrint(resultView);
+            printInterface = new HtmlPrint(commandResult);
         }
         if ((filename.isEmpty())) {
             printInterface.printTo(System.out);

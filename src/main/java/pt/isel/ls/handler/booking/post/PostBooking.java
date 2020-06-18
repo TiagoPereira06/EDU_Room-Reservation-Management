@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.booking.post;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
@@ -15,7 +15,7 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 public class PostBooking extends BookingHandler {
 
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String postBookingsQuery = "INSERT INTO bookings(reservationOwner, roomName, beginTime, endTime)"
                     + "VALUES (?,?,?,?) ";
@@ -45,7 +45,7 @@ public class PostBooking extends BookingHandler {
                 throw new SQLException("ROOM IS NOT AVAILABLE");
             }
             statement.executeUpdate();
-            return new PostBookingView(String.valueOf(getNextBookingId(connection)));
+            return new PostBookingResult(String.valueOf(getNextBookingId(connection)));
         });
     }
 

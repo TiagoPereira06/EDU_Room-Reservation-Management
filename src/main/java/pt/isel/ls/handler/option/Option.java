@@ -2,13 +2,13 @@ package pt.isel.ls.handler.option;
 
 import pt.isel.ls.App;
 import pt.isel.ls.handler.CommandHandler;
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.request.CommandRequest;
 
 public class Option implements CommandHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) {
-        return new OptionView(App.commandRouter.getRoutes());
+    public CommandResult execute(CommandRequest commandRequest) {
+        return new OptionResult(App.commandRouter.getRoutes());
     }
 
     @Override

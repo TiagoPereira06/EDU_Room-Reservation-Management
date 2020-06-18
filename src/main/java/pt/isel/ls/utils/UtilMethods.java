@@ -24,7 +24,7 @@ public class UtilMethods {
         for (String st : params) {
             String[] parts = st.split("=");
             if (parts.length > 1) {
-                list.add(new Parameter(parts[0], parts[1]));
+                list.add(new Parameter(parts[0], parts[1].replace("+", " ")));
             }
         }
         return list;
@@ -42,6 +42,9 @@ public class UtilMethods {
     }
 
     public static Date formatStringToDate(String date) throws ParseException {
+        if (date.split(":").length == 2) {
+            date = date.concat(":00");
+        }
         return Booking.dateFormat.parse(date);
     }
 
@@ -51,6 +54,12 @@ public class UtilMethods {
 
     public static byte[] getBytes(String target) {
         return target.getBytes(StandardCharsets.UTF_8);
+    }
+
+    public static void checkValid(String value, String errorMsg) throws Exception {
+        if (value == null || value.equals("0") || value.equals("[]")) {
+            throw new Exception(errorMsg);
+        }
     }
 
 }

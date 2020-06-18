@@ -30,6 +30,10 @@ public class Template {
 
     public static final String ROOMS_CREATE = "/rooms/create";
 
+    public static final String USERS_CREATE = "/users/create";
+
+    public static final String LABELS_CREATE = "/labels/create";
+
     public static final String LABELS_LID_ROOMS = "/labels/{lid}/rooms";
 
 }

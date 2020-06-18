@@ -3,6 +3,7 @@ package pt.isel.ls.routertests;
 import org.junit.Assert;
 import org.junit.Test;
 import pt.isel.ls.App;
+import pt.isel.ls.errors.router.RouterException;
 import pt.isel.ls.userinterfaces.interfaces.LocalInterface;
 import pt.isel.ls.handler.booking.post.PostBooking;
 import pt.isel.ls.handler.label.post.PostLabel;
@@ -22,8 +23,8 @@ public class RouterPostsTests {
     }
 
     @Test
-    public void routerPostUser() throws NoSuchMethodException {
-        String[] rawTask = {"POST", "/users", "name=Haris+Seferovic&email=haris@slb.pt"};
+    public void routerPostUser() throws RouterException {
+        String[] rawTask = {"POST", "/users/create", "name=Haris+Seferovic&email=haris@slb.pt"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
@@ -32,8 +33,8 @@ public class RouterPostsTests {
     }
 
     @Test
-    public void routerPostLabel() throws NoSuchMethodException {
-        String[] rawTask = {"POST", "/labels", "name=slow+internet"};
+    public void routerPostLabel() throws RouterException {
+        String[] rawTask = {"POST", "/labels/create", "name=slow+internet"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());
         RouteResult routeResult = commandRouter.findRoute(userRequest.getMethod(), userRequest.getPath());
         userRequest.setParameter(
@@ -42,8 +43,8 @@ public class RouterPostsTests {
     }
 
     @Test
-    public void routerPostRoom() throws NoSuchMethodException {
-        String[] rawTask = {"POST", "/rooms", "name=LGO"
+    public void routerPostRoom() throws RouterException {
+        String[] rawTask = {"POST", "/rooms/create", "name=LGO"
                 + "&description=muitobom"
                 + "&location=Building+F+floor+-1"
                 + "&capacity=55"
@@ -56,7 +57,7 @@ public class RouterPostsTests {
     }
 
     @Test
-    public void routerPostBooking() throws NoSuchMethodException {
+    public void routerPostBooking() throws RouterException {
         String[] rawTask = {"POST", "/rooms/LS1/bookings", "uid=ttavares@slb.pt"
                 + "&begin=2020-04-08+08:30:00"
                 + "&duration=45"};

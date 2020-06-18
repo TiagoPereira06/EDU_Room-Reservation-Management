@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.room.getall;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.handler.room.RoomHandler;
 import pt.isel.ls.model.Room;
@@ -16,9 +16,9 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public class GetRoom extends RoomHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) ->
-                new GetRoomView(executeGetCommand(commandRequest, connection)));
+                new GetRoomResult(executeGetCommand(commandRequest, connection)));
     }
 
     @Override

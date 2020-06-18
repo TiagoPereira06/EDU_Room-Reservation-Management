@@ -1,7 +1,7 @@
 package pt.isel.ls.handler.time;
 
 import pt.isel.ls.handler.CommandHandler;
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
 
@@ -9,8 +9,8 @@ import java.util.Date;
 
 public class Time implements CommandHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) {
-        return new TimeView(Booking.dateFormat.format(new Date()));
+    public CommandResult execute(CommandRequest commandRequest) {
+        return new TimeResult(Booking.dateFormat.format(new Date()));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.label.getbyid;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.model.Label;
 import pt.isel.ls.model.Room;
@@ -8,13 +8,14 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class GetLabelById extends LabelHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersByIdQuery = "select * from labels"
                     + " as l FULL join roomlabels as rm"
@@ -29,23 +30,28 @@ public class GetLabelById extends LabelHandler {
             resultSet.next();
             labelResult = new Label(
                     resultSet.getString("name"));
-            Room r;
             try {
-                r = new Room(resultSet.getString("roomname"));
-                roomsResult.add(r);
+                getRoom(resultSet, roomsResult);
             } catch (NullPointerException e) {
-                return new GetLabelByIdView(labelResult, Collections.emptyList());
+                return new GetLabelByIdResult(labelResult, Collections.emptyList());
             }
             while (resultSet.next()) {
                 try {
-                    r = new Room(resultSet.getString("roomname"));
-                    roomsResult.add(r);
+                    getRoom(resultSet, roomsResult);
                 } catch (NullPointerException e) {
                     break;
                 }
             }
-            return new GetLabelByIdView(labelResult, roomsResult);
+            return new GetLabelByIdResult(labelResult, roomsResult);
         });
+    }
+
+    private void getRoom(ResultSet resultSet, List<Room> roomsResult) throws SQLException {
+        Room r = new Room(resultSet.getString("roomname"));
+        if (r.getName() == null) {
+            throw new NullPointerException();
+        }
+        roomsResult.add(r);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.booking.getall;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.request.CommandRequest;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetBooking extends BookingHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsQuery = "SELECT * FROM bookings";
             PreparedStatement statement = connection.prepareStatement(getBookingsQuery);
@@ -28,7 +28,7 @@ public class GetBooking extends BookingHandler {
                         resultSet.getString("endTime"));
                 getAllBookingResult.add(b);
             }
-            return new GetBookingView(getAllBookingResult);
+            return new GetBookingResult(getAllBookingResult);
         });
     }
 

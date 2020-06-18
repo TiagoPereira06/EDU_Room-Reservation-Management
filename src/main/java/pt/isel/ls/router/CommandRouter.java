@@ -1,6 +1,7 @@
 package pt.isel.ls.router;
 
 import pt.isel.ls.CommandUri;
+import pt.isel.ls.errors.router.RouterException;
 import pt.isel.ls.handler.CommandHandler;
 import pt.isel.ls.request.Method;
 import pt.isel.ls.request.Parameter;
@@ -23,14 +24,14 @@ public class CommandRouter {
         routes.add(new Operation(commandUri, handler));
     }
 
-    public RouteResult findRoute(Method method, Path path) throws NoSuchMethodException {
+    public RouteResult findRoute(Method method, Path path) throws RouterException {
         RouteResult result = null;
         Iterator<Operation> itr = routes.iterator();
         while (itr.hasNext() && result == null) {
             result = checkPathMatch(itr.next(), method, path);
         }
         if (result == null) {
-            throw new NoSuchMethodException("Request Not Found");
+            throw new RouterException();
         }
         return result;
     }

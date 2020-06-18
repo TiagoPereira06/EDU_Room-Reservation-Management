@@ -29,6 +29,10 @@ public class Element implements Node {
         return new Element("nav").addNode(node);
     }
 
+    public static Element hr(Node... node) {
+        return new Element("hr").addNode(node);
+    }
+
     public static Element body(Node... node) {
         return new Element("body").addNode(node);
     }
@@ -59,6 +63,10 @@ public class Element implements Node {
 
     public static Element input(Node... node) {
         return new Element("input").addNode(node);
+    }
+
+    public static Element br(Node... node) {
+        return new Element("br").addNode(node);
     }
 
 
@@ -114,8 +122,8 @@ public class Element implements Node {
         return new Element("b").addNode(node);
     }
 
-    public static Element paragraph() {
-        return new Element("paragraph");
+    public static Element paragraph(Node node) {
+        return new Element("p").addNode(node);
     }
 
     public static Node text(String txt) {
@@ -146,7 +154,10 @@ public class Element implements Node {
     }
 
     public Element addAttribute(String name, String value) {
-        attributes.add(new Attribute(name, value.replace(" ", "%20")));
+        if (!name.equals("value")) {
+            value = value.replace("+", "%20");
+        }
+        attributes.add(new Attribute(name, value));
         return this;
     }
 
@@ -157,7 +168,7 @@ public class Element implements Node {
         sb.append(name);
         for (Attribute attr : attributes) {
             sb.append(" ");
-            sb.append(attr);
+            sb.append(attr.toString());
         }
         sb.append(">");
         for (Node node : nodes) {

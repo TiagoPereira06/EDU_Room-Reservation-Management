@@ -1,56 +1,90 @@
 package pt.isel.ls.handler.room.post;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.errors.handler.InvalidArgumentException;
+import pt.isel.ls.errors.handler.MissingArgumentsException;
+import pt.isel.ls.handler.CommandResult;
+import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.handler.room.RoomHandler;
+import pt.isel.ls.handler.room.post.getform.PostRoomFormResult;
 import pt.isel.ls.model.Label;
+import pt.isel.ls.model.Room;
 import pt.isel.ls.request.CommandRequest;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import static pt.isel.ls.utils.UtilMethods.checkValid;
+
 
 public class PostRoom extends RoomHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
-
             final String roomName;
             final int roomCapacity;
             final String roomDescription;
             final String roomLocation;
+            final List<String> labelsParameters;
             String postRoomsQuery = "INSERT INTO rooms(name, location, capacity, description) VALUES (?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(postRoomsQuery);
             try {
-                roomName = commandRequest.getParametersByName(nameParameter).get(0);
+                roomName = commandRequest.getParameterByName(nameParameter);
+                checkValid(roomName, nameParameter);
                 statement.setString(1, roomName);
-                roomLocation = commandRequest.getParametersByName(locationParameter).get(0);
+
+                roomLocation = commandRequest.getParameterByName(locationParameter);
+                checkValid(roomLocation, locationParameter);
                 statement.setString(2, roomLocation);
-                roomCapacity = Integer.parseInt(commandRequest.getParametersByName(capacityParameter).get(0));
+
+                roomCapacity = Integer.parseInt(commandRequest.getParameterByName(capacityParameter));
+                checkValid(String.valueOf(roomCapacity), capacityParameter);
                 statement.setInt(3, roomCapacity);
-                roomDescription = commandRequest.getParametersByName(descriptionParameter).get(0);
+
+                roomDescription = commandRequest.getParameterByName(descriptionParameter);
+                checkValid(roomDescription, descriptionParameter);
                 statement.setString(4, roomDescription);
-            } catch (IndexOutOfBoundsException exception) {
-                throw new SQLException("Missing Arguments");
+
+                labelsParameters = commandRequest.getParametersByName(labelParameter);
+                checkValid(String.valueOf(labelsParameters), labelParameter);
+
+            } catch (Exception exception) {
+                String tag = exception.getMessage();
+                commandRequest.getPostParameters().addErrorMsg(tag, "Missing " + tag);
+                throw new MissingArgumentsException(getPostRoomFormResult(commandRequest, connection));
             }
 
-            List<String> labelsParameters = commandRequest.getParametersByName(labelParameter);
+
             List<Label> labels = new LinkedList<>();
             for (String labelName : labelsParameters) {
                 if (!checkIfLabelAlreadyExists(labelName, connection)) {
-                    throw new SQLException("LABEL NOT VALID");
+                    commandRequest.getPostParameters().addErrorMsg("label", "Label not Found");
+                    throw new InvalidArgumentException(getPostRoomFormResult(commandRequest, connection));
                 } else {
                     labels.add(new Label(labelName));
                 }
             }
             if (checksIfRoomAlreadyExists(roomName, connection)) {
-                throw new SQLException("ROOM ALREADY EXISTS");
+                commandRequest.getPostParameters().addErrorMsg("name", "Duplicate Name Found");
+                throw new InvalidArgumentException(getPostRoomFormResult(commandRequest, connection));
             }
             statement.executeUpdate();
             insertLabelsRoom(connection, roomName, labels);
-            return new PostRoomView(roomName);
+            Room result = new Room(roomName, roomLocation, roomCapacity, roomDescription);
+            result.setLabels(labels);
+            return new PostRoomResult(result.getName(), "/rooms/" + roomName);
         });
+    }
+
+    private PostRoomFormResult getPostRoomFormResult(
+            CommandRequest commandRequest, Connection connection)
+            throws SQLException {
+        return new PostRoomFormResult(
+                LabelHandler.getAllLabels(connection),
+                commandRequest.getPostParameters()
+        );
     }
 
     @Override

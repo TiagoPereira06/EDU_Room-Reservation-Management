@@ -1,6 +1,6 @@
 package pt.isel.ls.handler.room.getbyid;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.room.RoomHandler;
 import pt.isel.ls.model.Booking;
 import pt.isel.ls.model.Label;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GetRoomById extends RoomHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
             String getRoomsByIdQuery = "select * from rooms as r"
                     + " full join bookings as b"
@@ -45,7 +45,7 @@ public class GetRoomById extends RoomHandler {
                         resultSet.getString("endTime"));
                 bookingsResult.add(b);
             } catch (NullPointerException e) {
-                return new GetRoomByIdView(roomResult, Collections.emptyList());
+                return new GetRoomByIdResult(roomResult, Collections.emptyList());
             }
 
             while (resultSet.next()) {
@@ -62,7 +62,7 @@ public class GetRoomById extends RoomHandler {
                 }
             }
 
-            return new GetRoomByIdView(roomResult, bookingsResult);
+            return new GetRoomByIdResult(roomResult, bookingsResult);
         });
     }
 

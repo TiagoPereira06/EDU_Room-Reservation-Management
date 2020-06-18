@@ -1,32 +1,47 @@
 package pt.isel.ls.handler.label.post;
 
-import pt.isel.ls.handler.ResultView;
+import pt.isel.ls.errors.handler.InvalidArgumentException;
+import pt.isel.ls.errors.handler.MissingArgumentsException;
+import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.label.LabelHandler;
+import pt.isel.ls.handler.label.post.getform.PostLabelFormResult;
 import pt.isel.ls.request.CommandRequest;
 
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import static pt.isel.ls.utils.UtilMethods.checkValid;
 
 public class PostLabel extends LabelHandler {
     @Override
-    public ResultView execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         return commandRequest.transactionManager.execute((connection) -> {
 
             final String labelName;
             String getRoomsQuery = "INSERT INTO labels(name) VALUES (?)";
             PreparedStatement statement = connection.prepareStatement(getRoomsQuery);
             try {
-                labelName = commandRequest.getParametersByName(nameParameter).get(0);
+
+                labelName = commandRequest.getParameterByName(nameParameter);
+                checkValid(labelName, nameParameter);
                 statement.setString(1, labelName);
-            } catch (IndexOutOfBoundsException exception) {
-                throw new SQLException("Missing Arguments");
+
+            } catch (Exception exception) {
+                String tag = exception.getMessage();
+                commandRequest.getPostParameters().addErrorMsg(tag, "Missing " + tag);
+                throw new MissingArgumentsException(getPostLabelFormResult(commandRequest));
             }
+
             if (checkIfLabelAlreadyExists(labelName, connection)) {
-                throw new SQLException("LABEL ALREADY IN USE !");
+                commandRequest.getPostParameters().addErrorMsg("name", "Duplicate Name Found");
+                throw new InvalidArgumentException(getPostLabelFormResult(commandRequest));
             }
             statement.executeUpdate();
-            return new PostLabelView(labelName);
+            return new PostLabelResult(labelName, "/labels/" + labelName);
         });
+    }
+
+    private PostLabelFormResult getPostLabelFormResult(CommandRequest commandRequest) {
+        return new PostLabelFormResult(commandRequest.getPostParameters());
     }
 
     @Override

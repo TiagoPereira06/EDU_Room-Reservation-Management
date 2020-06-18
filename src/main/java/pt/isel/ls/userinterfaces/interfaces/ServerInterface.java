@@ -1,8 +1,10 @@
 package pt.isel.ls.userinterfaces.interfaces;
 
-import pt.isel.ls.AppError;
-import pt.isel.ls.handler.ResultView;
-import pt.isel.ls.http.StatusCode;
+import pt.isel.ls.errors.AppError;
+import pt.isel.ls.errors.AppException;
+import pt.isel.ls.handler.CommandResult;
+import pt.isel.ls.handler.ResponseHeader;
+import pt.isel.ls.handler.Result;
 import pt.isel.ls.request.Header;
 import pt.isel.ls.userinterfaces.format.PrintInterface;
 import pt.isel.ls.userinterfaces.format.html.HtmlPrint;
@@ -28,9 +30,13 @@ public class ServerInterface implements OutputInterface {
     }
 
     @Override
-    public void show(ResultView resultView, Header header) throws Exception {
-        PrintInterface htmlPrint = new HtmlPrint(resultView);
-        resp.setStatus(StatusCode.Ok.getCodeValue());
+    public void show(CommandResult commandResult, Header header) throws Exception {
+        PrintInterface htmlPrint = new HtmlPrint(commandResult);
+        resp.setStatus(commandResult.successStatusCode().getCodeValue());
+        ResponseHeader responseHeader = commandResult.responseHeader();
+        if (responseHeader != null) {
+            resp.setHeader(responseHeader.getName(), responseHeader.getValue());
+        }
         htmlPrint.printTo(outputStream);
     }
 
@@ -39,7 +45,16 @@ public class ServerInterface implements OutputInterface {
         int status = AppError.getStatusCode(e);
         try {
             resp.setStatus(status);
-            outputStream.write(ErrorTemplate.errorTemplate(e.getMessage()).getBytes(Charset.defaultCharset()));
+            Result result = null;
+            if (e instanceof AppException) {
+                result = (((AppException) e).result);
+            }
+
+            if (result == null) {
+                outputStream.write(ErrorTemplate.errorTemplate(e.getMessage()).getBytes(Charset.defaultCharset()));
+            } else {
+                outputStream.write(result.htmlOutput().getBytes(Charset.defaultCharset()));
+            }
             outputStream.flush();
         } catch (IOException es) {
             showError(es);
