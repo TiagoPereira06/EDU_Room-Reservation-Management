@@ -24,7 +24,7 @@ public class TransactionManager {
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
-            resultCommandResult = command.execute(dataSource.getConnection());
+            resultCommandResult = command.execute(connection);
             connection.commit();
         } catch (Exception e) {
             if (connection != null) {
