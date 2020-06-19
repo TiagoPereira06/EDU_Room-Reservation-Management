@@ -92,7 +92,7 @@ public class Servlet extends HttpServlet {
             final String[] values = parameterMap.get(key);
             for (int j = 0; j < values.length; j++) {
                 sb.append(key).append("=");
-                if (values[j].contains("%3A")) {
+                if ((values[j].contains("-")) && (values[j].contains(":"))) {
                     values[j] = values[j].replace("T", "+");
                 }
                 sb.append(values[j].replace(" ", "+"));
