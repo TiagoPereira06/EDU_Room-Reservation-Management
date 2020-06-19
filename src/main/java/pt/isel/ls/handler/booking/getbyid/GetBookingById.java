@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.booking.getbyid;
 
+import pt.isel.ls.errors.command.CommandException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
@@ -11,12 +12,12 @@ import java.sql.ResultSet;
 public class GetBookingById extends BookingHandler {
 
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
 
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsByIdQuery = "SELECT * FROM bookings WHERE bid = ? ";
             PreparedStatement statement = connection.prepareStatement(getBookingsByIdQuery);
-            int roomId = Integer.parseInt(commandRequest.getParametersByName(idArgument).get(0));
+            int roomId = Integer.parseInt(commandRequest.getParameterByName(idArgument));
             statement.setInt(1, roomId);
             ResultSet resultSet = statement.executeQuery();
             Booking idBookings;

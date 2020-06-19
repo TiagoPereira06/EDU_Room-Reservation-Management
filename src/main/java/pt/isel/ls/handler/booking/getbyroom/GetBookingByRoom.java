@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.booking.getbyroom;
 
+import pt.isel.ls.errors.command.CommandException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
@@ -12,11 +13,11 @@ import java.util.List;
 
 public class GetBookingByRoom extends BookingHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsByRoomQuery = "SELECT * FROM bookings WHERE roomname = ?";
             PreparedStatement statement = connection.prepareStatement(getBookingsByRoomQuery);
-            statement.setString(1, commandRequest.getParametersByName(roomIdArgument).get(0));
+            statement.setString(1, commandRequest.getParameterByName(roomIdArgument));
             ResultSet resultSet = statement.executeQuery();
             List<Booking> roomBookings = new LinkedList<>();
             while (resultSet.next()) {

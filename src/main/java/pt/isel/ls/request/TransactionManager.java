@@ -1,11 +1,14 @@
 package pt.isel.ls.request;
 
 import org.postgresql.ds.PGSimpleDataSource;
-import pt.isel.ls.errors.database.InternalDataBaseException;
+import pt.isel.ls.errors.command.CommandException;
+import pt.isel.ls.errors.command.InternalDataBaseException;
+import pt.isel.ls.errors.command.ResultNotFoundException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.DataBaseFetch;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class TransactionManager {
     private final PGSimpleDataSource dataSource;
@@ -15,7 +18,7 @@ public class TransactionManager {
         dataSource.setUrl(System.getenv("JDBC_DATABASE_URL"));
     }
 
-    public CommandResult execute(DataBaseFetch command) throws Exception {
+    public CommandResult execute(DataBaseFetch command) throws CommandException {
         Connection connection = null;
         CommandResult resultCommandResult;
         try {
@@ -25,15 +28,27 @@ public class TransactionManager {
             connection.commit();
         } catch (Exception e) {
             if (connection != null) {
-                connection.rollback();
-                connection.close();
-                throw e;
+                try {
+                    connection.rollback();
+                    connection.close();
+                } catch (SQLException ex) {
+                    throw new InternalDataBaseException();
+                }
+                if (e instanceof CommandException) {
+                    throw (CommandException) e;
+                } else {
+                    throw new ResultNotFoundException();
+                }
             } else {
-                throw new InternalDataBaseException();
+                throw new InternalDataBaseException("Database is Unreachable");
             }
         } finally {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                throw new InternalDataBaseException();
             }
         }
         return resultCommandResult;

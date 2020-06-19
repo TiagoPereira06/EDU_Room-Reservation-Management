@@ -69,6 +69,14 @@ public class Element implements Node {
         return new Element("br").addNode(node);
     }
 
+    public static Element select(Node... node) {
+        return new Element("select").addNode(node);
+    }
+
+    public static Element option(Node... node) {
+        return new Element("option").addNode(node);
+    }
+
 
     public static Element table(Node node, List<Node> n) {
         return new Element("table").addNode(node).addNode(n);

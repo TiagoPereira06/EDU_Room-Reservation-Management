@@ -1,12 +1,12 @@
-package pt.isel.ls.errors.handler;
+package pt.isel.ls.errors.command;
 
 import pt.isel.ls.handler.Result;
 
-public class InvalidArgumentException extends HandlerException {
+public class InvalidArgumentException extends CommandException {
 
 
     public InvalidArgumentException(Result formResult) {
-        super("Invalid Arguments", formResult);
+        super("Invalid Argument", formResult);
     }
 
     public InvalidArgumentException(String msg, Result formResult) {
@@ -15,6 +15,10 @@ public class InvalidArgumentException extends HandlerException {
 
 
     public InvalidArgumentException() {
-        super("Invalid Arguments");
+        super("Invalid Argument");
+    }
+
+    public InvalidArgumentException(String msg) {
+        super(msg);
     }
 }

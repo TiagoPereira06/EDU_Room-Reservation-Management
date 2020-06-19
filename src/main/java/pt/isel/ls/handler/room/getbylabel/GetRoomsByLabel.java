@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.room.getbylabel;
 
+import pt.isel.ls.errors.command.CommandException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.room.RoomHandler;
 import pt.isel.ls.model.Room;
@@ -13,12 +14,12 @@ import java.util.List;
 
 public class GetRoomsByLabel extends RoomHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getRoomsByLabelQuery = "SELECT r.name,r.location,r.capacity,r.description from rooms as r "
                     + "FULL JOIN roomlabels as rm ON r.name = rm.roomName WHERE rm.label = ?";
             PreparedStatement statement = connection.prepareStatement(getRoomsByLabelQuery);
-            final String labelName = commandRequest.getParametersByName(lidArgument).get(0);
+            final String labelName = commandRequest.getParameterByName(lidArgument);
             statement.setString(1, labelName);
             ResultSet resultSet = statement.executeQuery();
             List<Room> roomResult = new LinkedList<>();

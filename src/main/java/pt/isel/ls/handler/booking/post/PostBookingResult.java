@@ -1,19 +1,23 @@
 package pt.isel.ls.handler.booking.post;
 
+import pt.isel.ls.handler.ResponseHeader;
 import pt.isel.ls.handler.Result;
+import pt.isel.ls.http.StatusCode;
 
 import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 
 public class PostBookingResult extends Result {
-    private final String model;
+    private final String bookingId;
+    private final String path;
 
-    public PostBookingResult(String postedBookingId) {
-        this.model = postedBookingId;
+    public PostBookingResult(String postedBookingId, String path) {
+        this.bookingId = postedBookingId;
+        this.path = path;
     }
 
     @Override
     public String name() {
-        return model + " booking posted";
+        return bookingId + " booking posted";
     }
 
     @Override
@@ -24,14 +28,24 @@ public class PostBookingResult extends Result {
                 ),
                 body(
                         h1(text(name())),
-                        text("booking id: " + model))
+                        text("booking id: " + bookingId))
 
         ).build();
     }
 
     @Override
     public String plainOutput() {
-        return model;
+        return "Booking Created : " + bookingId;
+    }
+
+    @Override
+    public StatusCode successStatusCode() {
+        return StatusCode.SeeOther;
+    }
+
+    @Override
+    public ResponseHeader responseHeader() {
+        return new ResponseHeader("Location", path);
     }
 
 }

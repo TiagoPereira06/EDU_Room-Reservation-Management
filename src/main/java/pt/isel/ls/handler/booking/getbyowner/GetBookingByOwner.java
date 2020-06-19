@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.booking.getbyowner;
 
+import pt.isel.ls.errors.command.CommandException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
@@ -13,11 +14,11 @@ import java.util.List;
 public class GetBookingByOwner extends BookingHandler {
 
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsByOwnerQuery = "SELECT * FROM bookings WHERE reservationOwner = ?";
             PreparedStatement statement = connection.prepareStatement(getBookingsByOwnerQuery);
-            statement.setString(1, commandRequest.getParametersByName(ownerIdArgument).get(0));
+            statement.setString(1, commandRequest.getParameterByName(ownerIdArgument));
             ResultSet resultSet = statement.executeQuery();
             List<Booking> ownerBookings = new LinkedList<>();
             while (resultSet.next()) {

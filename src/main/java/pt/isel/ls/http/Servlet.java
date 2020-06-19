@@ -63,7 +63,8 @@ public class Servlet extends HttpServlet {
     }
 
     private String formatUri(String requestUri) {
-        return requestUri.replace("%20", "+");
+        //TODO + ou " "
+        return requestUri.replace("%20", " ");
     }
 
     private void processPost(HttpServletRequest req) {
@@ -90,7 +91,11 @@ public class Servlet extends HttpServlet {
             String key = keys[i];
             final String[] values = parameterMap.get(key);
             for (int j = 0; j < values.length; j++) {
-                sb.append(key).append("=").append(values[j].replace(" ", "+"));
+                sb.append(key).append("=");
+                if (values[j].contains("%3A")) {
+                    values[j] = values[j].replace("T", "+");
+                }
+                sb.append(values[j].replace(" ", "+"));
                 if (j != values.length - 1) {
                     sb.append("&");
                 }

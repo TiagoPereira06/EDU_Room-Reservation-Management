@@ -1,5 +1,8 @@
 package pt.isel.ls.handler.user.getbyid;
 
+import pt.isel.ls.errors.command.CommandException;
+import pt.isel.ls.errors.command.InternalDataBaseException;
+import pt.isel.ls.errors.command.InvalidArgumentException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.user.UserHandler;
 import pt.isel.ls.model.Booking;
@@ -17,14 +20,14 @@ import java.util.List;
 public class GetUserById extends UserHandler {
 
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersByIdQuery = "select * from users"
                     + " as u FULL join bookings as b"
                     + " on b.reservationowner = u.email "
                     + "where u.email = ?";
             PreparedStatement statement = connection.prepareStatement(getUsersByIdQuery);
-            statement.setString(1, commandRequest.getParametersByName(idArgument).get(0));
+            statement.setString(1, commandRequest.getParameterByName(idArgument));
             ResultSet resultSet = statement.executeQuery();
             User userResult;
             List<Booking> bookingResult = new LinkedList<>();
@@ -52,11 +55,18 @@ public class GetUserById extends UserHandler {
 
     }
 
-    private void getBooking(ResultSet resultSet, List<Booking> bookingResult) throws ParseException, SQLException {
-        Booking b;
-        b = new Booking(resultSet.getInt("bid"), resultSet.getString("roomname"),
-                resultSet.getString("beginTime"), resultSet.getString("endTime"));
-        bookingResult.add(b);
+    private void getBooking(ResultSet resultSet, List<Booking> bookingResult)
+            throws InternalDataBaseException, InvalidArgumentException {
+        try {
+            Booking b;
+            b = new Booking(resultSet.getInt("bid"), resultSet.getString("roomname"),
+                    resultSet.getString("beginTime"), resultSet.getString("endTime"));
+            bookingResult.add(b);
+        } catch (SQLException throwables) {
+            throw new InternalDataBaseException();
+        } catch (ParseException e) {
+            throw new InvalidArgumentException(e.getMessage());
+        }
     }
 
     @Override

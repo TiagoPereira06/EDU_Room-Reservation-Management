@@ -7,28 +7,12 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class UtilMethods {
-
-    public static List<Parameter> getParameters(String[] rawInput, int index) {
-        List<Parameter> list = new LinkedList<>();
-        if (index >= rawInput.length) {
-            return list;
-        }
-        String rawString = rawInput[index];
-        String[] params = rawString.split("&");
-        for (String st : params) {
-            String[] parts = st.split("=");
-            if (parts.length > 1) {
-                list.add(new Parameter(parts[0], parts[1].replace("+", " ")));
-            }
-        }
-        return list;
-    }
 
     public static String[] filterStringArray(String[] array) {
         return Arrays.stream(array)
@@ -48,6 +32,13 @@ public class UtilMethods {
         return Booking.dateFormat.parse(date);
     }
 
+    public static String formatStringDate(String date) {
+        if (date.split(":").length == 2) {
+            date = date.concat(":00");
+        }
+        return date;
+    }
+
     public static String formatDateToString(Date date) {
         return Booking.dateFormat.format(date);
     }
@@ -56,9 +47,9 @@ public class UtilMethods {
         return target.getBytes(StandardCharsets.UTF_8);
     }
 
-    public static void checkValid(String value, String errorMsg) throws Exception {
+    public static void checkValid(String value, String tag) throws NoSuchElementException {
         if (value == null || value.equals("0") || value.equals("[]")) {
-            throw new Exception(errorMsg);
+            throw new NoSuchElementException(tag);
         }
     }
 

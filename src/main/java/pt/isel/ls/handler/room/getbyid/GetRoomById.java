@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.room.getbyid;
 
+import pt.isel.ls.errors.command.CommandException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.room.RoomHandler;
 import pt.isel.ls.model.Booking;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class GetRoomById extends RoomHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getRoomsByIdQuery = "select * from rooms as r"
                     + " full join bookings as b"

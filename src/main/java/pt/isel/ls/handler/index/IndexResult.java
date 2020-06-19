@@ -11,7 +11,7 @@ import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 public class IndexResult extends Result {
     @Override
     public String name() {
-        return "Group 6's Application";
+        return "Group 9's Application";
     }
 
     @Override

@@ -34,6 +34,8 @@ public class Template {
 
     public static final String LABELS_CREATE = "/labels/create";
 
+    public static final String BOOKING_CREATE = "/rooms/{rid}/bookings/create";
+
     public static final String LABELS_LID_ROOMS = "/labels/{lid}/rooms";
 
 }

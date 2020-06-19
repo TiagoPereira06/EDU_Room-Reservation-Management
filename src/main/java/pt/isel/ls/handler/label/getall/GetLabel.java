@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.label.getall;
 
+import pt.isel.ls.errors.command.CommandException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.model.Label;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class GetLabel extends LabelHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getLabelsQuery = "SELECT * FROM labels";
             PreparedStatement statement = connection.prepareStatement(getLabelsQuery);

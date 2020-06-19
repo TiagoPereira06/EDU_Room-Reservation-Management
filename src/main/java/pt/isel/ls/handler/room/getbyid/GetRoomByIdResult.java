@@ -53,6 +53,8 @@ public class GetRoomByIdResult extends Result {
         navItems.add(button("All Roms", "/rooms"));
         navItems.add(text(" | "));
         navItems.add(button("Rooms Search", "/rooms/search"));
+        navItems.add(text(" | "));
+        navItems.add(button("Create Booking", String.format("/rooms/%s/bookings/create", room.getName())));
         return navItems.toArray(new Node[0]);
     }
 

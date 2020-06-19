@@ -8,6 +8,7 @@ import pt.isel.ls.handler.booking.getbyid.GetBookingById;
 import pt.isel.ls.handler.booking.getbyowner.GetBookingByOwner;
 import pt.isel.ls.handler.booking.getbyroom.GetBookingByRoom;
 import pt.isel.ls.handler.booking.post.PostBooking;
+import pt.isel.ls.handler.booking.post.getform.PostBookingForm;
 import pt.isel.ls.handler.booking.put.PutBooking;
 import pt.isel.ls.handler.exit.Exit;
 import pt.isel.ls.handler.index.Index;
@@ -103,6 +104,9 @@ public class App {
         commandRouter
                 .addRoute(
                         GET_POST_USER_FORM_URL, new PostUserForm());
+        commandRouter
+                .addRoute(
+                        GET_POST_BOOKING_FORM_URL, new PostBookingForm());
         commandRouter
                 .addRoute(
                         GET_SEARCH_ROOM_URL, new SearchRoom());

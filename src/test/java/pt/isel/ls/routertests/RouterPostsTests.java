@@ -58,7 +58,7 @@ public class RouterPostsTests {
 
     @Test
     public void routerPostBooking() throws RouterException {
-        String[] rawTask = {"POST", "/rooms/LS1/bookings", "uid=ttavares@slb.pt"
+        String[] rawTask = {"POST", "/rooms/LS1/bookings/create", "uid=ttavares@slb.pt"
                 + "&begin=2020-04-08+08:30:00"
                 + "&duration=45"};
         CommandRequest userRequest = CommandRequest.formatUserInput(rawTask, new LocalInterface());

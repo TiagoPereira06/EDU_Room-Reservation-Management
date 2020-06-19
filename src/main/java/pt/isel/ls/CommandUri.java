@@ -23,11 +23,14 @@ public class CommandUri {
     static final CommandUri GET_POST_LABEL_FORM_URL =
             new CommandUri(Method.GET, new PathTemplate(Template.LABELS_CREATE));
 
+    static final CommandUri GET_POST_BOOKING_FORM_URL =
+            new CommandUri(Method.GET, new PathTemplate(Template.BOOKING_CREATE));
+
     static final CommandUri GET_ROOM_BY_ID_URL =
             new CommandUri(Method.GET, new PathTemplate(Template.ROOMS_RID));
 
     static final CommandUri POST_BOOKING_URL =
-            new CommandUri(Method.POST, new PathTemplate(Template.ROOMS_RID_BOOKINGS));
+            new CommandUri(Method.POST, new PathTemplate(Template.BOOKING_CREATE));
 
     static final CommandUri GET_BOOKING_BY_ROOM_URL =
             new CommandUri(Method.GET, new PathTemplate(Template.ROOMS_RID_BOOKINGS));

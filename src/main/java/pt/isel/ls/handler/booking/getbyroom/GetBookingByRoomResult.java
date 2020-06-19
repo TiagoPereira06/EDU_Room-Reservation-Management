@@ -5,6 +5,7 @@ import pt.isel.ls.model.Booking;
 import pt.isel.ls.userinterfaces.format.html.htmlemitter.Element;
 import pt.isel.ls.userinterfaces.format.html.htmlemitter.Node;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,8 +39,12 @@ public class GetBookingByRoomResult extends Result {
         ).build();
     }
 
-    private Node setNavBar() {
-        return homeButton();
+    private Node[] setNavBar() {
+        List<Node> navItems = new ArrayList<>();
+        navItems.add(homeButton());
+        navItems.add(text(" | "));
+        navItems.add(button("Create Booking", String.format("/rooms/%s/bookings/create", model.get(0).getRoomName())));
+        return navItems.toArray(new Node[0]);
     }
 
 

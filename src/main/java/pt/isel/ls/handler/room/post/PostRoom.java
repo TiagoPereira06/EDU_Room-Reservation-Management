@@ -1,7 +1,6 @@
 package pt.isel.ls.handler.room.post;
 
-import pt.isel.ls.errors.handler.InvalidArgumentException;
-import pt.isel.ls.errors.handler.MissingArgumentsException;
+import pt.isel.ls.errors.command.*;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.handler.room.RoomHandler;
@@ -12,16 +11,16 @@ import pt.isel.ls.request.CommandRequest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static pt.isel.ls.utils.UtilMethods.checkValid;
 
 
 public class PostRoom extends RoomHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             final String roomName;
             final int roomCapacity;
@@ -50,7 +49,7 @@ public class PostRoom extends RoomHandler {
                 labelsParameters = commandRequest.getParametersByName(labelParameter);
                 checkValid(String.valueOf(labelsParameters), labelParameter);
 
-            } catch (Exception exception) {
+            } catch (NoSuchElementException exception) {
                 String tag = exception.getMessage();
                 commandRequest.getPostParameters().addErrorMsg(tag, "Missing " + tag);
                 throw new MissingArgumentsException(getPostRoomFormResult(commandRequest, connection));
@@ -68,7 +67,7 @@ public class PostRoom extends RoomHandler {
             }
             if (checksIfRoomAlreadyExists(roomName, connection)) {
                 commandRequest.getPostParameters().addErrorMsg("name", "Duplicate Name Found");
-                throw new InvalidArgumentException(getPostRoomFormResult(commandRequest, connection));
+                throw new ConflictArgumentException(getPostRoomFormResult(commandRequest, connection));
             }
             statement.executeUpdate();
             insertLabelsRoom(connection, roomName, labels);
@@ -79,8 +78,7 @@ public class PostRoom extends RoomHandler {
     }
 
     private PostRoomFormResult getPostRoomFormResult(
-            CommandRequest commandRequest, Connection connection)
-            throws SQLException {
+            CommandRequest commandRequest, Connection connection) throws InternalDataBaseException {
         return new PostRoomFormResult(
                 LabelHandler.getAllLabels(connection),
                 commandRequest.getPostParameters()

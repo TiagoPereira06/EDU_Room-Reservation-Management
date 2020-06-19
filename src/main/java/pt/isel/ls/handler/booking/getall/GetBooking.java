@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.booking.getall;
 
+import pt.isel.ls.errors.command.CommandException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.model.Booking;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class GetBooking extends BookingHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getBookingsQuery = "SELECT * FROM bookings";
             PreparedStatement statement = connection.prepareStatement(getBookingsQuery);

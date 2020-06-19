@@ -1,5 +1,7 @@
 package pt.isel.ls.handler.label.getbyid;
 
+import pt.isel.ls.errors.command.CommandException;
+import pt.isel.ls.errors.command.InternalDataBaseException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.label.LabelHandler;
 import pt.isel.ls.model.Label;
@@ -15,15 +17,15 @@ import java.util.List;
 
 public class GetLabelById extends LabelHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersByIdQuery = "select * from labels"
                     + " as l FULL join roomlabels as rm"
                     + " on l.name = rm.label"
                     + " where l.name = ?";
             PreparedStatement statement = connection.prepareStatement(getUsersByIdQuery);
-            final String s = commandRequest.getParametersByName(idArgument).get(0);
-            statement.setString(1, s);
+            final String id = commandRequest.getParameterByName(idArgument);
+            statement.setString(1, id);
             ResultSet resultSet = statement.executeQuery();
             Label labelResult;
             List<Room> roomsResult = new LinkedList<>();
@@ -46,12 +48,16 @@ public class GetLabelById extends LabelHandler {
         });
     }
 
-    private void getRoom(ResultSet resultSet, List<Room> roomsResult) throws SQLException {
-        Room r = new Room(resultSet.getString("roomname"));
-        if (r.getName() == null) {
-            throw new NullPointerException();
+    private void getRoom(ResultSet resultSet, List<Room> roomsResult) throws InternalDataBaseException {
+        try {
+            Room r = new Room(resultSet.getString("roomname"));
+            if (r.getName() == null) {
+                throw new NullPointerException();
+            }
+            roomsResult.add(r);
+        } catch (SQLException throwables) {
+            throw new InternalDataBaseException();
         }
-        roomsResult.add(r);
     }
 
     @Override

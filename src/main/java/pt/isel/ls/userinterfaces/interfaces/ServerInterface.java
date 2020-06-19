@@ -49,9 +49,11 @@ public class ServerInterface implements OutputInterface {
             if (e instanceof AppException) {
                 result = (((AppException) e).result);
             }
-
             if (result == null) {
-                outputStream.write(ErrorTemplate.errorTemplate(e.getMessage()).getBytes(Charset.defaultCharset()));
+                outputStream.write(
+                        ErrorTemplate.errorTemplate(e.getMessage(), status)
+                                .getBytes(Charset.defaultCharset())
+                );
             } else {
                 outputStream.write(result.htmlOutput().getBytes(Charset.defaultCharset()));
             }

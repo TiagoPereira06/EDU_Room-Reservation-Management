@@ -1,5 +1,8 @@
 package pt.isel.ls.handler.room.getall;
 
+import pt.isel.ls.errors.command.CommandException;
+import pt.isel.ls.errors.command.InternalDataBaseException;
+import pt.isel.ls.errors.command.InvalidArgumentException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.booking.BookingHandler;
 import pt.isel.ls.handler.room.RoomHandler;
@@ -7,7 +10,6 @@ import pt.isel.ls.model.Room;
 import pt.isel.ls.request.CommandRequest;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +18,7 @@ import static pt.isel.ls.utils.UtilMethods.formatStringToDate;
 
 public class GetRoom extends RoomHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) ->
                 new GetRoomResult(executeGetCommand(commandRequest, connection)));
     }
@@ -27,14 +29,19 @@ public class GetRoom extends RoomHandler {
     }
 
     private List<Room> executeGetCommand(CommandRequest request, Connection connection)
-            throws ParseException, SQLException {
+            throws InternalDataBaseException, InvalidArgumentException {
         List<Room> result = getAllRoomsWithLabels(connection);
 
-        if (!request.getParametersByName(beginParameter).isEmpty()
-                && !request.getParametersByName(durationParameter).isEmpty()) {
-            final String begin = request.getParametersByName(beginParameter).get(0);
-            final String duration = request.getParametersByName(durationParameter).get(0);
-            final Date beginDate = formatStringToDate(begin);
+        if (request.getParameterByName(beginParameter) != null
+                && request.getParameterByName(durationParameter) != null) {
+            final String begin = request.getParameterByName(beginParameter);
+            final String duration = request.getParameterByName(durationParameter);
+            final Date beginDate;
+            try {
+                beginDate = formatStringToDate(begin);
+            } catch (ParseException e) {
+                throw new InvalidArgumentException(e.getMessage());
+            }
             result = getAvailableRooms(
                     connection,
                     beginDate,
@@ -43,11 +50,11 @@ public class GetRoom extends RoomHandler {
             );
         }
 
-        if (!request.getParametersByName(capacityParameter).isEmpty()) {
-            final int capacity = Integer.parseInt(request.getParametersByName(capacityParameter).get(0));
+        if (request.getParameterByName(capacityParameter) != null) {
+            final int capacity = Integer.parseInt(request.getParameterByName(capacityParameter));
             result.removeIf(room -> room.getCapacity() < capacity);
         }
-        if (!request.getParametersByName(labelParameter).isEmpty()) {
+        if (request.getParameterByName(labelParameter) != null) {
             List<String> labels = request.getParametersByName(labelParameter);
             for (String labelName : labels) {
                 result.removeIf(room -> room.getLabels()

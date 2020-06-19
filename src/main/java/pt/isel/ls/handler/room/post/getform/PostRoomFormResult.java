@@ -14,12 +14,10 @@ import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
 public class PostRoomFormResult extends Result {
     private final List<Label> availableLabels;
     private final PostParameters postParameters;
-    private final boolean error;
 
     public PostRoomFormResult(List<Label> availableLabels, PostParameters postParameters) {
         this.postParameters = postParameters;
         this.availableLabels = availableLabels;
-        this.error = !postParameters.isValid();
     }
 
 
@@ -38,10 +36,10 @@ public class PostRoomFormResult extends Result {
                 body(
                         h1(text(name())),
                         form(
-                                div(addInput("Name", "text")),
-                                div(addInput("Location", "text")),
-                                div(addInput("Capacity", "number")),
-                                div(addInput("Description", "text")),
+                                div(addPostInput("Name", "text", postParameters)),
+                                div(addPostInput("Location", "text", postParameters)),
+                                div(addPostInput("Capacity", "number", postParameters)),
+                                div(addPostInput("Description", "text", postParameters)),
                                 div(
                                         getLabelsCheckBoxes()
                                 ),
@@ -53,33 +51,6 @@ public class PostRoomFormResult extends Result {
         ).build();
     }
 
-    private Node[] addInput(String label, String inputType) {
-        List<Node> nodes = new ArrayList<>();
-        // ERRO NESTE LABEL ? -> SIM = != NULL
-        String errorMsg = postParameters.getErrorByParameterName(label.toLowerCase());
-        if (errorMsg == null) {
-            nodes.add(label(text(label + " ")).addAttribute("for", label.toLowerCase()));
-        } else {
-            nodes.add(label(text(label.concat(" -> ").concat(errorMsg + " ")))
-                    .addAttribute("for", label.toLowerCase())
-                    .addAttribute("style", "color:red"));
-        }
-        Element input = input();
-        input
-                .addAttribute("type", inputType)
-                .addAttribute("name", label.toLowerCase())
-                .addAttribute("id", label.toLowerCase())
-                .addAttribute("required", "true");
-
-        if (error) {
-            // COMO EXISTE ERRO, INPUT PREENCHIDO
-            String value = postParameters.getParameterValue(label.toLowerCase());
-            input.addAttribute("value", value);
-        }
-        nodes.add(input);
-        nodes.add(br());
-        return nodes.toArray(new Node[0]);
-    }
 
     private Node setNavBar() {
         return homeButton();

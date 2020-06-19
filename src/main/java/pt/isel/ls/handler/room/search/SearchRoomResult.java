@@ -31,30 +31,9 @@ public class SearchRoomResult extends Result {
                 body(
                         h1(text(name())),
                         form(
-                                div(
-                                        label(text("Capacity ")).addAttribute("for", "capacity"),
-                                        input()
-                                                .addAttribute("type", "number")
-                                                .addAttribute("name", "capacity")
-                                                .addAttribute("id", "capacity"),
-                                        br()
-                                ),
-                                div(
-                                        label(text("Begin Time ")).addAttribute("for", "begin"),
-                                        input()
-                                                .addAttribute("type", "datetime-local")
-                                                .addAttribute("name", "begin")
-                                                .addAttribute("id", "begin"),
-                                        br()
-                                ),
-                                div(
-                                        label(text("Duration ")).addAttribute("for", "duration"),
-                                        input()
-                                                .addAttribute("type", "number")
-                                                .addAttribute("name", "duration")
-                                                .addAttribute("id", "Duration"),
-                                        br()
-                                ),
+                                div(addInput("Capacity", "number")),
+                                div(addInput("Begin", "datetime-local")),
+                                div(addInput("Duration", "number")),
                                 div(
                                         getLabelsCheckBoxes()
                                 ),

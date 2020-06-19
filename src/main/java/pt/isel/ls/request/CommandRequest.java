@@ -3,7 +3,6 @@ package pt.isel.ls.request;
 import pt.isel.ls.errors.router.RouterException;
 import pt.isel.ls.userinterfaces.interfaces.LocalInterface;
 import pt.isel.ls.userinterfaces.interfaces.OutputInterface;
-import pt.isel.ls.utils.UtilMethods;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,12 +10,12 @@ import java.util.List;
 import static pt.isel.ls.request.Header.checkHeader;
 
 public class CommandRequest {
+    public final TransactionManager transactionManager;
     private final Method method;
     private final Path path;
     private final Header header;
-    public TransactionManager transactionManager;
+    private final PostParameters postParameters;
     private List<Parameter> parameter;
-    private PostParameters postParameters;
 
     public CommandRequest(Method method, Path path, List<Parameter> parameter, Header header) {
         this.method = method;
@@ -24,9 +23,11 @@ public class CommandRequest {
         this.header = header;
         this.parameter = parameter;
         transactionManager = new TransactionManager();
-        //TODO : APENAS EM POST
-        postParameters = new PostParameters(parameter);
-
+        if (method == Method.POST) {
+            postParameters = new PostParameters(parameter);
+        } else {
+            postParameters = new PostParameters(new LinkedList<>());
+        }
     }
 
     public static CommandRequest formatUserInput(String[] rawTask, OutputInterface outputInterface)
@@ -44,7 +45,7 @@ public class CommandRequest {
         //OS HEADERS SÓ APARECEM NA POS 2!
         try {
             header = checkHeader(rawTask, 2); //EXISTE HEADER
-            parameters = UtilMethods.getParameters(rawTask, 3); //PARAM OU NÃO EXISTE OU NA POS3
+            parameters = getParameters(rawTask, 3); //PARAM OU NÃO EXISTE OU NA POS3
         } catch (IllegalArgumentException e) {
             header = new Header();
             //NÃO EXISTE HEADER
@@ -53,9 +54,25 @@ public class CommandRequest {
             } else {
                 header.addPair(HeaderType.ACCEPT, new HeaderValue("text/html"));
             }
-            parameters = UtilMethods.getParameters(rawTask, 2); //PARAM OU NÃO EXISTE OU NA POS2
+            parameters = getParameters(rawTask, 2); //PARAM OU NÃO EXISTE OU NA POS2
         }
         return new CommandRequest(method, path, parameters, header);
+    }
+
+    private static List<Parameter> getParameters(String[] rawInput, int index) {
+        List<Parameter> list = new LinkedList<>();
+        if (index >= rawInput.length) {
+            return list;
+        }
+        String rawString = rawInput[index];
+        String[] params = rawString.split("&");
+        for (String st : params) {
+            String[] parts = st.split("=");
+            if (parts.length > 1) {
+                list.add(new Parameter(parts[0], parts[1].replace("+", " ")));
+            }
+        }
+        return list;
     }
 
     public Method getMethod() {
@@ -99,9 +116,5 @@ public class CommandRequest {
 
     public PostParameters getPostParameters() {
         return postParameters;
-    }
-
-    public void setPostParameters(PostParameters postParameters) {
-        this.postParameters = postParameters;
     }
 }

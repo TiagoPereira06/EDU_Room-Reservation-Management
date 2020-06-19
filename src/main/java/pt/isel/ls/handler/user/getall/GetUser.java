@@ -1,5 +1,6 @@
 package pt.isel.ls.handler.user.getall;
 
+import pt.isel.ls.errors.command.CommandException;
 import pt.isel.ls.handler.CommandResult;
 import pt.isel.ls.handler.user.UserHandler;
 import pt.isel.ls.model.User;
@@ -14,7 +15,7 @@ import java.util.List;
 public class GetUser extends UserHandler {
 
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException {
         return commandRequest.transactionManager.execute((connection) -> {
             String getUsersQuery = "SELECT * FROM users";
             PreparedStatement statement = connection.prepareStatement(getUsersQuery);
