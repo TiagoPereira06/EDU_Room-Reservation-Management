@@ -50,7 +50,7 @@ public class GetRoomByIdResult extends Result {
         List<Node> navItems = new ArrayList<>();
         navItems.add(homeButton());
         navItems.add(text(" | "));
-        navItems.add(button("All Roms", "/rooms"));
+        navItems.add(button("All Rooms", "/rooms"));
         navItems.add(text(" | "));
         navItems.add(button("Rooms Search", "/rooms/search"));
         navItems.add(text(" | "));
