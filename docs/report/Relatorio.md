@@ -573,14 +573,24 @@ Na interface StatusCode estão presentes os principais códigos:
 
  - OK (200) - indica um pedido bem sucedido;
  - Created (201) - indica um pedido bem sucedido e é  criado um novo recurso como resultado disso, resposta típica após um POST request;
- - SeeOther (303) - o servidor rnvia esta resposta ao cliente para ir buscar o recurso a outro URI com um GET request;
+ - SeeOther (303) - o servidor envia esta resposta ao cliente para ir buscar o recurso a outro URI com um GET request;
  - BadRequest (400) - quando o servidor não consegue entender o pedido;
  - NotFound (404) - quando o servidor não consegue encontrar o pedido;
  - InternalServerError (500) - indica que o servidor se deparou com uma situação que não consegue suportar;
  
- Temos ainda as classes **AppError**, que tira partido dos status code enumerados acima, **AppException**, da qual extendem as classes **RouterException**, **InternalDataBaseException** e **HandlerException**.
+Temos ainda as classes **AppError**, que tira partido dos status code enumerados acima e **AppException**, da qual extendem **CommandException** e  **RouterException**.
+À classe CommandException temos associadas:
+ - **InternalDataBaseException**
+ - **ConflictArgumentException**
+ - **MissingArgumentException**
+ - **ResultNotFoundException**
+ - **ServerException**
+ - **InvalidArgumentException**
+ - **ResultNotFoundException**
  
-RouterException() lançado em CommandRequest e CommandRouter com a mensagem "Request Not Found";
-InternalDataBaseException() com a mensagem "Database is unreachable" lançado no método execute() de TransactionManager.
+Com **InvalidArgumentException** e **MissingArgumentException** associadas ao tratamento de erros gerados pelos métodos POST/GET  e handlers para o primeiro e POST/PUT/DELETE para o segundo, com as respetivas mensagens "Invalid Argument" e "Missing Arguments".
 
-De HandlerException extendem as classes **InvalidArgumentException** e **MissingArgumentException** associadas ao tratamento de erros gerados pelos métodos POST com as mensagens "Invalid Argument" e "Missing Arguments".
+Já RouterException é lançado em CommandRequest e CommandRouter com a mensagem "Request Not Found";
+E assim sucessivamente para as restantes classes de exceções, às quais estão associadas as respetivas mensagens de erro.
+
+ 
