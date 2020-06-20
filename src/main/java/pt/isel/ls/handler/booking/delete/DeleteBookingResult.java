@@ -13,7 +13,7 @@ public class DeleteBookingResult extends Result {
 
     @Override
     public String name() {
-        return model + " booking deleted";
+        return model + " Booking Deleted";
     }
 
     @Override

@@ -25,7 +25,7 @@ public class GetBookingByIdResult extends Result {
 
     @Override
     public String name() {
-        return "booking " + model.getId() + " details";
+        return "Booking No." + model.getId() + " Details";
     }
 
     @Override

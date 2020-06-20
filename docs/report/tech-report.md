@@ -467,7 +467,7 @@ Cada uma destas formas envia, quando submetida, um POST request para o resource 
 >
 ## Lógica de Implementação
 Abaixo apresenta-se a implementação da classe PostLabelFromResult referente ao recurso 4, enumerado anteriormente. Foi gerado código semelhante para a realização dos restantes recursos com a descrição da representação html.
-````
+````java
 public PostLabelFormResult(PostParameters postParameters) {  
     this.postParameters = postParameters;  
  this.error = !postParameters.isValid();  
@@ -546,7 +546,7 @@ management do Grandle.
 ## Servlet 
 
 Apresenta-se abaixo um excerto do código contendo alterações na classe servlet relativamente à fase anterior, dando agora suporte a comandos com o método POST no contexto HTTP.
-````
+````java
 public void doPost(HttpServletRequest req, HttpServletResponse resp) {  
     serverInterface = new ServerInterface(resp);  
   processPost(req);  

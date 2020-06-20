@@ -26,7 +26,7 @@ public class GetRoomByIdResult extends Result {
 
     @Override
     public String name() {
-        return room.getName() + " room details";
+        return room.getName() + " Room Details";
     }
 
     @Override

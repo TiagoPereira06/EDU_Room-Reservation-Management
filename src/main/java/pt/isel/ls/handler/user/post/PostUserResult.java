@@ -19,7 +19,7 @@ public class PostUserResult extends Result {
 
     @Override
     public String name() {
-        return model + " user posted";
+        return model + " User Posted";
     }
 
     @Override
