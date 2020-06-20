@@ -67,7 +67,7 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
             PreparedStatement statement = connection.prepareStatement(insertLabelQuery);
             for (Label l : labels) {
                 statement.setString(1, roomName);
-                statement.setString(2, l.getName().replace('+', ' '));
+                statement.setString(2, l.getName());
                 statement.executeUpdate();
             }
         } catch (SQLException throwables) {
@@ -92,7 +92,7 @@ public abstract class RoomHandler extends LabelHandler implements CommandHandler
                 Date beginDateDb = formatStringToDate(resultSet.getString("begintime"));
                 Date endDateDb = formatStringToDate(resultSet.getString("endtime"));
                 if ((beginDate.compareTo(endDateDb) <= 0 && endDate.compareTo(beginDateDb) >= 0)) {
-                    String name = resultSet.getString("roomname");
+                    String name = resultSet.getString("name");
                     allRooms.removeIf(room -> room.getName().equals(name));
                 }
             }

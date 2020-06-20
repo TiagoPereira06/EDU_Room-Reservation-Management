@@ -17,22 +17,6 @@ public class Servlet extends HttpServlet {
     CommandRouter commandRouter = App.initRouterBehaviour();
     ServerInterface serverInterface;
 
-    private static List<String> formatUrl(String reqUriRaw) {
-        if (reqUriRaw == null) {
-            return Collections.emptyList();
-        }
-        String replace = reqUriRaw
-                .replace("?", " ")
-                .replace("%20", " ");
-        if (reqUriRaw.contains("%3A")) {
-            replace = replace.replace("%3A", ":")
-                    .replace("T", "+");
-        }
-
-        return Arrays.asList(replace.split(" "));
-
-    }
-
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         serverInterface = new ServerInterface(resp);
@@ -63,13 +47,12 @@ public class Servlet extends HttpServlet {
     }
 
     private String formatUri(String requestUri) {
-        //TODO + ou " "
-        return requestUri.replace("%20", " ");
+        return requestUri.replace("%20", "+");
     }
 
     private void processPost(HttpServletRequest req) {
         String method = req.getMethod();
-        String requestUri = req.getRequestURI();
+        String requestUri = formatUri(req.getRequestURI());
         String parameters = getBodyParameters(req.getParameterMap());
         log.info(String.format("Incoming Request: ME->%s||URI->%s||PARAM->%s", method, requestUri, parameters));
         String[] rawTask = {method, requestUri, parameters};
@@ -105,5 +88,21 @@ public class Servlet extends HttpServlet {
             }
         }
         return sb.toString();
+    }
+
+    private static List<String> formatUrl(String reqUriRaw) {
+        if (reqUriRaw == null) {
+            return Collections.emptyList();
+        }
+        String replace = reqUriRaw
+                //.replace("?", "+")
+                .replace("%20", "+");
+        if (reqUriRaw.contains("%3A")) {
+            replace = replace.replace("%3A", ":")
+                    .replace("T", "+");
+        }
+
+        return Arrays.asList(replace.split(" "));
+
     }
 }

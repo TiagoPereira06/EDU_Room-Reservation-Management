@@ -53,4 +53,8 @@ public class UtilMethods {
         }
     }
 
+    public static String fixPath(String value) {
+        return value.replace(" ", "%20");
+    }
+
 }

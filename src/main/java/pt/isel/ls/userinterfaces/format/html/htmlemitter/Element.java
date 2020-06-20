@@ -3,6 +3,8 @@ package pt.isel.ls.userinterfaces.format.html.htmlemitter;
 import java.util.LinkedList;
 import java.util.List;
 
+import static pt.isel.ls.utils.UtilMethods.fixPath;
+
 public class Element implements Node {
 
     private final String name;
@@ -163,7 +165,7 @@ public class Element implements Node {
 
     public Element addAttribute(String name, String value) {
         if (!name.equals("value")) {
-            value = value.replace("+", "%20");
+            value = fixPath(value);
         }
         attributes.add(new Attribute(name, value));
         return this;

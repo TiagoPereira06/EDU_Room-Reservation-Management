@@ -36,7 +36,7 @@ public abstract class LabelHandler implements CommandHandler {
     public boolean checkIfLabelAlreadyExists(String label, Connection connection) throws InternalDataBaseException {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM labels WHERE name = ?");
-            statement.setString(1, label.replace('+', ' '));
+            statement.setString(1, label);
             return statement.executeQuery().next();
         } catch (SQLException throwables) {
             throw new InternalDataBaseException();

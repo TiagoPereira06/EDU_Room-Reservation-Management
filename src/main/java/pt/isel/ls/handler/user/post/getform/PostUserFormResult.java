@@ -28,7 +28,7 @@ public class PostUserFormResult extends Result {
                 body(
                         h1(text(name())),
                         form(
-                                div(addPostInput("Email", "text", postParameters)),
+                                div(addPostInput("Email", "email", postParameters)),
                                 div(addPostInput("Name", "text", postParameters)),
                                 input().addAttribute("type", "submit").addAttribute("value", "Create!")
 

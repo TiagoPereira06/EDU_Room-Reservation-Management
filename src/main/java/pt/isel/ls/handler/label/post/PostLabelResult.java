@@ -5,6 +5,7 @@ import pt.isel.ls.handler.Result;
 import pt.isel.ls.http.StatusCode;
 
 import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
+import static pt.isel.ls.utils.UtilMethods.fixPath;
 
 public class PostLabelResult extends Result {
     private final String postedLabelName;
@@ -12,7 +13,7 @@ public class PostLabelResult extends Result {
 
     public PostLabelResult(String postedLabelName, String redirectPath) {
         this.postedLabelName = postedLabelName;
-        this.path = redirectPath.replace(" ", "+");
+        this.path = fixPath(redirectPath);
     }
 
     @Override

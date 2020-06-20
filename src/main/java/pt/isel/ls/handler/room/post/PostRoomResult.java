@@ -5,6 +5,7 @@ import pt.isel.ls.handler.Result;
 import pt.isel.ls.http.StatusCode;
 
 import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
+import static pt.isel.ls.utils.UtilMethods.fixPath;
 
 public class PostRoomResult extends Result {
     private final String model;
@@ -12,7 +13,7 @@ public class PostRoomResult extends Result {
 
     public PostRoomResult(String roomName, String redirectPath) {
         this.model = roomName;
-        this.redirectPath = redirectPath.replace(" ", "+");
+        this.redirectPath = fixPath(redirectPath);
     }
 
     @Override

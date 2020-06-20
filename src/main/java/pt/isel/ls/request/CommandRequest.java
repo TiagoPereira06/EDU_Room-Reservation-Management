@@ -41,7 +41,7 @@ public class CommandRequest {
         } catch (IllegalArgumentException e) {
             throw new RouterException();
         }
-        path = new Path(rawTask[1]);
+        path = new Path(rawTask[1].replace("+"," "));
         //OS HEADERS SÓ APARECEM NA POS 2!
         try {
             header = checkHeader(rawTask, 2); //EXISTE HEADER
@@ -95,7 +95,7 @@ public class CommandRequest {
         List<String> list = new LinkedList<>();
         for (Parameter p : parameter) {
             if (p.getName().equals(paramName)) {
-                list.add(p.getValue().replace("+", " "));
+                list.add(p.getValue());
             }
         }
         return list;

@@ -5,6 +5,7 @@ import pt.isel.ls.handler.Result;
 import pt.isel.ls.http.StatusCode;
 
 import static pt.isel.ls.userinterfaces.format.html.htmlemitter.Element.*;
+import static pt.isel.ls.utils.UtilMethods.fixPath;
 
 public class PostBookingResult extends Result {
     private final String bookingId;
@@ -12,7 +13,7 @@ public class PostBookingResult extends Result {
 
     public PostBookingResult(String postedBookingId, String path) {
         this.bookingId = postedBookingId;
-        this.path = path;
+        this.path = fixPath(path);
     }
 
     @Override
