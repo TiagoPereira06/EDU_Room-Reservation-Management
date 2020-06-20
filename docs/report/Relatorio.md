@@ -446,3 +446,141 @@ Funciona como index da aplicação servidor, retorna um **IndexView** que conté
 Criou-se a classe **ServerInterface** que imprime no output o respetivo resultado html do pedido, associando à resposta o código de estado 200 para sucesso ou 404 para NotFound.
 Continua, no entanto a ser possível a forma de interação com o programa usada até à fase anterior por meio da **LocalInterface**.
 
+>## Alterações a ter em conta na fase 4
+
+O principal objetivo desta fase é adicionar suporte a comandos com método POST na interface HTTP, para tal foi necessário acrescentar as seguintes alterações:
+
+ 1. Recurso **/rooms/create**;
+ 2. Recurso **/rooms/{rid}/booking/create** ;
+ 3. Recurso **/users/create**;
+ 4. Recurso **/labels/create**;
+ 
+>Permitindo os métodos GET e POST, que retornam uma representação HTML e criam uma nova sala, respetivamente. 
+
+Quando bem sucedido redireciona para os respetivos detalhes e caso ocorra um erro retorna um formato HTML com a devida informação de erro.
+
+Cada uma destas formas envia, quando submetida, um POST request para o resource path associado.
+>Por exemplo: 
+>A representação retornada num pedido **get/rooms/create** deve conter um formato com todos os campos necessários para criar um room;
+>Quando submetido deve ser enviado um pedido POST para **/rooms/create** contendo os campos no body;
+>Se o pedido POST for bem sucedido e for criado um novo room a resposta de ser 303 See Other com a localização do header a apontar para o room criado.
+>
+## Lógica de Implementação
+Abaixo apresenta-se a implementação da classe PostLabelFromResult referente ao recurso 4, enumerado anteriormente. Foi gerado código semelhante para a realização dos restantes recursos com a descrição da representação html.
+````
+public PostLabelFormResult(PostParameters postParameters) {  
+    this.postParameters = postParameters;  
+ this.error = !postParameters.isValid();  
+}  
+  
+  
+@Override  
+public String name() {  
+    return "Label Creator";  
+}  
+  
+@Override  
+public String htmlOutput() {  
+    return html(  
+            head(  
+                    title(text(name())),  
+  nav(setNavBar())  
+            ),  
+  body(  
+                    h1(text(name())),  
+  form(  
+                            div(addInput("Name", "text")),  
+  input().addAttribute("type", "submit").addAttribute("value", "Create!")  
+  
+                    ).addAttribute("method", "post")  
+                            .addAttribute("action", "/labels/create")  
+            )  
+  
+    ).build();  
+}  
+  
+private Node[] addInput(String label, String inputType) {  
+    List<Node> nodes = new ArrayList<>();  
+  // ERRO NESTE LABEL ? -> SIM = != NULL  
+  String errorMsg = postParameters.getErrorByParameterName(label.toLowerCase());  
+ if (errorMsg == null) {  
+        nodes.add(label(text(label + " ")).addAttribute("for", label.toLowerCase()));  
+  } else {  
+        nodes.add(label(text(label.concat(" -> ").concat(errorMsg + " ")))  
+                .addAttribute("for", label.toLowerCase())  
+                .addAttribute("style", "color:red"));  
+  }  
+    Element input = input();  
+  input  
+            .addAttribute("type", inputType)  
+            .addAttribute("name", label.toLowerCase())  
+            .addAttribute("id", label.toLowerCase())  
+            .addAttribute("required", "true");  
+  
+ if (error) {  
+        // COMO EXISTE ERRO, INPUT PREENCHIDO  
+  String value = postParameters.getParameterValue(label.toLowerCase());  
+  input.addAttribute("value", value);  
+  }  
+    nodes.add(input);  
+  nodes.add(br());  
+ return nodes.toArray(new Node[0]);  
+}  
+  
+private Node setNavBar() {  
+    return homeButton();  
+}  
+  
+  
+@Override  
+public String plainOutput() {  
+    return "Only Available on HTML Support";  
+}
+````
+
+
+## Dependency Management
+Nesta fase o projeto deixa de depender dos JARs alojadas localmente e passa a usar o sistema de dependency 
+management do Grandle.
+
+## Servlet 
+
+Apresenta-se abaixo um excerto do código contendo alterações na classe servlet relativamente à fase anterior, dando agora suporte a comandos com o método POST no contexto HTTP.
+````
+public void doPost(HttpServletRequest req, HttpServletResponse resp) {  
+    serverInterface = new ServerInterface(resp);  
+  processPost(req);  
+}
+
+private void processPost(HttpServletRequest req) {  
+    String method = req.getMethod();  
+  String requestUri = req.getRequestURI();  
+  String parameters = getBodyParameters(req.getParameterMap());  
+  log.info(String.format("Incoming Request: ME->%s||URI->%s||PARAM->%s", method, requestUri, parameters));  
+  String[] rawTask = {method, requestUri, parameters};  
+ try {  
+        delegateTask(rawTask);  
+  } catch (Exception e) {  
+        serverInterface.showError(e);  
+  }  
+}
+````
+
+## Error and Status Code 
+Nesta última fase do trabalho é dada ainda mais importância ao processamento de erros e valores retornados pelo status code.
+
+Na interface StatusCode estão presentes os principais códigos:
+
+ - OK (200) - indica um pedido bem sucedido;
+ - Created (201) - indica um pedido bem sucedido e é  criado um novo recurso como resultado disso, resposta típica após um POST request;
+ - SeeOther (303) - o servidor rnvia esta resposta ao cliente para ir buscar o recurso a outro URI com um GET request;
+ - BadRequest (400) - quando o servidor não consegue entender o pedido;
+ - NotFound (404) - quando o servidor não consegue encontrar o pedido;
+ - InternalServerError (500) - indica que o servidor se deparou com uma situação que não consegue suportar;
+ 
+ Temos ainda as classes **AppError**, que tira partido dos status code enumerados acima, **AppException**, da qual extendem as classes **RouterException**, **InternalDataBaseException** e **HandlerException**.
+ 
+RouterException() lançado em CommandRequest e CommandRouter com a mensagem "Request Not Found";
+InternalDataBaseException() com a mensagem "Database is unreachable" lançado no método execute() de TransactionManager.
+
+De HandlerException extendem as classes **InvalidArgumentException** e **MissingArgumentException** associadas ao tratamento de erros gerados pelos métodos POST com as mensagens "Invalid Argument" e "Missing Arguments".
